@@ -34,15 +34,9 @@ Deno.serve(async (req: Request) => {
   try { body = await req.json(); } catch { return reply(400, { error: "요청 형식이 올바르지 않아요." }); }
 
   async function ensureCredits() {
-    let result = await admin.from("user_credits").select("balance").eq("user_id", userId).maybeSingle();
+    const result = await admin.rpc("get_or_create_user_credits", { p_user_id: userId });
     if (result.error) throw result.error;
-    if (!result.data) {
-      const inserted = await admin.from("user_credits").insert({ user_id: userId, balance: 100 });
-      if (inserted.error && inserted.error.code !== "23505") throw inserted.error;
-      result = await admin.from("user_credits").select("balance").eq("user_id", userId).single();
-      if (result.error) throw result.error;
-    }
-    return Number(result.data.balance);
+    return Number(result.data);
   }
 
   try {
