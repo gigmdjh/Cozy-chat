@@ -40,6 +40,21 @@
 <div class="backdrop" id="chat-modal" role="dialog" aria-modal="true" aria-labelledby="chat-title"><div class="modal"><div class="modal-head"><div><h2 id="chat-title">캐릭터와 대화</h2><div id="chat-subtitle" style="font-size:12px;color:#858895;margin-top:4px"></div></div><button class="close" data-close="chat-modal" aria-label="닫기">×</button></div><div class="chat-log" id="chat-log" aria-live="polite"></div><form class="chat-compose" id="chat-form"><input id="chat-input" autocomplete="off" maxlength="1000" placeholder="메시지를 입력하세요…" required aria-label="메시지 입력"><button type="submit">보내기</button></form><p class="note">현재는 화면을 확인하는 데모입니다. 실제 AI 모델은 아직 연결되지 않았어요.</p></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+/* Independent diagnostic script: this runs even if the main application script has a syntax error. */
+(function(){
+  function report(message){
+    var p=document.getElementById('runtime-error-panel');
+    if(!p){p=document.createElement('div');p.id='runtime-error-panel';p.style.cssText='position:fixed;z-index:999999;left:8px;right:8px;bottom:88px;max-height:40vh;overflow:auto;padding:13px;border:2px solid #d95b70;border-radius:12px;background:#fff0f2;color:#7f2032;font:13px/1.5 system-ui;white-space:pre-wrap';document.body.appendChild(p)}
+    p.textContent='사이트 진단 결과\\n'+message;
+  }
+  window.addEventListener('error',function(e){report('JavaScript 오류: '+(e.message||'알 수 없는 오류')+'\\n위치: '+(e.filename||'?')+':'+(e.lineno||'?')+':'+(e.colno||'?'))});
+  window.addEventListener('unhandledrejection',function(e){report('비동기 오류: '+(e.reason&&e.reason.message||e.reason||'알 수 없는 오류'))});
+  document.addEventListener('DOMContentLoaded',function(){
+    var p=document.createElement('div');p.id='runtime-status';p.textContent='진단: 웹페이지가 열렸습니다. 버튼을 한 번 눌러 보세요.';p.style.cssText='position:fixed;z-index:999998;left:8px;right:8px;bottom:88px;padding:11px;border-radius:10px;background:#eefaf3;color:#246b48;font:13px system-ui';document.body.appendChild(p);setTimeout(function(){if(p.parentNode)p.remove()},8000);
+  });
+})();
+</script>
+<script>
 /* Runtime diagnostics: show JavaScript failures on the page, including mobile browsers. */
 (function(){
   function report(message){
