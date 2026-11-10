@@ -40,8 +40,8 @@
 <div class="backdrop" id="chat-modal" role="dialog" aria-modal="true" aria-labelledby="chat-title"><div class="modal"><div class="modal-head"><div><h2 id="chat-title">캐릭터와 대화</h2><div id="chat-subtitle" style="font-size:12px;color:#858895;margin-top:4px"></div></div><button class="close" data-close="chat-modal" aria-label="닫기">×</button></div><div class="chat-log" id="chat-log" aria-live="polite"></div><form class="chat-compose" id="chat-form"><input id="chat-input" autocomplete="off" maxlength="1000" placeholder="메시지를 입력하세요…" required aria-label="메시지 입력"><button type="submit">보내기</button></form><p class="note">현재는 화면을 확인하는 데모입니다. 실제 AI 모델은 아직 연결되지 않았어요.</p></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = ""; // Supabase Project URL을 입력하세요.
-const SUPABASE_ANON_KEY = ""; // Supabase publishable/anon key를 입력하세요. service_role 키는 절대 넣지 마세요.
+const SUPABASE_URL = "https://iancmscwyespbcjjyahu.supabase.co"; // Supabase Project URL을 입력하세요.
+const SUPABASE_ANON_KEY = "sb_publishable_iDq31MeD6_BbW59V4KHCag_caTnCXea"; // Supabase publishable/anon key를 입력하세요. service_role 키는 절대 넣지 마세요.
 let supabaseClient = null, authMode = 'login', currentUser = null;
 if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase?.createClient) { supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); }
 const seed=[
