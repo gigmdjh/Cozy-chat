@@ -65,6 +65,7 @@ Deno.serve(async (req: Request) => {
       "캐릭터 이름: " + String(character.name ?? "캐릭터").slice(0, 100),
       "캐릭터 설명: " + String(character.description ?? "").slice(0, 4000),
       "캐릭터 프롬프트: " + String(character.prompt ?? "").slice(0, 10000),
+      "사용자 페르소나: " + String(character.persona ?? "").slice(0, 1000) + "\n이 페르소나는 사용자가 연기하는 인물의 역할·외형·성격·배경이다. 비어 있으면 임의로 가정하지 않는다.",
       "템플릿: " + String(character.template ?? "1:1"),
       "프롤로그: " + String(character.prologue ?? "").slice(0, 1000),
       "시작 설정: " + JSON.stringify(Array.isArray(character.startSettings) ? character.startSettings.slice(0, 20) : []).slice(0, 8000),
