@@ -83,7 +83,7 @@ Deno.serve(async (req: Request) => {
       if (model === "groq") {
         const key = Deno.env.get("GROQ_API_KEY");
         if (!key) throw new Error("MISSING_PROVIDER_KEY");
-        const modelName = Deno.env.get("GROQ_MODEL") ?? "llama-3.3-70b-versatile";
+        const modelName = Deno.env.get("GROQ_MODEL") ?? "openai/gpt-oss-120b";
         const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
           method: "POST",
           headers: { "Authorization": "Bearer " + key, "Content-Type": "application/json" },
