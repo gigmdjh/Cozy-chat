@@ -16,6 +16,6 @@ Only configure the providers you actually intend to offer. A provider without it
 
 ## Credits
 
-The database migrations `character_chat_credits` and `credit_balance_rpc` were applied to the connected Supabase project. A user receives 100 initial credits when their balance is first created. A successful AI response costs 1 credit. Failed provider calls attempt to refund that credit.
+The database migrations `character_chat_credits`, `credit_balance_rpc`, and `public_character_catalog` were applied to the connected Supabase project. Public character records are stored separately so private characters are not exposed by the catalog. A user receives 100 initial credits when their balance is first created. A successful AI response costs 1 credit. Failed provider calls attempt to refund that credit.
 
 The balance and transaction tables are not writable by regular authenticated clients. Credit adjustments run through the server-side RPC using the Edge Function's service role. Payment/top-up integration is not implemented yet.
