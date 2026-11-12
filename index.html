@@ -191,6 +191,62 @@ label.search .ico{color:var(--muted)}
 .drawer-chat-emoji img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
 @media(max-width:760px){.conv-tools{flex-direction:column}.conv-model select{max-width:none;flex:1}}
 :root[data-theme="dark"] .conv-item,:root[data-theme="dark"] .conv-search,:root[data-theme="dark"] .conv-model{background:var(--surface)}
+/* ---- v5: 탭 전반 ---- */
+body.is-member .hero{padding:26px 0 8px}
+body.is-member .hero h1{font-size:clamp(26px,6vw,44px)}
+@media(max-width:760px){body.is-member .hero-visual{display:none}body.is-member .hero p{display:none}body.is-member .hero-actions{margin-top:14px}}
+.home-recent{margin:18px 0 6px}
+.home-recent[hidden]{display:none}
+.home-recent-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.home-recent-head h3{margin:0;font-size:17px}
+.text-link{border:0;background:transparent;color:var(--muted);font:inherit;font-size:13px;cursor:pointer;padding:4px}
+.home-recent-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+.home-recent-row::-webkit-scrollbar{display:none}
+.recent-chip{flex:0 0 auto;width:86px;display:flex;flex-direction:column;align-items:center;gap:5px;border:0;background:transparent;font:inherit;color:var(--text);cursor:pointer;padding:4px 0}
+.recent-avatar{width:64px;height:64px;border-radius:22px;overflow:hidden;display:grid;place-items:center;font-size:28px;background:var(--soft,#f1f3fa);box-shadow:0 0 0 2px var(--bg,#fff),0 0 0 4px #cdd6f3}
+.recent-avatar img{width:100%;height:100%;object-fit:cover}
+.recent-name{font-size:12.5px;font-weight:700;max-width:86px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recent-time{font-size:10.5px;color:var(--muted);margin-top:-3px}
+.discover-bar{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 12px;font-size:12.5px;color:var(--muted)}
+.sort-label{display:flex;align-items:center;gap:6px}
+.sort-label select{border:1px solid var(--line);border-radius:10px;background:var(--surface,#fff);color:var(--text);font:inherit;font-size:12.5px;padding:6px 8px}
+.card-creator{display:block;margin-top:3px;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.detail-meta{margin-top:10px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.detail-creator{display:inline-flex;align-items:center;gap:7px;border:0;background:transparent;padding:0;font:inherit;font-size:13px;color:var(--muted);cursor:pointer}
+button.detail-creator:hover{color:var(--text)}
+.detail-creator-avatar{width:22px;height:22px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:var(--soft,#f1f3fa);font-size:11px;font-weight:700;color:var(--text)}
+.detail-creator-avatar img{width:100%;height:100%;object-fit:cover}
+.detail-tags{display:flex;flex-wrap:wrap;gap:5px}
+.detail-tags span{font-size:11.5px;color:#6f7896;background:rgba(127,127,160,.1);border-radius:999px;padding:3px 8px}
+@media(max-width:760px){#character-detail-chat{position:sticky;bottom:calc(84px + env(safe-area-inset-bottom));z-index:5;box-shadow:0 8px 24px rgba(160,150,200,.35)}}
+.creator-progress{display:flex;align-items:center;gap:10px;margin:4px 0 12px}
+.creator-progress-track{flex:1;height:6px;border-radius:999px;background:rgba(127,127,160,.15);overflow:hidden}
+.creator-progress-fill{height:100%;width:0;border-radius:inherit;background:var(--gradient);transition:width .3s}
+.creator-progress-text{font-size:12px;color:var(--muted);white-space:nowrap}
+[data-chapter-tab].done::after{content:'✓';margin-left:5px;color:#3f9a6e;font-weight:800}
+input[type=file]{width:100%;font:inherit;font-size:13px;color:var(--muted)}
+input[type=file]::file-selector-button{border:1px solid var(--line);border-radius:10px;background:var(--surface,#fff);color:var(--text);font:inherit;font-size:13px;font-weight:700;padding:8px 14px;margin-right:10px;cursor:pointer}
+input[type=file]::file-selector-button:hover{background:rgba(127,127,160,.08)}
+.post-item-head{justify-content:flex-start}
+.post-item-head strong{flex:1;min-width:0}
+.post-avatar{width:34px;height:34px;flex:0 0 34px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:var(--gradient);color:#fff;font-size:14px;font-weight:800;margin-right:9px}
+.post-avatar img{width:100%;height:100%;object-fit:cover}
+.post-item .text-button{padding:0;text-decoration:none;font-weight:700;font-size:14px;color:var(--text)}
+.post-item p{margin:10px 0 8px}
+.post-item small{font-size:11.5px}
+.post-count{font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap}
+#post-submit{white-space:nowrap;flex:0 0 auto}
+#post-auth-hint{flex:1;min-width:0}
+@media(max-width:760px){body.is-member #post-auth-hint{display:none}}
+.post-count.near{color:#b5476f}
+.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;padding:14px 8px!important}
+.profile-stats div{display:flex;flex-direction:column;align-items:center;gap:3px}
+.profile-stats div+div{border-left:1px solid var(--line)}
+.profile-stats strong{font-size:19px}
+.profile-stats span{font-size:11.5px;color:var(--muted)}
+.cards .card{aspect-ratio:auto;height:auto}
+.cards .card .card-body{overflow:visible;padding:10px 11px 12px}
+.cards .card .card-body p{-webkit-line-clamp:2;margin:6px 0 0}
 </style>
 </head>
 <body>
@@ -1054,7 +1110,7 @@ document.getElementById('persona-list').onclick=e=>{const choose=e.target.closes
       try {
         const { data, error } = await supabaseClient.from('community_posts').select('id,content,created_at,user_id,author_name').order('created_at', { ascending: false }).limit(100);
         if (error) throw error;
-        posts = (data || []).map(p => ({ id: p.id, text: p.content, date: new Date(p.created_at).toLocaleString('ko-KR'), author: p.author_name || '사용자', user_id: p.user_id }));
+        posts = (data || []).map(p => ({ id: p.id, text: p.content, date: new Date(p.created_at).toLocaleString('ko-KR'), author: p.author_name || '사용자', user_id: p.user_id, created: p.created_at }));
         cloudPostsLoaded = true;
       } catch (err) {
         box.innerHTML = '<div class="empty-state">게시물을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</div>';
@@ -1070,7 +1126,7 @@ document.getElementById('persona-list').onclick=e=>{const choose=e.target.closes
       const actions = own
         ? '<button type="button" class="post-action" data-post-delete="' + esc(p.id) + '">삭제</button>'
         : (p.user_id ? '<button type="button" class="post-action" data-post-report="' + esc(p.id) + '">신고</button><button type="button" class="post-action" data-post-block="' + esc(p.id) + '">차단</button>' : '');
-      return '<article class="post-item"><div class="post-item-head"><strong><button type="button" class="text-button" data-public-user="' + esc(p.user_id || '') + '">' + esc(p.author || '사용자') + '</button></strong><span class="post-actions">' + actions + '</span></div><p>' + esc(p.text) + '</p><small>' + esc(p.date) + '</small></article>';
+      return '<article class="post-item"><div class="post-item-head"><span class="post-avatar" data-avatar-user="' + esc(p.user_id || '') + '" data-avatar-name="' + esc(p.author || '') + '">' + esc(String(p.author || '?').charAt(0)) + '</span><strong><button type="button" class="text-button" data-public-user="' + esc(p.user_id || '') + '">' + esc(p.author || '사용자') + '</button></strong><span class="post-actions">' + actions + '</span></div><p>' + esc(p.text) + '</p><small title="' + esc(p.date) + '">' + esc(window.cozyRelTime && p.created ? cozyRelTime(p.created) : p.date) + '</small></article>';
     }).join('') : '<div class="empty-state">아직 게시물이 없어요.<br>로그인하고 첫 이야기를 공유해 보세요.</div>';
   };
   $('post-list').addEventListener('click', async e => {
@@ -1578,6 +1634,255 @@ window.COZY_ICONS = {"trash": "<svg class=\"ico\" viewBox=\"0 0 24 24\" width=\"
 
   renderHistory();
   renderDrawerChats();
+})();
+</script>
+<script id="cozy-v5">
+/* Cozy Chat v5: 탭 전반 개선 (검색 · 상세 · 새 캐릭터 · 게시물 · 프로필) */
+(() => {
+  'use strict';
+  if (window.__cozyV5) return;
+  window.__cozyV5 = true;
+
+  const $ = id => document.getElementById(id);
+  const uid = () => (currentUser && currentUser.id) || '';
+
+  function relTime(t) {
+    const time = typeof t === 'number' ? t : Date.parse(t);
+    if (!time) return '';
+    const d = Date.now() - time, m = 60000, h = 60 * m, day = 24 * h;
+    if (d < m) return '방금';
+    if (d < h) return Math.floor(d / m) + '분 전';
+    if (d < day) return Math.floor(d / h) + '시간 전';
+    if (d < 2 * day) return '어제';
+    if (d < 7 * day) return Math.floor(d / day) + '일 전';
+    const dt = new Date(time);
+    return (dt.getFullYear() === new Date().getFullYear() ? '' : dt.getFullYear() + '. ') + (dt.getMonth() + 1) + '월 ' + dt.getDate() + '일';
+  }
+  window.cozyRelTime = relTime;
+
+  /* ---------- 작성자 프로필 (이름 · 사진) 캐시 ---------- */
+  const profiles = new Map();
+  async function loadProfiles(ids) {
+    const missing = [...new Set(ids.filter(Boolean).map(String))].filter(id => !profiles.has(id));
+    if (!missing.length || !supabaseClient) return;
+    missing.forEach(id => profiles.set(id, null));
+    const { data } = await supabaseClient.from('user_profiles').select('user_id,display_name,avatar_data').in('user_id', missing);
+    (data || []).forEach(r => profiles.set(String(r.user_id), r));
+  }
+  const nameOf = id => profiles.get(String(id))?.display_name || '';
+  function avatarHtml(id, fallbackName) {
+    const p = profiles.get(String(id));
+    if (p?.avatar_data) return '<img src="' + esc(p.avatar_data) + '" alt="">';
+    return esc((p?.display_name || fallbackName || '?').trim().charAt(0).toUpperCase() || '?');
+  }
+
+  /* ================= 검색(홈) ================= */
+  // 정렬
+  let sortMode = 'popular', sorting = false;
+  try { sortMode = localStorage.getItem('cozy-chat-sort-v1') || 'popular' } catch {}
+  const createdAt = c => Number(String(c.character_id || c.id || '').match(/(\d{10,})/)?.[1] || 0);
+  const previousAll = window.all;
+  window.all = function () {
+    const list = previousAll();
+    if (!sorting) return list;
+    const by = {
+      popular: (a, b) => getLikeCount(b) - getLikeCount(a) || createdAt(b) - createdAt(a),
+      new: (a, b) => createdAt(b) - createdAt(a),
+      name: (a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'ko'),
+    }[sortMode];
+    return by ? [...list].sort(by) : list;
+  };
+  const filters = $('filters');
+  if (filters && !$('sort-select')) {
+    filters.insertAdjacentHTML('afterend', '<div class="discover-bar"><span id="discover-count"></span><label class="sort-label">정렬 <select id="sort-select" aria-label="정렬"><option value="popular">인기순</option><option value="new">최신순</option><option value="name">이름순</option></select></label></div>');
+    $('sort-select').value = sortMode;
+    $('sort-select').addEventListener('change', e => {
+      sortMode = e.target.value;
+      try { localStorage.setItem('cozy-chat-sort-v1', sortMode) } catch {}
+      render();
+    });
+  }
+
+  // 이어서 대화하기 (최근 대화)
+  const discover = $('discover');
+  if (discover && !$('home-recent')) {
+    discover.insertAdjacentHTML('beforebegin', '<section id="home-recent" class="home-recent" hidden><div class="home-recent-head"><h3>이어서 대화하기</h3><button type="button" class="text-link" id="home-recent-all">전체 보기</button></div><div class="home-recent-row" id="home-recent-row"></div></section>');
+    $('home-recent-all').addEventListener('click', () => setPage('conversations'));
+    $('home-recent-row').addEventListener('click', e => {
+      const b = e.target.closest('[data-recent-chat]');
+      if (b) openChat(b.dataset.recentChat);
+    });
+  }
+  function renderRecent() {
+    const box = $('home-recent'), row = $('home-recent-row');
+    if (!box) return;
+    const hist = getHistory(), chars = all();
+    const items = Object.keys(hist)
+      .filter(id => Array.isArray(hist[id]) && hist[id].some(m => m.role === 'user'))
+      .map(id => ({ id, ch: chars.find(x => String(x.id) === String(id)), time: hist[id].reduce((n, m) => Math.max(n, Number(m.time) || 0), 0) }))
+      .filter(x => x.ch).sort((a, b) => b.time - a.time).slice(0, 10);
+    box.hidden = !items.length || !document.getElementById('discover') || document.getElementById('discover').style.display === 'none';
+    row.innerHTML = items.map(x => '<button type="button" class="recent-chip" data-recent-chat="' + esc(x.id) + '"><span class="recent-avatar">' + (x.ch.image ? '<img src="' + esc(x.ch.image) + '" alt="">' : esc(x.ch.emoji || '✦')) + '</span><span class="recent-name">' + esc(x.ch.name || '캐릭터') + '</span><span class="recent-time">' + esc(relTime(x.time)) + '</span></button>').join('');
+  }
+
+  // 카드: 만든 사람 표시, 결과 수
+  function decorateCards() {
+    const cards = [...document.querySelectorAll('#cards [data-character-detail]')];
+    const byId = new Map(all().map(c => [String(c.id), c]));
+    const count = $('discover-count');
+    if (count) count.textContent = cards.length ? '캐릭터 ' + cards.length + '개' : '';
+    cards.forEach(card => {
+      const c = byId.get(card.dataset.characterDetail);
+      if (!c || card.querySelector('.card-creator')) return;
+      const own = !c.user_id || String(c.user_id) === uid();
+      const name = own ? '나' : nameOf(c.user_id);
+      if (name) card.querySelector('.card-title')?.insertAdjacentHTML('afterend', '<span class="card-creator">by ' + esc(name) + '</span>');
+    });
+  }
+  const previousRender = window.render;
+  window.render = function (...args) {
+    sorting = true;
+    let r;
+    try { r = previousRender.apply(this, args) } finally { sorting = false }
+    decorateCards();
+    renderRecent();
+    const owners = all().filter(c => c.user_id && String(c.user_id) !== uid()).map(c => c.user_id);
+    const before = profiles.size;
+    loadProfiles(owners).then(() => { if (profiles.size !== before) decorateCards() });
+    return r;
+  };
+
+  /* ================= 캐릭터 상세 ================= */
+  const likeRow = $('character-detail-like')?.parentElement;
+  if (likeRow && !$('character-detail-meta')) {
+    likeRow.insertAdjacentHTML('afterend', '<div id="character-detail-meta" class="detail-meta"></div>');
+  }
+  const previousOpenDetail = window.openCharacterDetail;
+  window.openCharacterDetail = function (id) {
+    const r = previousOpenDetail(id);
+    const c = detailCharacter, box = $('character-detail-meta');
+    if (c && box) {
+      const own = !c.user_id || String(c.user_id) === uid();
+      const tags = (Array.isArray(c.hashtags) ? c.hashtags : String(c.hashtags || '').split(/[ ,]+/)).filter(Boolean).slice(0, 8);
+      const draw = () => {
+        box.innerHTML = (own ? '<span class="detail-creator">내가 만든 캐릭터</span>'
+          : c.user_id ? '<button type="button" class="detail-creator" data-creator="' + esc(c.user_id) + '"><span class="detail-creator-avatar">' + avatarHtml(c.user_id, '?') + '</span>' + esc(nameOf(c.user_id) || '제작자') + ' 님의 캐릭터 ›</button>' : '')
+          + (tags.length ? '<div class="detail-tags">' + tags.map(t => '<span>#' + esc(t.replace(/^#/, '')) + '</span>').join('') + '</div>' : '');
+      };
+      draw();
+      if (!own && c.user_id) loadProfiles([c.user_id]).then(draw);
+    }
+    return r;
+  };
+  $('character-detail-meta')?.addEventListener('click', e => {
+    const b = e.target.closest('[data-creator]');
+    if (!b) return;
+    publicProfileUserId = b.dataset.creator;
+    setPage('public-profile');
+  });
+
+  /* ================= 새 캐릭터: 단계별 완료 표시 ================= */
+  function chapterDone() {
+    const v = id => ($(id)?.value || '').trim();
+    const starts = [...document.querySelectorAll('[data-start-item]')];
+    const assets = [...document.querySelectorAll('[data-asset-card]')];
+    const notes = [...document.querySelectorAll('[data-note-card]')];
+    return [
+      !!creatorImageData && !!v('creator-name'),
+      !!v('creator-prompt'),
+      starts.length > 0 && starts.every(x => x.querySelector('[data-start-name]')?.value.trim() && x.querySelector('[data-start-prologue]')?.value.trim() && x.querySelector('[data-start-situation]')?.value.trim()),
+      assets.every(x => x.assetData && x.querySelector('[data-name]')?.value.trim() && x.querySelector('[data-situation]')?.value.trim()),
+      notes.every(x => x.querySelector('[data-title]')?.textContent.trim() && x.querySelector('[data-info]')?.value.trim() && x.querySelector('[data-words]')?.value.trim()),
+      !!v('creator-genre') && !!v('creator-target') && !!v('creator-visibility'),
+    ];
+  }
+  const REQUIRED = [true, true, true, false, false, true];
+  function updateCreatorProgress() {
+    const done = chapterDone();
+    document.querySelectorAll('[data-chapter-tab]').forEach((tab, i) => {
+      tab.classList.toggle('done', !!done[i] && (REQUIRED[i] || document.querySelectorAll(i === 3 ? '[data-asset-card]' : '[data-note-card]').length > 0));
+    });
+    const need = REQUIRED.filter(Boolean).length, have = done.filter((d, i) => d && REQUIRED[i]).length;
+    const bar = $('creator-progress');
+    if (bar) {
+      bar.querySelector('.creator-progress-fill').style.width = Math.round(have / need * 100) + '%';
+      bar.querySelector('.creator-progress-text').textContent = have === need ? '필수 항목을 모두 채웠어요. 저장할 수 있어요!' : '필수 항목 ' + have + ' / ' + need + ' 완료';
+    }
+  }
+  const tabs = document.querySelector('.creator-tabs');
+  if (tabs && !$('creator-progress')) {
+    tabs.insertAdjacentHTML('beforebegin', '<div id="creator-progress" class="creator-progress"><div class="creator-progress-track"><div class="creator-progress-fill"></div></div><span class="creator-progress-text"></span></div>');
+  }
+  const form = $('creator-form');
+  if (form) {
+    let pending = 0;
+    const schedule = () => { cancelAnimationFrame(pending); pending = requestAnimationFrame(updateCreatorProgress) };
+    ['input', 'change', 'click'].forEach(ev => form.addEventListener(ev, () => setTimeout(schedule, 0)));
+    new MutationObserver(schedule).observe(form, { childList: true, subtree: true });
+  }
+  for (const fn of ['openCharacterCreator', 'populateCharacterCreator', 'resetCreator']) {
+    const prev = window[fn];
+    if (typeof prev === 'function') window[fn] = function (...args) { const r = prev.apply(this, args); setTimeout(updateCreatorProgress, 0); return r };
+  }
+
+  /* ================= 게시물 ================= */
+  const postInput = $('post-input');
+  if (postInput && !$('post-count')) {
+    $('post-auth-hint')?.insertAdjacentHTML('afterend', '<span id="post-count" class="post-count">0 / 600</span>');
+    postInput.addEventListener('input', () => {
+      const n = postInput.value.length;
+      $('post-count').textContent = n + ' / 600';
+      $('post-count').classList.toggle('near', n > 540);
+    });
+    $('post-form')?.addEventListener('submit', () => setTimeout(() => { $('post-count').textContent = postInput.value.length + ' / 600' }, 600));
+  }
+  function decoratePosts() {
+    document.querySelectorAll('#post-list [data-avatar-user]').forEach(el => {
+      el.innerHTML = avatarHtml(el.dataset.avatarUser, el.dataset.avatarName);
+    });
+  }
+  const previousRenderPosts = window.renderPosts;
+  window.renderPosts = async function (...args) {
+    const r = await previousRenderPosts.apply(this, args);
+    decoratePosts();
+    await loadProfiles(posts.map(p => p.user_id));
+    decoratePosts();
+    return r;
+  };
+
+  /* ================= 프로필: 활동 요약 ================= */
+  const cookieCard = document.querySelector('.profile-card.cookie-card');
+  if (cookieCard && !$('profile-stats')) {
+    cookieCard.insertAdjacentHTML('beforebegin', '<div class="profile-card profile-stats" id="profile-stats"><div><strong id="stat-chars">0</strong><span>내 캐릭터</span></div><div><strong id="stat-chats">0</strong><span>대화한 캐릭터</span></div><div><strong id="stat-likes">0</strong><span>받은 좋아요</span></div></div>');
+  }
+  function renderStats() {
+    if (!$('profile-stats')) return;
+    const me = uid();
+    const mine = custom.filter(c => !c.user_id || String(c.user_id) === me);
+    const hist = getHistory();
+    const chats = Object.keys(hist).filter(id => Array.isArray(hist[id]) && hist[id].some(m => m.role === 'user')).length;
+    const likes = mine.reduce((n, c) => n + (Number(getLikeCount(c)) || 0), 0);
+    $('stat-chars').textContent = mine.length.toLocaleString();
+    $('stat-chats').textContent = chats.toLocaleString();
+    $('stat-likes').textContent = likes.toLocaleString();
+  }
+
+  /* ================= 페이지 이동 · 로그인 상태 ================= */
+  const previousSetPage = window.setPage;
+  window.setPage = function (page) {
+    const r = previousSetPage(page);
+    const home = page === 'home' || (page === 'profile' && window.matchMedia('(min-width: 761px)').matches);
+    if (home) renderRecent();
+    if ($('home-recent') && !home) $('home-recent').hidden = true;
+    if (page === 'profile') renderStats();
+    return r;
+  };
+  function syncMemberClass() {
+    document.body.classList.toggle('is-member', !!currentUser);
+  }
+  if (supabaseClient) supabaseClient.auth.onAuthStateChange(() => setTimeout(() => { syncMemberClass(); renderStats(); renderRecent() }, 120));
+  syncMemberClass();
+  render();
 })();
 </script>
 </body></html>
