@@ -318,6 +318,7 @@ input[type=file]::file-selector-button:hover{background:rgba(127,127,160,.08)}
 .post-preview-empty{color:var(--muted)}
 .post-preview-toggle{border:1px solid var(--line);background:var(--surface,#fff);color:var(--text);border-radius:9px;padding:6px 11px;font:inherit;font-size:12px;cursor:pointer;margin-left:auto}
 .post-preview-toggle+.post-count{margin-left:0}
+.conv-chip.room{background:rgba(120,140,210,.14);color:#5c6fae}
 </style>
 </head>
 <body>
@@ -1635,11 +1636,12 @@ window.COZY_ICONS = {"trash": "<svg class=\"ico\" viewBox=\"0 0 24 24\" width=\"
     return Object.keys(hist)
       .filter(id => Array.isArray(hist[id]) && hist[id].some(m => m.role === 'user'))
       .map(id => {
-        const ch = chars.find(x => String(x.id) === String(id));
+        const charId = window.cozyCharOf ? cozyCharOf(id) : id;
+        const ch = chars.find(x => String(x.id) === String(charId));
         const msgs = hist[id];
         const last = [...msgs].reverse().find(m => !m.system);
         const time = msgs.reduce((n, m) => Math.max(n, Number(m.time) || 0), 0);
-        return { id, ch, msgs, last, time };
+        return { id, ch, msgs, last, time, archived: charId !== id };
       })
       .filter(c => c.ch)
       .sort((a, b) => b.time - a.time);
@@ -1667,7 +1669,7 @@ window.COZY_ICONS = {"trash": "<svg class=\"ico\" viewBox=\"0 0 24 24\" width=\"
         + '<span class="conv-avatar">' + avatarHtml(c.ch) + '</span>'
         + '<span class="conv-meta"><span class="conv-top"><strong>' + esc(c.ch.name || '캐릭터') + '</strong><span class="conv-time">' + esc(relTime(c.time)) + '</span></span>'
         + '<span class="conv-preview">' + mine + esc(plain(c.last?.text).slice(0, 90) || '대화를 이어가 보세요.') + '</span>'
-        + '<span class="conv-sub"><span class="conv-chip">' + esc(c.ch.tag || '캐릭터') + '</span>' + (c.ch.rating === 'unsafe' ? '<span class="conv-chip unsafe">언세이프</span>' : '') + '<span>대화 ' + turns + '번</span></span></span>'
+        + '<span class="conv-sub">' + (c.archived ? '<span class="conv-chip room">이전 채팅방</span>' : '') + '<span class="conv-chip">' + esc(c.ch.tag || '캐릭터') + '</span>' + (c.ch.rating === 'unsafe' ? '<span class="conv-chip unsafe">언세이프</span>' : '') + '<span>대화 ' + turns + '번</span></span></span>'
         + '</button>'
         + '<button type="button" class="conv-delete" data-conv-delete="' + esc(c.id) + '" aria-label="' + esc(c.ch.name || '캐릭터') + ' 대화 삭제" title="대화 삭제">' + (ICON.trash || '삭제') + '</button>'
         + '</div>';
@@ -1677,7 +1679,7 @@ window.COZY_ICONS = {"trash": "<svg class=\"ico\" viewBox=\"0 0 24 24\" width=\"
   window.renderDrawerChats = function () {
     const box = $('drawer-chats');
     if (!box) return;
-    const list = conversations().slice(0, 12);
+    const list = conversations().filter(c => !c.archived).slice(0, 12);
     box.innerHTML = list.length
       ? list.map(c => '<button class="drawer-chat" data-history-chat="' + esc(c.id) + '"><span class="drawer-chat-emoji">' + avatarHtml(c.ch) + '</span><span class="drawer-chat-name">' + esc(c.ch.name || '캐릭터') + '</span></button>').join('')
       : '<div style="padding:8px 12px;color:#9b9eaa;font-size:12px;line-height:1.7">아직 대화한 캐릭터가 없어요.</div>';
@@ -1694,8 +1696,8 @@ window.COZY_ICONS = {"trash": "<svg class=\"ico\" viewBox=\"0 0 24 24\" width=\"
     if (!del) return;
     e.stopPropagation();
     const id = del.dataset.convDelete;
-    const ch = all().find(x => String(x.id) === String(id));
-    if (!confirm('「' + (ch?.name || '이 캐릭터') + '」와의 대화 기록을 삭제할까요?\n삭제하면 되돌릴 수 없고, 캐릭터가 기억하던 내용도 함께 지워져요.')) return;
+    const ch = all().find(x => String(x.id) === String(window.cozyCharOf ? cozyCharOf(id) : id));
+    if (!confirm('「' + (ch?.name || '이 캐릭터') + '」와의 이 채팅방을 삭제할까요?\n삭제하면 되돌릴 수 없고, 캐릭터가 기억하던 내용도 함께 지워져요.')) return;
     const hist = getHistory();
     delete hist[id];
     save(H, hist);
@@ -1935,7 +1937,7 @@ window.COZY_ICONS = {"trash": "<svg class=\"ico\" viewBox=\"0 0 24 24\" width=\"
     const me = uid();
     const mine = custom.filter(c => !c.user_id || String(c.user_id) === me);
     const hist = getHistory();
-    const chats = Object.keys(hist).filter(id => Array.isArray(hist[id]) && hist[id].some(m => m.role === 'user')).length;
+    const chats = new Set(Object.keys(hist).filter(id => Array.isArray(hist[id]) && hist[id].some(m => m.role === 'user')).map(id => String(id).split('#')[0])).size;
     const likes = mine.reduce((n, c) => n + (Number(getLikeCount(c)) || 0), 0);
     $('stat-chars').textContent = mine.length.toLocaleString();
     $('stat-chats').textContent = chats.toLocaleString();
@@ -2353,7 +2355,8 @@ window.COZY_ICONS = {"trash": "<svg class=\"ico\" viewBox=\"0 0 24 24\" width=\"
       extra.hidden = !list;
       if (list) {
         const t = list.reduce((n, m) => Math.max(n, Number(m.time) || 0), 0);
-        $('detail-chat-last').textContent = '마지막 대화 ' + (window.cozyRelTime ? cozyRelTime(t) : '') + ' · 대화 ' + list.filter(m => m.role === 'user').length + '번';
+        const rooms = window.cozyRooms ? cozyRooms.list(c.id).length : 1;
+        $('detail-chat-last').textContent = '마지막 대화 ' + (window.cozyRelTime ? cozyRelTime(t) : '') + (rooms > 1 ? ' · 채팅방 ' + rooms + '개' : ' · 대화 ' + list.filter(m => m.role === 'user').length + '번');
       }
     }
     return r;
@@ -2361,14 +2364,10 @@ window.COZY_ICONS = {"trash": "<svg class=\"ico\" viewBox=\"0 0 24 24\" width=\"
   $('character-detail-new-chat')?.addEventListener('click', async () => {
     const c = detailCharacter;
     if (!c) return;
-    if (!confirm('「' + (c.name || '이 캐릭터') + '」와 새로 대화를 시작할까요?\n지금까지의 대화 기록과 캐릭터가 기억하던 내용이 지워져요.')) return;
-    const hist = read(H, {});
-    delete hist[c.id];
-    save(H, hist);
-    if (currentUser && supabaseClient) {
-      const { error } = await supabaseClient.from('conversations').delete().eq('user_id', currentUser.id).eq('character_key', String(c.id));
-      if (error) console.error('대화 초기화 실패:', error);
-    }
+    const btn = $('character-detail-new-chat');
+    btn.disabled = true;
+    await window.cozyRooms.archiveCurrent(String(c.id)); // 지금 대화는 '이전 채팅방'으로 보관
+    btn.disabled = false;
     renderHistory?.();
     renderDrawerChats?.();
     chatBtn.textContent = '대화하기 →';
@@ -2395,6 +2394,88 @@ window.COZY_ICONS = {"trash": "<svg class=\"ico\" viewBox=\"0 0 24 24\" width=\"
       $('post-preview-toggle').textContent = '미리보기';
     }, true);
   }
+})();
+</script>
+<script id="cozy-v8">
+/* Cozy Chat v8: 캐릭터별 여러 채팅방
+   - 지금 쓰는 채팅방은 언제나 캐릭터 id 칸(H[charId], conversations.character_key = charId)에 있다.
+   - 이전 채팅방은 "charId#room-시각" 칸에 보관한다. 이전 방을 열면 지금 방과 자리를 바꾼다.
+   - 장기 기억(memory)도 채팅방과 함께 옮겨 다닌다. */
+(() => {
+  'use strict';
+  if (window.__cozyV8) return;
+  window.__cozyV8 = true;
+
+  const SEP = '#';
+  const charOf = key => String(key).split(SEP)[0];
+  const isRoomKey = key => String(key).includes(SEP);
+  const hasChat = list => Array.isArray(list) && list.some(m => m.role === 'user');
+  window.cozyCharOf = charOf;
+
+  async function cloudRow(key) {
+    if (!currentUser || !supabaseClient) return null;
+    const { data } = await supabaseClient.from('conversations').select('messages,memory,memory_until').eq('user_id', currentUser.id).eq('character_key', key).maybeSingle();
+    return data || null;
+  }
+  async function cloudMove(fromKey, toKey, messages) {
+    if (!currentUser || !supabaseClient) return;
+    const row = await cloudRow(fromKey);
+    const { error } = await supabaseClient.from('conversations').upsert({
+      user_id: currentUser.id, character_key: toKey, messages,
+      memory: row?.memory || '', memory_until: row?.memory_until || 0, updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id,character_key' });
+    if (error) throw error;
+    await supabaseClient.from('conversations').delete().eq('user_id', currentUser.id).eq('character_key', fromKey);
+  }
+
+  // 지금 채팅방을 보관함으로 옮긴다. 옮긴 칸의 key 를 돌려준다.
+  async function archiveCurrent(charId) {
+    const hist = read(H, {});
+    const list = hist[charId];
+    if (!hasChat(list)) { delete hist[charId]; save(H, hist); return null }
+    let stamp = Number(list[0]?.time) || Date.now();
+    let roomKey = charId + SEP + 'room-' + stamp;
+    while (hist[roomKey]) roomKey = charId + SEP + 'room-' + (++stamp);
+    hist[roomKey] = list;
+    delete hist[charId];
+    save(H, hist);
+    try { await cloudMove(charId, roomKey, list) } catch (e) { console.error('채팅방 보관 실패:', e) }
+    return roomKey;
+  }
+
+  // 보관된 채팅방을 지금 채팅방 자리로 가져온다.
+  async function restoreRoom(roomKey) {
+    const charId = charOf(roomKey);
+    const hist = read(H, {});
+    const list = hist[roomKey];
+    if (!Array.isArray(list)) return;
+    await archiveCurrent(charId);
+    const fresh = read(H, {});
+    fresh[charId] = list;
+    delete fresh[roomKey];
+    save(H, fresh);
+    try { await cloudMove(roomKey, charId, list) } catch (e) { console.error('채팅방 열기 실패:', e) }
+  }
+
+  window.cozyRooms = {
+    list(charId) {
+      const hist = read(H, {});
+      return Object.keys(hist).filter(k => charOf(k) === String(charId) && hasChat(hist[k]));
+    },
+    archiveCurrent,
+    restoreRoom,
+  };
+
+  // 어디서든 openChat(보관된 방 key) 를 부르면 그 방을 열어 준다
+  const previousOpenChat = window.openChat;
+  window.openChat = function (id, ...rest) {
+    if (!isRoomKey(id)) return previousOpenChat.call(this, id, ...rest);
+    restoreRoom(id).then(() => {
+      previousOpenChat.call(this, charOf(id));
+      renderHistory?.();
+      renderDrawerChats?.();
+    });
+  };
 })();
 </script>
 </body></html>
