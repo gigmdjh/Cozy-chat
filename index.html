@@ -247,6 +247,29 @@ input[type=file]::file-selector-button:hover{background:rgba(127,127,160,.08)}
 .cards .card{aspect-ratio:auto;height:auto}
 .cards .card .card-body{overflow:visible;padding:10px 11px 12px}
 .cards .card .card-body p{-webkit-line-clamp:2;margin:6px 0 0}
+/* ---- v6: 채팅방 ---- */
+.chat-input-shell{align-items:flex-end}
+.chat-input-shell #chat-input{resize:none;font:inherit;line-height:1.5;max-height:140px;overflow-y:auto;display:block}
+.chat-input-shell .chat-action-button{margin-bottom:4px}
+.chat-send-button .ico-stop{display:none}
+.chat-send-button.is-busy{opacity:1}
+.chat-send-button.is-busy .ico:not(.ico-stop){display:none}
+.chat-send-button.is-busy .ico-stop{display:block;animation:none}
+.chat-cost-chip{border:1px solid var(--line);background:var(--surface,#fff);color:var(--text);border-radius:999px;padding:7px 11px;font:inherit;font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer}
+.chat-day{align-self:center;margin:6px 0 2px;font-size:11px;color:var(--muted)}
+.chat-day span{background:rgba(127,127,160,.1);border-radius:999px;padding:3px 10px}
+.msg-actions{display:flex;gap:6px;margin-top:-6px}
+.msg-actions.ai{padding-left:42px}
+.msg-actions.user{justify-content:flex-end;padding-right:38px}
+.msg-actions button{border:1px solid var(--line);background:var(--surface,#fff);color:var(--muted);border-radius:999px;padding:5px 10px;font:inherit;font-size:12px;cursor:pointer}
+.msg-actions button:hover:not(:disabled){color:var(--text);border-color:#cdd2e6}
+.msg-actions button:disabled{opacity:.45;cursor:default}
+.msg-actions small{font-size:11px;margin-left:2px}
+.chat-jump{position:absolute;right:16px;bottom:14px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surface,#fff);color:var(--text);font-size:18px;box-shadow:0 6px 18px rgba(80,90,130,.18);cursor:pointer;z-index:4}
+.chat-jump[hidden]{display:none}
+.chat-toast{position:absolute;left:50%;bottom:18px;transform:translate(-50%,10px);background:rgba(40,42,55,.92);color:#fff;font-size:13px;padding:8px 14px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:5}
+.chat-toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:760px){.chat-cost-chip{padding:6px 9px;font-size:11px}.msg-actions.ai{padding-left:36px}}
 </style>
 </head>
 <body>
@@ -437,7 +460,7 @@ input[type=file]::file-selector-button:hover{background:rgba(127,127,160,.08)}
 <div class="backdrop" id="create-modal" role="dialog" aria-modal="true" aria-labelledby="create-title" hidden><div class="modal"><div class="modal-head"><h2 id="create-title">이전 제작 양식</h2><button class="close" data-close="create-modal" aria-label="닫기">×</button></div><form id="create-form"><div class="field"><label for="char-name">이름</label><input id="char-name" maxlength="40"></div><div class="field"><label for="char-tag">장르</label><select id="char-tag"><option>일상</option><option>로맨스</option><option>판타지</option><option>힐링</option></select></div><div class="field"><label for="char-personality">성격 및 설정</label><textarea id="char-personality" maxlength="600"></textarea></div><div class="field"><label for="char-greeting">첫 대사</label><textarea id="char-greeting" maxlength="300"></textarea></div><button class="btn btn-primary wide" type="submit">저장</button><p class="note">호환용 양식</p></form></div></div>
 
 <div class="backdrop" id="terms-consent-modal" role="dialog" aria-modal="true" aria-labelledby="terms-consent-title"><div class="modal"><div class="modal-head"><h2 id="terms-consent-title">약관에 동의해 주세요</h2></div><p class="page-description">Cozy Chat 이용약관과 개인정보처리방침이 새로 만들어졌어요. 계속 이용하려면 동의가 필요해요.</p><div class="legal-links"><a href="./#legal-terms" target="_blank" rel="noopener">이용약관 보기</a><a href="./#legal-privacy" target="_blank" rel="noopener">개인정보처리방침 보기</a><a href="./#legal-policy" target="_blank" rel="noopener">운영정책 보기</a></div><label class="terms-check"><input type="checkbox" id="terms-consent-check"><span>만 14세 이상이며, 이용약관과 개인정보처리방침에 동의합니다. (필수)</span></label><p class="note" id="terms-consent-message"></p><div style="display:flex;gap:8px;margin-top:12px"><button type="button" class="btn btn-plain" id="terms-consent-decline" style="flex:1">로그아웃</button><button type="button" class="btn btn-primary" id="terms-consent-agree" style="flex:2">동의하고 계속하기</button></div></div></div><div class="backdrop" id="report-modal" role="dialog" aria-modal="true" aria-labelledby="report-title"><div class="modal"><div class="modal-head"><h2 id="report-title">신고하기</h2><button class="close" data-close="report-modal" aria-label="닫기">×</button></div><form id="report-form"><p class="note" id="report-target-label"></p><div class="report-reasons"><label><input type="radio" name="report-reason" value="선정적·성적인 내용">선정적·성적인 내용</label><label><input type="radio" name="report-reason" value="폭력적·잔인한 내용">폭력적·잔인한 내용</label><label><input type="radio" name="report-reason" value="혐오·차별 표현">혐오·차별 표현</label><label><input type="radio" name="report-reason" value="스팸·광고">스팸·광고</label><label><input type="radio" name="report-reason" value="저작권·초상권 침해">저작권·초상권 침해</label><label><input type="radio" name="report-reason" value="미성년자 관련 부적절한 내용">미성년자 관련 부적절한 내용</label><label><input type="radio" name="report-reason" value="기타">기타</label></div><div class="field"><label for="report-detail">자세한 내용 (선택)</label><textarea id="report-detail" maxlength="400" rows="3" placeholder="신고 이유를 더 알려 주시면 검토에 도움이 돼요."></textarea></div><div id="report-message" class="auth-message" role="status" aria-live="polite"></div><button class="btn btn-primary" id="report-submit" type="submit" style="width:100%;margin-top:12px">신고 접수</button></form></div></div><div class="backdrop" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title"><div class="modal"><div class="modal-head"><h2 id="auth-title">Cozy Chat 계정</h2><button class="close" data-close="auth-modal" aria-label="닫기">×</button></div><div class="auth-tabs"><button type="button" id="auth-tab-login" class="active">로그인</button><button type="button" id="auth-tab-signup">회원가입</button></div><form id="auth-form"><div class="field"><label for="auth-email">이메일</label><input id="auth-email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></div><div class="field"><label for="auth-password">비밀번호</label><input id="auth-password" type="password" autocomplete="current-password" required minlength="6" maxlength="128" placeholder="6자 이상"></div><label class="terms-check" id="auth-terms-row" hidden><input type="checkbox" id="auth-terms"><span>만 14세 이상이며, <a href="./#legal-terms" target="_blank" rel="noopener" data-legal-link="terms">이용약관</a>과 <a href="./#legal-privacy" target="_blank" rel="noopener" data-legal-link="privacy">개인정보처리방침</a>에 동의합니다. (필수)</span></label><button class="btn btn-primary wide" id="auth-submit" type="submit">로그인</button><div class="auth-actions"><button class="text-button" type="button" id="auth-reset">비밀번호 재설정</button><span style="font-size:11px;color:#9b9eaa">비밀번호는 안전하게 인증 서비스에서 처리돼요.</span></div><div id="auth-message" class="auth-message" role="status" aria-live="polite"></div></form><p class="note">로그인하면 캐릭터와 대화 기록이 계정에 저장돼요. <a href="./#legal-terms" target="_blank" rel="noopener" data-legal-link="terms">이용약관</a> · <a href="./#legal-privacy" target="_blank" rel="noopener" data-legal-link="privacy">개인정보처리방침</a></p></div></div>
-<div class="backdrop" id="chat-modal" role="dialog" aria-modal="true" aria-labelledby="chat-title"><div class="modal chat-window"><header class="chat-topbar"><button type="button" class="chat-back-button" id="chat-back-button" aria-label="뒤로 가기"><svg class="ico" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><div class="chat-head-copy"><strong id="chat-title">캐릭터와 대화</strong><small id="chat-subtitle"></small></div><div class="chat-top-actions"><button type="button" class="chat-settings-toggle" id="chat-settings-toggle" aria-label="채팅방 설정 열기" aria-expanded="false"><svg class="ico" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5.5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="18.5" r="1.2"/></svg></button></div></header><div class="chat-content"><div class="chat-log" id="chat-log" aria-live="polite"></div><aside class="chat-settings-panel" id="chat-settings-panel" aria-hidden="true"><div class="chat-settings-header"><strong>채팅방 설정</strong><button type="button" class="close" id="chat-settings-close" aria-label="설정 닫기">×</button></div><nav class="chat-settings-nav" aria-label="채팅방 설정 항목"><button type="button" data-settings-view="persona" class="active">페르소나</button><button type="button" data-settings-view="note">유저 노트</button><button type="button" data-settings-view="output">출력량 설정</button><button type="button" data-settings-view="chat">채팅 설정</button><button type="button" data-settings-view="model">AI 모델</button></nav><div class="chat-settings-body"><section class="chat-settings-view active" data-settings-panel="persona"><h3>페르소나</h3><p class="settings-help">이번 대화에서 내가 어떤 인물인지 선택해.</p><div class="field"><label for="chat-persona-select">사용할 페르소나</label><select id="chat-persona-select"><option value="">선택 안 함</option></select><small class="note" id="chat-persona-status" role="status">현재 적용: 페르소나 없음</small></div><button type="button" class="settings-primary" id="chat-open-persona-tab">페르소나 탭 열기</button></section><section class="chat-settings-view" data-settings-panel="note"><h3>유저 노트</h3><p class="settings-help">AI가 대화 중 계속 참고할 정보야. 이 캐릭터의 대화에만 저장돼.</p><div class="field"><label for="chat-user-note">유저 노트</label><textarea id="chat-user-note" maxlength="2000" rows="8" placeholder="인물 관계, 중요한 사실, 현재 상황 등을 적어 줘."></textarea><small class="note">최대 2,000자 · 입력하면 자동 저장돼.</small></div></section><section class="chat-settings-view" data-settings-panel="output"><h3>출력량 설정</h3><p class="settings-help">배수가 높을수록 더 긴 답변을 만들 수 있지만, 한 번의 응답에 사용하는 쿠키도 늘어나.</p><div class="field"><label for="chat-output-groq">Groq · GPT-OSS 120B <output id="chat-output-groq-value">1×</output></label><input id="chat-output-groq" type="range" min="1" max="5" step="0.5" value="1"><small class="note">약 <span id="chat-output-groq-tokens">1,280</span> 출력 토큰</small></div><div class="field"><label for="chat-output-gemini">Gemini <output id="chat-output-gemini-value">1×</output></label><input id="chat-output-gemini" type="range" min="1" max="5" step="0.5" value="1"><small class="note">약 <span id="chat-output-gemini-tokens">1,280</span> 출력 토큰</small></div><div class="field"><label for="chat-output-openai">OpenAI 호환 <output id="chat-output-openai-value">1×</output></label><input id="chat-output-openai" type="range" min="1" max="5" step="0.5" value="1"><small class="note">약 <span id="chat-output-openai-tokens">1,280</span> 출력 토큰</small></div><p class="settings-cost-note" id="chat-output-cost-note">1× 기준 응답 1번: Groq 20 · Gemini 50 · OpenAI 20쿠키</p></section><section class="chat-settings-view" data-settings-panel="chat"><h3>채팅 설정</h3><p class="settings-help">이 캐릭터 대화에 적용되는 표시 설정이야.</p><div class="field"><label for="chat-font-select">글꼴</label><select id="chat-font-select"><option value="system">기본 글꼴</option><option value="noto">고딕체</option><option value="serif">명조체</option><option value="mono">고정폭 글꼴</option></select></div><div class="field"><label for="chat-font-size">글자 크기 <output id="chat-font-size-value">16px</output></label><input id="chat-font-size" type="range" min="12" max="24" step="1" value="16"></div></section><section class="chat-settings-view" data-settings-panel="model"><h3>AI 모델</h3><p class="settings-help">이 대화에서 사용할 모델을 선택해.</p><div class="field"><label for="chat-model-select">모델 선택</label><select id="chat-model-select"><option value="auto">자동 선택 (캐릭터 권장 모델)</option><option value="groq">Groq Cloud · GPT-OSS 120B · 🍪20</option><option value="gemini">Gemini · 2.5 Flash · 🍪50</option><option value="openai-compatible">OpenAI 호환 모델 · 🍪20</option></select></div></section></div></aside><div class="chat-profile-panel" id="chat-profile-panel" aria-hidden="true"><div class="chat-profile-head"><strong>캐릭터 정보</strong><button type="button" class="close" id="chat-profile-close" aria-label="정보 닫기">×</button></div><div id="chat-profile-content" class="chat-profile-content"></div></div></div><form class="chat-compose" id="chat-form"><div class="chat-input-shell"><button type="button" id="chat-action-toggle" class="chat-action-button" aria-label="행동 묘사 모드" aria-pressed="false"><svg class="ico" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M5.1 8l13.8 8M18.9 8 5.1 16"/></svg></button><input id="chat-input" autocomplete="off" maxlength="1000" placeholder="메시지를 입력하세요…" required aria-label="메시지 입력"></div><button type="submit" class="chat-send-button" aria-label="전송"><svg class="ico" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg></button></form></div></div>
+<div class="backdrop" id="chat-modal" role="dialog" aria-modal="true" aria-labelledby="chat-title"><div class="modal chat-window"><header class="chat-topbar"><button type="button" class="chat-back-button" id="chat-back-button" aria-label="뒤로 가기"><svg class="ico" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><div class="chat-head-copy"><strong id="chat-title">캐릭터와 대화</strong><small id="chat-subtitle"></small></div><div class="chat-top-actions"><button type="button" class="chat-settings-toggle" id="chat-settings-toggle" aria-label="채팅방 설정 열기" aria-expanded="false"><svg class="ico" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5.5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="18.5" r="1.2"/></svg></button></div></header><div class="chat-content"><div class="chat-log" id="chat-log" aria-live="polite"></div><aside class="chat-settings-panel" id="chat-settings-panel" aria-hidden="true"><div class="chat-settings-header"><strong>채팅방 설정</strong><button type="button" class="close" id="chat-settings-close" aria-label="설정 닫기">×</button></div><nav class="chat-settings-nav" aria-label="채팅방 설정 항목"><button type="button" data-settings-view="persona" class="active">페르소나</button><button type="button" data-settings-view="note">유저 노트</button><button type="button" data-settings-view="output">출력량 설정</button><button type="button" data-settings-view="chat">채팅 설정</button><button type="button" data-settings-view="model">AI 모델</button></nav><div class="chat-settings-body"><section class="chat-settings-view active" data-settings-panel="persona"><h3>페르소나</h3><p class="settings-help">이번 대화에서 내가 어떤 인물인지 선택해.</p><div class="field"><label for="chat-persona-select">사용할 페르소나</label><select id="chat-persona-select"><option value="">선택 안 함</option></select><small class="note" id="chat-persona-status" role="status">현재 적용: 페르소나 없음</small></div><button type="button" class="settings-primary" id="chat-open-persona-tab">페르소나 탭 열기</button></section><section class="chat-settings-view" data-settings-panel="note"><h3>유저 노트</h3><p class="settings-help">AI가 대화 중 계속 참고할 정보야. 이 캐릭터의 대화에만 저장돼.</p><div class="field"><label for="chat-user-note">유저 노트</label><textarea id="chat-user-note" maxlength="2000" rows="8" placeholder="인물 관계, 중요한 사실, 현재 상황 등을 적어 줘."></textarea><small class="note">최대 2,000자 · 입력하면 자동 저장돼.</small></div></section><section class="chat-settings-view" data-settings-panel="output"><h3>출력량 설정</h3><p class="settings-help">배수가 높을수록 더 긴 답변을 만들 수 있지만, 한 번의 응답에 사용하는 쿠키도 늘어나.</p><div class="field"><label for="chat-output-groq">Groq · GPT-OSS 120B <output id="chat-output-groq-value">1×</output></label><input id="chat-output-groq" type="range" min="1" max="5" step="0.5" value="1"><small class="note">약 <span id="chat-output-groq-tokens">1,280</span> 출력 토큰</small></div><div class="field"><label for="chat-output-gemini">Gemini <output id="chat-output-gemini-value">1×</output></label><input id="chat-output-gemini" type="range" min="1" max="5" step="0.5" value="1"><small class="note">약 <span id="chat-output-gemini-tokens">1,280</span> 출력 토큰</small></div><div class="field"><label for="chat-output-openai">OpenAI 호환 <output id="chat-output-openai-value">1×</output></label><input id="chat-output-openai" type="range" min="1" max="5" step="0.5" value="1"><small class="note">약 <span id="chat-output-openai-tokens">1,280</span> 출력 토큰</small></div><p class="settings-cost-note" id="chat-output-cost-note">1× 기준 응답 1번: Groq 20 · Gemini 50 · OpenAI 20쿠키</p></section><section class="chat-settings-view" data-settings-panel="chat"><h3>채팅 설정</h3><p class="settings-help">이 캐릭터 대화에 적용되는 표시 설정이야.</p><div class="field"><label for="chat-font-select">글꼴</label><select id="chat-font-select"><option value="system">기본 글꼴</option><option value="noto">고딕체</option><option value="serif">명조체</option><option value="mono">고정폭 글꼴</option></select></div><div class="field"><label for="chat-font-size">글자 크기 <output id="chat-font-size-value">16px</output></label><input id="chat-font-size" type="range" min="12" max="24" step="1" value="16"></div></section><section class="chat-settings-view" data-settings-panel="model"><h3>AI 모델</h3><p class="settings-help">이 대화에서 사용할 모델을 선택해.</p><div class="field"><label for="chat-model-select">모델 선택</label><select id="chat-model-select"><option value="auto">자동 선택 (캐릭터 권장 모델)</option><option value="groq">Groq Cloud · GPT-OSS 120B · 🍪20</option><option value="gemini">Gemini · 2.5 Flash · 🍪50</option><option value="openai-compatible">OpenAI 호환 모델 · 🍪20</option></select></div></section></div></aside><div class="chat-profile-panel" id="chat-profile-panel" aria-hidden="true"><div class="chat-profile-head"><strong>캐릭터 정보</strong><button type="button" class="close" id="chat-profile-close" aria-label="정보 닫기">×</button></div><div id="chat-profile-content" class="chat-profile-content"></div></div></div><form class="chat-compose" id="chat-form"><div class="chat-input-shell"><button type="button" id="chat-action-toggle" class="chat-action-button" aria-label="행동 묘사 모드" aria-pressed="false"><svg class="ico" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M5.1 8l13.8 8M18.9 8 5.1 16"/></svg></button><textarea id="chat-input" rows="1" autocomplete="off" maxlength="2000" placeholder="메시지를 입력하세요…" required aria-label="메시지 입력" enterkeyhint="send"></textarea></div><button type="submit" class="chat-send-button" aria-label="전송"><svg class="ico" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg><svg class="ico ico-stop" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5"/></svg></button></form></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
@@ -659,13 +682,14 @@ document.getElementById('persona-list').onclick=e=>{const choose=e.target.closes
     const { data } = await supabaseClient.auth.getSession();
     return data.session?.access_token || '';
   }
-  async function callChatFunction(payload) {
+  async function callChatFunction(payload, signal) {
     const token = await accessToken();
     if (!token) throw Error('로그인이 필요해요.');
     return fetch(SUPABASE_URL + '/functions/v1/character-chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, 'apikey': SUPABASE_ANON_KEY },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      signal
     });
   }
 
@@ -839,7 +863,8 @@ document.getElementById('persona-list').onclick=e=>{const choose=e.target.closes
     renderChatMessages([...hist[key], { role: 'ai', text: '' }]);
     { const pending = document.querySelectorAll('#chat-log .bubble.ai'); pending[pending.length - 1]?.classList.add('streaming'); }
     const submit = document.querySelector('#chat-form button[type=submit]');
-    submit.disabled = true;
+    const abortCtrl = new AbortController();
+    window.__cozyChatAbort = abortCtrl;
     submit.classList.add('is-busy');
 
     const persist = async aiText => {
@@ -876,7 +901,7 @@ document.getElementById('persona-list').onclick=e=>{const choose=e.target.closes
         userNote: roomSettings.userNote,
         chatSettings: { outputTokens: roomSettings.outputTokens, outputMultipliers: roomSettings.outputMultipliers },
         model: model === 'auto' ? (chatCharacter.recommendedModel || 'auto') : model
-      });
+      }, abortCtrl.signal);
       const type = response.headers.get('content-type') || '';
       if (!type.includes('text/event-stream')) {
         const data = await response.json().catch(() => ({}));
@@ -899,7 +924,8 @@ document.getElementById('persona-list').onclick=e=>{const choose=e.target.closes
         bubble.innerHTML = md(answer, chatCharacter.assets || []);
         if (nearBottom) log.scrollTop = log.scrollHeight;
       };
-      for await (const evt of readSSE(response)) {
+      let stopped = false;
+      try { for await (const evt of readSSE(response)) {
         if (evt.type === 'delta') {
           answer += evt.text || '';
           if (!pending) { pending = true; requestAnimationFrame(paint) }
@@ -909,14 +935,15 @@ document.getElementById('persona-list').onclick=e=>{const choose=e.target.closes
         } else if (evt.type === 'error') {
           failure = evt.error || 'AI 응답을 받지 못했어요.';
         }
-      }
+      } } catch (streamErr) { if (streamErr.name === 'AbortError') stopped = true; else throw streamErr; }
       if (failure && !answer.trim()) throw Error(failure);
-      if (!answer.trim()) throw Error('AI 응답이 비어 있어요. 다시 시도해 주세요.');
-      if (!finished) answer += '\n\n*(연결이 끊겨 답변이 중간에 멈췄어요.)*';
+      if (!answer.trim()) throw Error(stopped ? '답변을 멈췄어요.' : 'AI 응답이 비어 있어요. 다시 시도해 주세요.');
+      if (!finished) answer += stopped ? '\n\n*(여기서 멈췄어요)*' : '\n\n*(연결이 끊겨 답변이 중간에 멈췄어요.)*';
       await persist(answer);
     } catch (err) {
-      showError(err.message || 'AI 서버 연결에 실패했어요.');
+      showError(err.name === 'AbortError' ? '답변을 멈췄어요.' : (err.message || 'AI 서버 연결에 실패했어요.'));
     } finally {
+      window.__cozyChatAbort = null;
       submit.disabled = false;
       submit.classList.remove('is-busy');
     }
@@ -1883,6 +1910,207 @@ window.COZY_ICONS = {"trash": "<svg class=\"ico\" viewBox=\"0 0 24 24\" width=\"
   if (supabaseClient) supabaseClient.auth.onAuthStateChange(() => setTimeout(() => { syncMemberClass(); renderStats(); renderRecent() }, 120));
   syncMemberClass();
   render();
+})();
+</script>
+<script id="cozy-v6">
+/* Cozy Chat v6: 채팅방 개선 (여러 줄 입력 · 멈추기 · 다시 쓰기 · 수정 · 복사 · 날짜 구분 · 비용 표시) */
+(() => {
+  'use strict';
+  if (window.__cozyV6) return;
+  window.__cozyV6 = true;
+
+  const $ = id => document.getElementById(id);
+  const MODEL_COOKIES = { groq: 20, 'openai-compatible': 20, gemini: 50 };
+  const MODEL_NAME = { groq: 'Groq', gemini: 'Gemini', 'openai-compatible': 'OpenAI' };
+  const form = $('chat-form'), input = $('chat-input');
+  const sendBtn = form?.querySelector('button[type=submit]');
+  if (!form || !input || !sendBtn) return;
+  const busy = () => sendBtn.classList.contains('is-busy');
+  const isTouch = () => window.matchMedia('(pointer: coarse)').matches;
+
+  /* ---------- 여러 줄 입력 · Enter 전송 ---------- */
+  function grow() {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 140) + 'px';
+  }
+  input.addEventListener('input', grow);
+  input.addEventListener('keydown', e => {
+    // 한글 조합 중 Enter 는 무시, 휴대폰에서는 Enter = 줄바꿈
+    if (e.key !== 'Enter' || e.shiftKey || e.isComposing || e.keyCode === 229 || isTouch()) return;
+    e.preventDefault();
+    if (!busy() && input.value.trim()) form.requestSubmit();
+  });
+  form.addEventListener('submit', () => setTimeout(grow, 0));
+
+  /* ---------- 답변 멈추기 ---------- */
+  sendBtn.addEventListener('click', e => {
+    if (!busy()) return;
+    e.preventDefault();
+    window.__cozyChatAbort?.abort();
+  });
+  form.addEventListener('submit', e => {
+    if (!busy()) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }, true);
+  new MutationObserver(() => {
+    sendBtn.setAttribute('aria-label', busy() ? '답변 멈추기' : '전송');
+    document.querySelectorAll('.msg-actions button').forEach(b => { b.disabled = busy() });
+  }).observe(sendBtn, { attributes: true, attributeFilter: ['class'] });
+
+  /* ---------- 상단: 모델 · 쿠키 비용 ---------- */
+  const actions = document.querySelector('.chat-top-actions');
+  if (actions && !$('chat-cost-chip')) {
+    actions.insertAdjacentHTML('afterbegin', '<button type="button" class="chat-cost-chip" id="chat-cost-chip" title="모델과 출력량 바꾸기"></button>');
+    $('chat-cost-chip').addEventListener('click', () => {
+      toggleChatSettings(true);
+      if (typeof setChatSettingsView === 'function') setChatSettingsView('model');
+    });
+  }
+  function currentModel() {
+    const sel = $('chat-model-select')?.value || 'auto';
+    if (sel !== 'auto') return sel;
+    return MODEL_COOKIES[active?.recommendedModel] ? active.recommendedModel : 'groq';
+  }
+  function replyCost() {
+    const m = currentModel();
+    let mult = 1;
+    try { mult = Number(getChatRoomSettings().outputMultipliers?.[m]) || 1 } catch {}
+    return Math.ceil(MODEL_COOKIES[m] * Math.min(5, Math.max(1, mult)));
+  }
+  function updateChip() {
+    const chip = $('chat-cost-chip');
+    if (chip) chip.textContent = MODEL_NAME[currentModel()] + ' · 🍪' + replyCost();
+  }
+  ['chat-model-select', 'conversation-model-select'].forEach(id => $(id)?.addEventListener('change', updateChip));
+  ['chat-output-groq', 'chat-output-gemini', 'chat-output-openai'].forEach(id => $(id)?.addEventListener('input', () => setTimeout(updateChip, 0)));
+
+  /* ---------- 날짜 구분 · 메시지 버튼 ---------- */
+  function dayLabel(t) {
+    const d = new Date(t), today = new Date();
+    const start = x => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+    const diff = Math.round((start(today) - start(d)) / 86400000);
+    if (diff === 0) return '오늘';
+    if (diff === 1) return '어제';
+    return (d.getFullYear() !== today.getFullYear() ? d.getFullYear() + '년 ' : '') + (d.getMonth() + 1) + '월 ' + d.getDate() + '일';
+  }
+  function decorateMessages(msgs) {
+    const log = $('chat-log');
+    if (!log || !Array.isArray(msgs)) return;
+    const rows = [...log.querySelectorAll('.chat-message-row')];
+    let lastDay = '';
+    rows.forEach((row, i) => {
+      const t = Number(msgs[i]?.time) || 0;
+      if (!t) return;
+      const label = dayLabel(t);
+      if (label !== lastDay) {
+        row.insertAdjacentHTML('beforebegin', '<div class="chat-day"><span>' + label + '</span></div>');
+        lastDay = label;
+      }
+    });
+    // 마지막 대화에만 버튼을 단다 (입력 중 말풍선이 있으면 생략)
+    const last = msgs[msgs.length - 1];
+    if (!last || (last.role === 'ai' && !String(last.text || '').trim())) return;
+    const hasUser = msgs.some(m => m.role === 'user');
+    if (!hasUser) return;
+    const lastUserIdx = msgs.map(m => m.role).lastIndexOf('user');
+    const lastAiIdx = msgs.length - 1;
+    const off = busy() ? ' disabled' : '';
+    if (last.role === 'ai' && !last.system && lastAiIdx > lastUserIdx) {
+      rows[lastAiIdx]?.insertAdjacentHTML('afterend', '<div class="msg-actions ai"><button type="button" data-msg-action="regen"' + off + '>↻ 다시 쓰기 <small>🍪' + replyCost() + '</small></button><button type="button" data-msg-action="copy"' + off + '>복사</button></div>');
+    }
+    if (lastUserIdx >= 0) {
+      const failed = last.system || last.role === 'user';
+      rows[lastUserIdx]?.insertAdjacentHTML('afterend', '<div class="msg-actions user">' + (failed ? '<button type="button" data-msg-action="resend"' + off + '>다시 보내기</button>' : '') + '<button type="button" data-msg-action="edit"' + off + '>수정</button></div>');
+    }
+  }
+  const previousRenderChat = window.renderChatMessages;
+  window.renderChatMessages = function (msgs) {
+    const r = previousRenderChat(msgs);
+    decorateMessages(msgs);
+    updateJump();
+    return r;
+  };
+
+  function roomHistory() {
+    const key = String(active?.id || '');
+    const hist = read(H, {});
+    return { key, hist, list: Array.isArray(hist[key]) ? hist[key] : [] };
+  }
+  async function commit(key, hist, list) {
+    hist[key] = list;
+    save(H, hist);
+    renderChatMessages(list);
+    try { await saveHistoryToCloud(key) } catch {}
+  }
+  function sendText(text) {
+    input.value = text;
+    grow();
+    form.requestSubmit();
+  }
+  function toast(msg) {
+    let t = $('chat-toast');
+    if (!t) { document.querySelector('.chat-content')?.insertAdjacentHTML('beforeend', '<div id="chat-toast" class="chat-toast" role="status"></div>'); t = $('chat-toast') }
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._h);
+    t._h = setTimeout(() => t.classList.remove('show'), 1400);
+  }
+
+  $('chat-log')?.addEventListener('click', async e => {
+    const b = e.target.closest('[data-msg-action]');
+    if (!b || busy() || !active) return;
+    const action = b.dataset.msgAction;
+    const { key, hist, list } = roomHistory();
+    if (action === 'copy') {
+      const bubbles = document.querySelectorAll('#chat-log .bubble.ai');
+      const text = bubbles[bubbles.length - 1]?.innerText || '';
+      try { await navigator.clipboard.writeText(text); toast('답변을 복사했어요') } catch { toast('복사하지 못했어요') }
+      return;
+    }
+    const lastUser = list.map(m => m.role).lastIndexOf('user');
+    if (lastUser < 0) return;
+    const text = String(list[lastUser].text || '');
+    if (action === 'regen' || action === 'resend') {
+      // 마지막 내 메시지부터 다시 보내면 같은 질문으로 새 답을 받는다
+      await commit(key, hist, list.slice(0, lastUser));
+      sendText(text);
+    } else if (action === 'edit') {
+      await commit(key, hist, list.slice(0, lastUser));
+      input.value = text;
+      grow();
+      input.focus();
+      input.setSelectionRange(text.length, text.length);
+      toast('수정한 뒤 다시 보내 주세요');
+    }
+  });
+
+  /* ---------- 최신 메시지로 이동 ---------- */
+  const content = document.querySelector('.chat-content');
+  if (content && !$('chat-jump')) {
+    content.insertAdjacentHTML('beforeend', '<button type="button" class="chat-jump" id="chat-jump" hidden aria-label="최신 메시지로">↓</button>');
+    $('chat-jump').addEventListener('click', () => { const l = $('chat-log'); l.scrollTo({ top: l.scrollHeight, behavior: 'smooth' }) });
+  }
+  function updateJump() {
+    const l = $('chat-log'), j = $('chat-jump');
+    if (!l || !j) return;
+    j.hidden = l.scrollHeight - l.scrollTop - l.clientHeight < 160;
+  }
+  $('chat-log')?.addEventListener('scroll', updateJump, { passive: true });
+
+  /* ---------- 채팅방 열 때 ---------- */
+  const previousOpenChat = window.openChat;
+  window.openChat = function (...args) {
+    const r = previousOpenChat.apply(this, args);
+    updateChip();
+    input.style.height = '';
+    setTimeout(() => { grow(); updateJump(); if (isTouch()) input.blur() }, 40);
+    return r;
+  };
+  const previousToggle = window.toggleChatSettings;
+  if (typeof previousToggle === 'function') {
+    window.toggleChatSettings = function (...args) { const r = previousToggle.apply(this, args); updateChip(); return r };
+  }
 })();
 </script>
 </body></html>
