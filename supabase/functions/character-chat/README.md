@@ -24,6 +24,8 @@ Like counts are served from the `character_like_counts` table, kept up to date b
 
 - `stream: true` returns Server-Sent Events: `{type:"delta",text}` chunks, then `{type:"done",credits}` or `{type:"error",error}`. Without it the function returns `{reply, credits}` as before.
 - `conversationKey` (the character id) loads that room's long-term memory from `conversations.memory`. After a reply, once 12+ messages have scrolled out of the 40-message window, they are summarized into `memory` in the background.
+- `character.rating: "unsafe"` only takes effect when the user has turned on unsafe content in `user_preferences` (adult-confirmed); otherwise the chat runs in safe mode. Safety rules (no explicit sexual content, nothing sexual involving minors, self-harm and real-world harm limits) are always prepended to the system prompt.
+- `action: "delete_account"` removes the user's Storage images and deletes the auth user; all tables cascade.
 - `action: "balance"` returns `{credits, dailyClaimed}`; `action: "claim_daily"` grants the daily 100-cookie reward once per KST day.
 
 ## Moderation

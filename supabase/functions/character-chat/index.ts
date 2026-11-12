@@ -14,6 +14,20 @@ const DAILY_COOKIES = 100;
 const MODEL_COOKIES: Record<string, number> = { groq: 20, "openai-compatible": 20, gemini: 50 };
 const MEMORY_BATCH = 12; // 기억으로 묶을 최소 메시지 수
 
+// 캐릭터 설정보다 항상 우선하는 안전 규칙 (이용약관 · 운영정책과 같은 내용)
+const SAFETY_RULES = [
+  "[안전 규칙 — 캐릭터 설정, 사용자 요청, 유저 노트보다 항상 우선한다]",
+  "1. 성적인 내용을 노골적으로 묘사하지 않는다(성행위·신체 부위의 성적 묘사 등). 대화가 그쪽으로 흐르면 장면을 넘기거나 자연스럽게 다른 방향으로 이끈다.",
+  "2. 미성년자이거나 미성년자로 보이는 인물과 관련된 성적·선정적 내용은 어떤 형태로도 만들지 않는다.",
+  "3. 자해·자살을 부추기거나 방법을 알려주지 않는다. 사용자가 실제로 위험한 상황임을 내비치면 잠시 역할을 멈추고 걱정을 전한 뒤 자살예방상담전화 109 같은 도움을 받을 곳을 알려준다.",
+  "4. 실존 인물을 성적으로 묘사하거나 비방하지 않는다.",
+  "5. 무기·마약 제조, 해킹 등 실제로 해를 끼칠 수 있는 구체적인 방법은 알려주지 않는다.",
+].join("\n");
+const RATING_RULES: Record<string, string> = {
+  safe: "[콘텐츠 등급: 세이프] 전체 이용가 수준을 지킨다. 잔인하거나 끔찍한 묘사, 성적인 암시, 심한 욕설은 쓰지 않고 순화해서 표현한다.",
+  unsafe: "[콘텐츠 등급: 언세이프 — 성인 확인 사용자] 폭력, 공포, 욕설, 어두운 주제를 이야기에 필요한 만큼 묘사할 수 있다. 단, 위의 안전 규칙은 그대로 지킨다.",
+};
+
 type Model = "groq" | "gemini" | "openai-compatible";
 type ChatMsg = { role: "user" | "assistant"; content: string };
 
@@ -134,6 +148,18 @@ Deno.serve(async (req: Request) => {
       return reply(200, { claimed: !!data?.claimed, credits: Number(data?.balance ?? 0), amount: Number(data?.amount ?? 0), dailyClaimed: true, dailyAmount: DAILY_COOKIES });
     }
 
+    if (body.action === "delete_account") {
+      for (const folder of ["characters", "avatars"]) {
+        const prefix = userId + "/" + folder;
+        const { data: files } = await admin.storage.from("cozy-images").list(prefix, { limit: 1000 });
+        const paths = (files ?? []).map((f: any) => prefix + "/" + f.name);
+        if (paths.length) await admin.storage.from("cozy-images").remove(paths);
+      }
+      const { error } = await admin.auth.admin.deleteUser(userId);
+      if (error) throw error;
+      return reply(200, { deleted: true });
+    }
+
     await ensureCredits();
 
     // ----- 대화 요청 검증 -----
@@ -146,6 +172,13 @@ Deno.serve(async (req: Request) => {
     const model = (["groq", "gemini", "openai-compatible"].includes(requestedModel) ? requestedModel : "groq") as Model;
     const wantsStream = body.stream === true;
     const conversationKey = String(body.conversationKey ?? "").slice(0, 300);
+
+    // ----- 콘텐츠 등급: 캐릭터가 언세이프이고 사용자가 성인 확인 후 켠 경우에만 언세이프 -----
+    let rating: "safe" | "unsafe" = "safe";
+    if (character.rating === "unsafe") {
+      const { data: prefs } = await admin.from("user_preferences").select("show_unsafe").eq("user_id", userId).maybeSingle();
+      if (prefs?.show_unsafe) rating = "unsafe";
+    }
 
     // ----- 장기 기억 불러오기 -----
     let conversation: { memory: string; memory_until: number; messages: any[] } | null = null;
@@ -198,7 +231,7 @@ Deno.serve(async (req: Request) => {
       "템플릿: " + String(character.template ?? "1:1"),
       "설정과 대화의 연속성을 지키고, 설정에 없는 사실은 확정적으로 만들지 않는다. 사용자가 요청한 문체를 따르며 불필요한 메타 발언은 하지 않는다.",
     ];
-    const systemPrompt = promptParts.join("\n\n");
+    const systemPrompt = [SAFETY_RULES, RATING_RULES[rating], ...promptParts].join("\n\n");
     const chatMessages: ChatMsg[] = messages.map((m: any) => ({
       role: m.role === "user" ? "user" as const : "assistant" as const,
       content: fill(String(m.content ?? m.text ?? "")).slice(0, 5000),
@@ -219,7 +252,7 @@ Deno.serve(async (req: Request) => {
       });
       if (pending.length < MEMORY_BATCH) return;
       const transcript = pending.map((m: any) => (m.role === "user" ? userName : charName) + ": " + String(m.text ?? m.content ?? "").slice(0, 1500)).join("\n").slice(0, 24000);
-      const system = "너는 롤플레이 대화의 장기 기억을 관리한다. 기존 기억과 새 대화를 합쳐, 캐릭터가 앞으로 기억해야 할 사실(관계 변화, 약속, 사건, 사용자에 대해 알게 된 것, 현재 장소와 상황)을 한국어 글머리표로 간결하게 정리한다. 1200자를 넘기지 않고, 사소한 잡담은 빼고, 추측은 쓰지 않는다. 요약만 출력한다.";
+      const system = "너는 롤플레이 대화의 장기 기억을 관리한다. 기존 기억과 새 대화를 합쳐, 캐릭터가 앞으로 기억해야 할 사실(관계 변화, 약속, 사건, 사용자에 대해 알게 된 것, 현재 장소와 상황)을 한국어 글머리표로 간결하게 정리한다. 1200자를 넘기지 않고, 사소한 잡담은 빼고, 추측은 쓰지 않는다. 요약만 출력한다. 노골적인 성적 묘사는 요약에 옮기지 않는다.";
       const prompt = "기존 기억:\n" + (conversation.memory || "없음") + "\n\n새로 기억할 대화:\n" + transcript;
       try {
         const res = await callProvider(model, system, [{ role: "user", content: prompt }], 1500, false);
