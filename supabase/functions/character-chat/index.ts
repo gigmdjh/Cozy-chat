@@ -9,7 +9,9 @@ const corsHeaders = {
 };
 const jsonHeaders = { ...corsHeaders, "Content-Type": "application/json" };
 
-const DAILY_COOKIES = 20;
+const DAILY_COOKIES = 100;
+// 대화 1번(출력 배율 1×)에 쓰는 쿠키. 쿠키 1개 ≈ ₩1, 원가의 약 5배 이상이 남도록 잡은 값
+const MODEL_COOKIES: Record<string, number> = { groq: 20, "openai-compatible": 20, gemini: 50 };
 const MEMORY_BATCH = 12; // 기억으로 묶을 최소 메시지 수
 
 type Model = "groq" | "gemini" | "openai-compatible";
@@ -32,7 +34,7 @@ async function callProvider(model: Model, system: string, messages: ChatMsg[], m
     return await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: { "Authorization": "Bearer " + key, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: modelName, messages: [{ role: "system", content: system }, ...messages], temperature: 0.85, max_tokens: maxTokens, stream }),
+      body: JSON.stringify({ model: modelName, messages: [{ role: "system", content: system }, ...messages], temperature: 0.85, max_tokens: maxTokens, stream, ...(modelName.includes("gpt-oss") ? { reasoning_effort: "low" } : {}) }),
     });
   }
   if (model === "gemini") {
@@ -44,7 +46,7 @@ async function callProvider(model: Model, system: string, messages: ChatMsg[], m
     return await fetch("https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(modelName) + method, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-goog-api-key": key },
-      body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents, generationConfig: { temperature: 0.85, maxOutputTokens: maxTokens } }),
+      body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents, generationConfig: { temperature: 0.85, maxOutputTokens: maxTokens, ...(modelName.includes("2.5-flash") ? { thinkingConfig: { thinkingBudget: 0 } } : {}) } }),
     });
   }
   const key = Deno.env.get("OPENAI_API_KEY");
@@ -124,7 +126,7 @@ Deno.serve(async (req: Request) => {
     if (body.action === "balance") {
       const credits = await ensureCredits();
       const { data: today } = await admin.from("daily_rewards").select("amount").eq("user_id", userId).eq("reward_date", todayKST()).maybeSingle();
-      return reply(200, { credits, dailyClaimed: !!today, dailyAmount: DAILY_COOKIES });
+      return reply(200, { credits, dailyClaimed: !!today, dailyAmount: DAILY_COOKIES, modelCookies: MODEL_COOKIES });
     }
     if (body.action === "claim_daily") {
       const { data, error } = await admin.rpc("claim_daily_cookies", { p_user_id: userId, p_amount: DAILY_COOKIES });
@@ -156,10 +158,10 @@ Deno.serve(async (req: Request) => {
     const requestId = crypto.randomUUID();
     const outputMultipliers = body.chatSettings?.outputMultipliers ?? {};
     const outputMultiplier = Math.min(5, Math.max(1, Number(outputMultipliers[model]) || 1));
-    const creditCost = Math.ceil(outputMultiplier);
+    const creditCost = Math.ceil((MODEL_COOKIES[model] ?? 20) * outputMultiplier);
     const charged = await admin.rpc("change_user_credits", { p_user_id: userId, p_delta: -creditCost, p_model: model, p_request_id: requestId });
     if (charged.error) {
-      if (String(charged.error.message ?? "").includes("INSUFFICIENT_CREDITS")) return reply(402, { error: "쿠키가 부족해요. 충전 탭에서 출석 보상을 받아 보세요.", credits: 0 });
+      if (String(charged.error.message ?? "").includes("INSUFFICIENT_CREDITS")) return reply(402, { error: "쿠키가 부족해요. 이번 대화에는 쿠키 " + creditCost + "개가 필요해요. 충전 탭에서 출석 보상을 받거나 충전해 주세요." });
       console.error("Credit deduction failed:", charged.error.message);
       return reply(500, { error: "쿠키를 확인하지 못했어요." });
     }
@@ -256,7 +258,7 @@ Deno.serve(async (req: Request) => {
         return reply(502, { error: "AI 서비스에서 응답을 받지 못했어요. 쿠키는 돌려드렸어요." });
       }
       scheduleMemory();
-      return reply(200, { reply: answer, credits: chargedBalance });
+      return reply(200, { reply: answer, credits: chargedBalance, cost: creditCost });
     }
 
     // ----- 스트리밍 응답 (SSE) -----
@@ -283,7 +285,7 @@ Deno.serve(async (req: Request) => {
           await refund();
           send({ type: "error", error: "AI 서비스에서 응답을 받지 못했어요. 쿠키는 돌려드렸어요." });
         } else {
-          send({ type: "done", credits: chargedBalance });
+          send({ type: "done", credits: chargedBalance, cost: creditCost });
           scheduleMemory();
         }
         controller.close();
