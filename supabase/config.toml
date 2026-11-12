@@ -1,0 +1,5 @@
+project_id = "iancmscwyespbcjjyahu"
+
+# 배포된 함수와 같은 설정. 함수 안에서 직접 로그인 토큰을 검증하므로 게이트웨이 JWT 검사는 끔.
+[functions.character-chat]
+verify_jwt = false
