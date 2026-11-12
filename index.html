@@ -75,16 +75,57 @@
 :root[data-theme="dark"] .chat-window .bubble a{color:#a9c3ff}
 
 </style>
+<style id="cozy-v2-style">
+.cookie-pill{display:inline-flex;align-items:center;gap:5px;height:36px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface,#fff);color:var(--text);font-weight:700;font-size:13px;cursor:pointer}
+.cookie-pill[hidden]{display:none}
+.btn-small{padding:6px 11px;font-size:12px;border-radius:10px}
+.detail-moderation{display:inline-flex;gap:6px;margin-left:6px}
+.detail-moderation[hidden]{display:none}
+.post-item-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.post-actions{display:inline-flex;gap:2px}
+.post-action{border:0;background:transparent;color:var(--muted);font-size:12px;padding:4px 7px;border-radius:8px;cursor:pointer}
+.post-action:hover{background:rgba(127,127,160,.12);color:var(--text)}
+.bubble.streaming::after{content:'▍';display:inline-block;margin-left:2px;animation:cozy-blink 1s steps(1) infinite;color:var(--muted)}
+@keyframes cozy-blink{50%{opacity:0}}
+.credit-charge-btn{margin-top:8px;align-self:flex-start}
+#cookie-page .cookie-hero{display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#e9f8fd,#fdeef6)}
+#cookie-page .cookie-hero-icon{font-size:40px;line-height:1}
+#cookie-page .cookie-hero strong{display:block;font-size:30px;margin-top:2px}
+#cookie-page .daily-card{display:flex;align-items:center;justify-content:space-between;gap:14px}
+#cookie-page .daily-card p{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.6}
+#cookie-page .daily-card .btn{flex:0 0 auto;min-width:76px}
+.cookie-section-title{margin:26px 0 12px;font-size:16px}
+.cookie-packages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.cookie-package{border:1px solid var(--line);border-radius:16px;padding:16px 12px;text-align:center;background:var(--surface,#fff);color:var(--text);cursor:pointer;font:inherit}
+.cookie-package strong{display:block;font-size:18px}
+.cookie-package .bonus{display:block;font-size:12px;color:#c2557f;min-height:18px;margin-top:2px}
+.cookie-package .price{display:block;margin-top:10px;font-size:13px;color:var(--muted)}
+.cookie-package .soon{display:inline-block;margin-top:8px;font-size:11px;padding:3px 8px;border-radius:999px;background:rgba(127,127,160,.12);color:var(--muted)}
+.cookie-history{display:flex;flex-direction:column;gap:8px}
+.cookie-history-item{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--surface,#fff)}
+.cookie-history-item small{display:block;color:var(--muted);font-size:11px;margin-top:3px;font-weight:400}
+.cookie-history-amount{text-align:right;font-weight:800}
+.cookie-history-amount.plus{color:#2f8f62}
+.cookie-history-amount.minus{color:#b5476f}
+.report-reasons{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.report-reasons label{display:flex;align-items:center;gap:9px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;cursor:pointer;font-size:14px}
+.report-reasons input{margin:0}
+.blocked-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.blocked-item:first-child{border-top:0}
+:root[data-theme="dark"] #cookie-page .cookie-hero{background:linear-gradient(135deg,#1f3440,#3a2635)}
+:root[data-theme="dark"] .cookie-package,:root[data-theme="dark"] .cookie-history-item,:root[data-theme="dark"] .cookie-pill{background:var(--surface)}
+@media(max-width:760px){.cookie-packages{gap:8px}.cookie-package{padding:14px 6px}.cookie-package strong{font-size:15px}.cookie-package .bonus{font-size:11px}.cookie-pill{height:34px;padding:0 10px}}
+</style>
 </head>
 <body>
 <div class="wrap">
-<header class="header"><div class="header-left"><button class="icon-btn desktop-only" id="open-drawer" aria-label="메뉴 열기">☰</button><a class="brand" href="#" id="brand-home" aria-label="Cozy Chat 홈"><span class="logo">C</span><span>Cozy Chat</span></a></div><nav class="nav"><a href="#discover" id="header-discover">캐릭터 탐색</a><a href="#about" class="desktop-only">소개</a><button class="btn btn-primary desktop-only" id="open-create">＋ 캐릭터 만들기</button><button class="avatar-btn" id="open-profile" aria-label="프로필">나</button></nav></header>
+<header class="header"><div class="header-left"><button class="icon-btn desktop-only" id="open-drawer" aria-label="메뉴 열기">☰</button><a class="brand" href="#" id="brand-home" aria-label="Cozy Chat 홈"><span class="logo">C</span><span>Cozy Chat</span></a></div><nav class="nav"><a href="#discover" id="header-discover">캐릭터 탐색</a><a href="#about" class="desktop-only">소개</a><button class="btn btn-primary desktop-only" id="open-create">＋ 캐릭터 만들기</button><button class="cookie-pill" id="header-cookies" type="button" aria-label="쿠키 충전" hidden>🍪 <span id="header-cookie-balance">0</span></button><button class="avatar-btn" id="open-profile" aria-label="프로필">나</button></nav></header>
 <main>
 <section class="hero"><div><div class="eyebrow"><span class="eyedot"></span> YOUR LITTLE STORY SPACE</div><h1>오늘은 어떤<br><span class="gradient-text">이야기</span>를 시작할까요?</h1><p>마음에 드는 캐릭터를 만나고, 나만의 인물을 만들고, 둘만의 이야기를 이어 가세요. 상상력이 머무는 작은 공간, Cozy Chat.</p><div class="hero-actions"><button class="btn btn-primary" id="jump-discover">캐릭터 만나기 ↗</button><button class="btn btn-plain" id="hero-create">나만의 캐릭터 만들기</button></div></div><div class="hero-visual"><div class="halo"></div><div class="big-c">C</div><div class="float a">✦ 오늘의 이야기</div><div class="float b">♡ 당신만의 대화 공간</div></div></section>
 <section id="discover"><div class="section-head"><div><h2>캐릭터 둘러보기</h2><p>지금 마음이 가는 캐릭터를 골라 보세요.</p></div><label class="search">⌕ <input id="search" placeholder="이름이나 키워드 검색" aria-label="캐릭터 검색"></label></div><div class="filters" id="filters"><button class="filter active" data-filter="전체">전체</button><button class="filter" data-filter="일상">☕ 일상</button><button class="filter" data-filter="로맨스">♡ 로맨스</button><button class="filter" data-filter="판타지">✧ 판타지</button><button class="filter" data-filter="힐링">☁ 힐링</button><button class="filter" data-filter="내 캐릭터">✎ 내 캐릭터</button></div><div class="cards" id="cards"></div></section>
 <section id="about" class="section-head" style="margin-top:40px"><div><h2>당신의 상상력이 머무는 곳</h2><p>캐릭터를 만들고, 마음에 드는 이야기를 시작해 보세요.</p></div></section>
 <section id="character-detail-page" class="app-page"><button type="button" class="btn btn-plain" id="character-detail-back">← 탐색으로</button><article class="character-detail-panel"><div class="character-detail-hero"><div class="character-detail-image" id="character-detail-image"></div><div class="character-detail-heading"><h1 id="character-detail-name"></h1><span class="tag" id="character-detail-tag"></span><div class="character-detail-stats"><button type="button" id="character-detail-like" class="btn btn-plain" aria-pressed="false">♡ 좋아요 <span id="character-detail-likes">0</span></button><span class="character-detail-views">조회수 <strong id="character-detail-views">0</strong></span></div></div></div><div class="character-detail-section"><h3>상세설명</h3><div id="character-detail-description" class="character-detail-copy"></div></div><div class="character-detail-section"><label for="character-detail-start">시작설정 선택</label><select id="character-detail-start"></select><h3 style="margin-top:18px">프롤로그 미리보기</h3><div id="character-detail-prologue" class="character-detail-prologue"></div></div><div class="character-detail-section"><label for="character-detail-persona">페르소나 선택</label><select id="character-detail-persona"><option value="">선택 안 함</option></select><p class="note">선택한 페르소나는 이 캐릭터와의 대화에 적용돼요.</p></div><button type="button" class="btn btn-primary wide" id="character-detail-chat">대화하기 →</button></article></section>
-<section id="conversations-page" class="app-page"><h2 class="page-title">대화</h2><p class="page-description">대화에 사용할 AI 모델을 선택하고 기록을 이어 가세요.</p><div class="model-panel"><div class="field"><label for="conversation-model-select">대화 모델</label><select id="conversation-model-select"><option value="auto">자동 선택 (캐릭터 권장 모델)</option><option value="groq">Groq Cloud · GPT-OSS 120B</option><option value="gemini">Gemini · 2.5 Flash</option><option value="openai-compatible">OpenAI 호환 · gpt-4o-mini</option></select></div><div class="credit-panel"><span class="credit-label">내 크레딧</span><strong id="credit-balance">서버 연결 필요</strong><p id="credit-status">크레딧은 서버에서 안전하게 관리하도록 연결해야 해요.</p></div></div><div class="section-head"><div><h3>대화 기록</h3><p>캐릭터를 선택해 대화를 계속할 수 있어요.</p></div></div><div id="history-list" class="history-list"></div></section>
+<section id="conversations-page" class="app-page"><h2 class="page-title">대화</h2><p class="page-description">대화에 사용할 AI 모델을 선택하고 기록을 이어 가세요.</p><div class="model-panel"><div class="field"><label for="conversation-model-select">대화 모델</label><select id="conversation-model-select"><option value="auto">자동 선택 (캐릭터 권장 모델)</option><option value="groq">Groq Cloud · GPT-OSS 120B</option><option value="gemini">Gemini · 2.5 Flash</option><option value="openai-compatible">OpenAI 호환 · gpt-4o-mini</option></select></div><div class="credit-panel"><span class="credit-label">내 쿠키</span><strong id="credit-balance">서버 연결 필요</strong><p id="credit-status">로그인하면 쿠키 잔액을 확인할 수 있어요.</p><button type="button" class="btn btn-plain btn-small credit-charge-btn" id="credit-panel-charge">🍪 충전하기</button></div></div><div class="section-head"><div><h3>대화 기록</h3><p>캐릭터를 선택해 대화를 계속할 수 있어요.</p></div></div><div id="history-list" class="history-list"></div></section>
 <section id="character-create-page" class="app-page">
 <div class="creator-heading"><button type="button" class="btn btn-plain" id="creator-back">← 돌아가기</button><div><h2 class="page-title" id="creator-page-title">캐릭터 제작</h2><p class="page-description">여섯 단계로 캐릭터를 설정해요. 대부분의 입력란에서 Markdown을 사용할 수 있어요.</p></div></div>
 <form id="creator-form">
@@ -103,19 +144,19 @@
 <div id="profile-logged-in" hidden>
 <div class="profile-card profile-summary-card"><div class="profile-summary-main"><div class="profile-avatar" id="profile-avatar-large">나</div><div class="profile-summary-text"><h2 id="profile-heading">나의 프로필</h2><div class="profile-stats"><button type="button" id="profile-followers"><strong id="profile-follower-count">0</strong><span>팔로워</span></button><button type="button" id="profile-following"><strong id="profile-following-count">0</strong><span>팔로잉</span></button></div></div><button class="profile-public-arrow" id="profile-open-public" aria-label="공개 프로필 보기">›</button></div><p id="profile-description" class="profile-bio-preview"></p></div>
 
-<div class="profile-card cookie-card"><div><span class="cookie-symbol">◉</span><div><strong>쿠키 (크레딧)</strong><p>AI 대화와 유료 기능에 사용할 크레딧</p></div></div><strong class="cookie-balance" id="cookie-balance">0</strong><button class="btn btn-primary" id="cookie-charge" type="button">충전</button></div>
+<div class="profile-card cookie-card"><div><span class="cookie-symbol">◉</span><div><strong>쿠키</strong><p>AI 대화에 사용하는 쿠키</p></div></div><strong class="cookie-balance" id="cookie-balance">0</strong><button class="btn btn-primary" id="cookie-charge" type="button">충전</button></div>
 <div class="profile-card profile-tools-card"><button class="profile-tool" id="profile-character-manage"><span>✦</span><span><strong>캐릭터 관리</strong><small>내가 만든 캐릭터를 관리해요.</small></span><b>›</b></button><button class="profile-tool" id="profile-personas"><span>♙</span><span><strong>페르소나</strong><small>대화에 사용할 나만의 인물 설정</small></span><b>›</b></button><button class="profile-tool" id="profile-settings-open"><span>⚙</span><span><strong>설정</strong><small>테마 등 화면 환경을 설정해요.</small></span><b>›</b></button><button class="profile-tool" id="profile-auth-action"><span>↪</span><span><strong>로그아웃</strong><small id="profile-email">로그인된 계정</small></span><b>›</b></button></div>
 </div>
 </section>
 <section id="profile-edit-page" class="app-page"><button type="button" class="btn btn-plain" id="profile-edit-back">← 프로필로</button><h2 class="page-title" style="margin-top:18px">프로필 수정</h2><p class="page-description">공개 프로필에 표시될 정보와 사진을 수정해요.</p><div id="profile-edit-area" class="profile-card profile-edit-area"><div class="profile-panel-head"><h3>프로필 수정</h3><button class="close" id="profile-edit-cancel" type="button" aria-label="수정 닫기">×</button></div><div class="profile-avatar" id="profile-edit-avatar">나</div><div class="profile-photo-controls"><label class="btn btn-plain" for="profile-photo-input">사진 선택</label><input id="profile-photo-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden><button class="btn btn-plain" id="profile-photo-remove" type="button">사진 삭제</button><span class="profile-photo-help">이미지 5MB 이하</span></div><form id="profile-edit-form"><div class="field"><label for="profile-name-input">닉네임</label><input id="profile-name-input" maxlength="30" placeholder="다른 사용자에게 표시될 이름" autocomplete="nickname"></div><div class="field"><label for="profile-bio-input">자기소개</label><textarea id="profile-bio-input" maxlength="240" placeholder="나를 소개해 보세요."></textarea></div><button class="btn btn-primary wide" id="profile-save" type="submit">프로필 저장</button><div id="profile-edit-message" class="auth-message" role="status" aria-live="polite"></div></form><p class="note" id="profile-sync-note">프로필과 대화 기록은 계정에 저장됩니다.</p></div></section>
-<section id="character-manage-page" class="app-page"><button class="btn btn-plain" id="manage-back">← 프로필로</button><h2 class="page-title" style="margin-top:18px">캐릭터 관리</h2><p class="page-description">내가 만든 캐릭터를 수정하거나 삭제할 수 있어요.</p><button class="btn btn-primary" id="manage-create">＋ 새 캐릭터</button><div id="manage-character-list" class="profile-content-list" style="margin-top:16px"></div></section><section id="persona-page" class="app-page"><button type="button" class="btn btn-plain" id="persona-back">← 프로필로</button><h2 class="page-title" style="margin-top:18px">페르소나</h2><p class="page-description">대화에서 사용할 나만의 인물 설정을 만들고 관리해요.</p><form id="persona-form" class="profile-card"><input id="persona-edit-id" type="hidden"><div class="field" style="margin-top:0"><label for="persona-name">이름</label><input id="persona-name" maxlength="40" required placeholder="예: 모험가, 마법사"></div><div class="field"><label for="persona-description">설정 (최대 500자)</label><textarea id="persona-description" maxlength="500" rows="5" required placeholder="역할, 외형, 성격, 배경 등을 적어 주세요."></textarea></div><small class="creator-count" id="persona-description-count">0 / 500</small><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary" type="submit" id="persona-save">페르소나 저장</button><button class="btn btn-plain" type="button" id="persona-cancel" hidden>수정 취소</button></div><div id="persona-message" class="auth-message" role="status" aria-live="polite"></div></form><div class="section-head" style="margin-top:25px"><div><h3 style="margin:0 0 5px">내 페르소나</h3><p>이 브라우저에 저장됩니다.</p></div></div><div id="persona-list" class="profile-content-list"></div></section><section id="settings-page" class="app-page"><button class="btn btn-plain" id="settings-back">← 프로필로</button><h2 class="page-title" style="margin-top:18px">설정</h2><p class="page-description">Cozy Chat의 화면 환경을 설정해요.</p><div class="profile-card"><strong>테마</strong><p class="page-description" style="margin:7px 0 15px">화면의 밝기를 선택하세요.</p><div class="field" style="margin-top:0"><label for="theme-choice">화면 테마</label><select id="theme-choice"><option value="light">라이트</option><option value="dark">다크</option><option value="auto">자동 (기기 설정 따르기)</option></select></div><p class="note">선택한 테마는 이 브라우저에 저장됩니다.</p></div></section><section id="public-profile-page" class="app-page public-profile-page"><button class="btn btn-plain" id="public-profile-back">← 돌아가기</button><div class="profile-card public-profile-card"><div class="profile-avatar" id="public-profile-avatar">나</div><h2 id="public-profile-name">사용자</h2><p id="public-profile-bio" class="profile-bio-preview"></p><div class="profile-stats public-profile-stats"><div><strong id="public-follower-count">0</strong><span>팔로워</span></div><div><strong id="public-following-count">0</strong><span>팔로잉</span></div></div><button class="btn btn-primary" id="public-profile-follow" hidden>팔로우</button><button class="btn btn-primary" id="public-profile-edit">프로필 수정</button></div><div class="profile-category-tabs" id="public-profile-tabs"><button class="active" data-public-tab="characters">캐릭터</button><button data-public-tab="posts">게시물</button></div><div id="public-profile-content" class="profile-content-list"></div></section>
+<section id="character-manage-page" class="app-page"><button class="btn btn-plain" id="manage-back">← 프로필로</button><h2 class="page-title" style="margin-top:18px">캐릭터 관리</h2><p class="page-description">내가 만든 캐릭터를 수정하거나 삭제할 수 있어요.</p><button class="btn btn-primary" id="manage-create">＋ 새 캐릭터</button><div id="manage-character-list" class="profile-content-list" style="margin-top:16px"></div></section><section id="persona-page" class="app-page"><button type="button" class="btn btn-plain" id="persona-back">← 프로필로</button><h2 class="page-title" style="margin-top:18px">페르소나</h2><p class="page-description">대화에서 사용할 나만의 인물 설정을 만들고 관리해요.</p><form id="persona-form" class="profile-card"><input id="persona-edit-id" type="hidden"><div class="field" style="margin-top:0"><label for="persona-name">이름</label><input id="persona-name" maxlength="40" required placeholder="예: 모험가, 마법사"></div><div class="field"><label for="persona-description">설정 (최대 500자)</label><textarea id="persona-description" maxlength="500" rows="5" required placeholder="역할, 외형, 성격, 배경 등을 적어 주세요."></textarea></div><small class="creator-count" id="persona-description-count">0 / 500</small><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary" type="submit" id="persona-save">페르소나 저장</button><button class="btn btn-plain" type="button" id="persona-cancel" hidden>수정 취소</button></div><div id="persona-message" class="auth-message" role="status" aria-live="polite"></div></form><div class="section-head" style="margin-top:25px"><div><h3 style="margin:0 0 5px">내 페르소나</h3><p>이 브라우저에 저장됩니다.</p></div></div><div id="persona-list" class="profile-content-list"></div></section><section id="cookie-page" class="app-page"><h2 class="page-title">쿠키 충전</h2><p class="page-description">쿠키로 캐릭터와 대화해요. 대화 1번에 쿠키 1개가 사용돼요. (출력 배율을 올리면 최대 5개)</p><div class="profile-card cookie-hero"><span class="cookie-hero-icon">🍪</span><div><span class="credit-label">내 쿠키</span><strong id="cookie-page-balance">—</strong></div></div><div class="profile-card" id="cookie-login-hint" hidden><p class="page-description" style="margin:0 0 12px">로그인하면 쿠키를 받고 사용할 수 있어요. 처음 가입하면 쿠키 100개를 드려요.</p><button type="button" class="btn btn-primary" id="cookie-login-button">로그인</button></div><div class="profile-card daily-card"><div><strong>출석 보상</strong><p id="daily-status">매일 한 번 쿠키 20개를 받을 수 있어요.</p></div><button class="btn btn-primary" id="daily-claim" type="button">받기</button></div><h3 class="cookie-section-title">충전 상품</h3><div class="cookie-packages"><button type="button" class="cookie-package" data-cookie-package="100"><strong>🍪 100</strong><span class="bonus"></span><span class="price">₩1,200</span><span class="soon">준비 중</span></button><button type="button" class="cookie-package" data-cookie-package="550"><strong>🍪 500</strong><span class="bonus">+50 보너스</span><span class="price">₩5,900</span><span class="soon">준비 중</span></button><button type="button" class="cookie-package" data-cookie-package="1400"><strong>🍪 1,200</strong><span class="bonus">+200 보너스</span><span class="price">₩12,900</span><span class="soon">준비 중</span></button></div><p class="note">결제 기능은 준비 중이에요. 열리면 이곳에서 바로 충전할 수 있어요.</p><h3 class="cookie-section-title">쿠키 내역</h3><div id="cookie-history" class="cookie-history"></div></section><section id="settings-page" class="app-page"><button class="btn btn-plain" id="settings-back">← 프로필로</button><h2 class="page-title" style="margin-top:18px">설정</h2><p class="page-description">Cozy Chat의 화면 환경을 설정해요.</p><div class="profile-card"><strong>테마</strong><p class="page-description" style="margin:7px 0 15px">화면의 밝기를 선택하세요.</p><div class="field" style="margin-top:0"><label for="theme-choice">화면 테마</label><select id="theme-choice"><option value="light">라이트</option><option value="dark">다크</option><option value="auto">자동 (기기 설정 따르기)</option></select></div><p class="note">선택한 테마는 이 브라우저에 저장됩니다.</p></div><div class="profile-card"><strong>차단한 사용자</strong><p class="page-description" style="margin:7px 0 10px">차단한 사용자의 캐릭터와 게시물은 보이지 않아요.</p><div id="blocked-list"></div></div></section><section id="public-profile-page" class="app-page public-profile-page"><button class="btn btn-plain" id="public-profile-back">← 돌아가기</button><div class="profile-card public-profile-card"><div class="profile-avatar" id="public-profile-avatar">나</div><h2 id="public-profile-name">사용자</h2><p id="public-profile-bio" class="profile-bio-preview"></p><div class="profile-stats public-profile-stats"><div><strong id="public-follower-count">0</strong><span>팔로워</span></div><div><strong id="public-following-count">0</strong><span>팔로잉</span></div></div><button class="btn btn-primary" id="public-profile-follow" hidden>팔로우</button><button class="btn btn-primary" id="public-profile-edit">프로필 수정</button></div><div class="profile-category-tabs" id="public-profile-tabs"><button class="active" data-public-tab="characters">캐릭터</button><button data-public-tab="posts">게시물</button></div><div id="public-profile-content" class="profile-content-list"></div></section>
 </main><footer class="footer"><span><b style="color:#747b91">C</b> Cozy Chat · Your characters, your stories.</span><span>v1.3.18 · 캐릭터 정보 바로가기 · 에셋 상황 인식 · 이름 변수 안내</span></footer>
 </div>
 <nav class="mobile-nav" aria-label="모바일 메뉴"><button data-page="home" class="active"><span class="mobile-icon">⌕</span><span>검색</span></button><button data-page="conversations"><span class="mobile-icon">▢</span><span>대화</span></button><button data-action="create" class="new-character"><span class="mobile-icon">＋</span><span>새 캐릭터</span></button><button data-page="posts"><span class="mobile-icon">♧</span><span>게시물</span></button><button data-page="profile"><span class="mobile-icon">♙</span><span>프로필</span></button></nav>
-<div class="desktop-drawer" id="desktop-drawer"><div class="drawer-shade" id="drawer-shade"></div><aside class="drawer-panel" aria-label="사이드 메뉴"><div class="drawer-top"><a class="brand" href="#" id="drawer-home"><span class="logo">C</span><span>Cozy Chat</span></a><button class="close" id="close-drawer" aria-label="메뉴 닫기">×</button></div><button class="drawer-link" data-page="home"><span class="drawer-icon">⌕</span>검색</button><button class="drawer-link" data-action="create"><span class="drawer-icon">＋</span>새 캐릭터</button><button class="drawer-link" data-page="posts"><span class="drawer-icon">♧</span>게시물</button><button class="drawer-link" data-page="character-manage"><span class="drawer-icon">✦</span>캐릭터 관리</button><button class="drawer-link" data-page="settings"><span class="drawer-icon">⚙</span>설정</button><div class="drawer-caption">최근 대화</div><div class="drawer-chats" id="drawer-chats"></div></aside></div>
+<div class="desktop-drawer" id="desktop-drawer"><div class="drawer-shade" id="drawer-shade"></div><aside class="drawer-panel" aria-label="사이드 메뉴"><div class="drawer-top"><a class="brand" href="#" id="drawer-home"><span class="logo">C</span><span>Cozy Chat</span></a><button class="close" id="close-drawer" aria-label="메뉴 닫기">×</button></div><button class="drawer-link" data-page="home"><span class="drawer-icon">⌕</span>검색</button><button class="drawer-link" data-action="create"><span class="drawer-icon">＋</span>새 캐릭터</button><button class="drawer-link" data-page="posts"><span class="drawer-icon">♧</span>게시물</button><button class="drawer-link" data-page="cookies"><span class="drawer-icon">🍪</span>쿠키 충전</button><button class="drawer-link" data-page="character-manage"><span class="drawer-icon">✦</span>캐릭터 관리</button><button class="drawer-link" data-page="settings"><span class="drawer-icon">⚙</span>설정</button><div class="drawer-caption">최근 대화</div><div class="drawer-chats" id="drawer-chats"></div></aside></div>
 <div class="backdrop" id="create-modal" role="dialog" aria-modal="true" aria-labelledby="create-title" hidden><div class="modal"><div class="modal-head"><h2 id="create-title">이전 제작 양식</h2><button class="close" data-close="create-modal" aria-label="닫기">×</button></div><form id="create-form"><div class="field"><label for="char-name">이름</label><input id="char-name" maxlength="40"></div><div class="field"><label for="char-tag">장르</label><select id="char-tag"><option>일상</option><option>로맨스</option><option>판타지</option><option>힐링</option></select></div><div class="field"><label for="char-personality">성격 및 설정</label><textarea id="char-personality" maxlength="600"></textarea></div><div class="field"><label for="char-greeting">첫 대사</label><textarea id="char-greeting" maxlength="300"></textarea></div><button class="btn btn-primary wide" type="submit">저장</button><p class="note">호환용 양식</p></form></div></div>
 
-<div class="backdrop" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title"><div class="modal"><div class="modal-head"><h2 id="auth-title">Cozy Chat 계정</h2><button class="close" data-close="auth-modal" aria-label="닫기">×</button></div><div class="auth-tabs"><button type="button" id="auth-tab-login" class="active">로그인</button><button type="button" id="auth-tab-signup">회원가입</button></div><form id="auth-form"><div class="field"><label for="auth-email">이메일</label><input id="auth-email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></div><div class="field"><label for="auth-password">비밀번호</label><input id="auth-password" type="password" autocomplete="current-password" required minlength="6" maxlength="128" placeholder="6자 이상"></div><button class="btn btn-primary wide" id="auth-submit" type="submit">로그인</button><div class="auth-actions"><button class="text-button" type="button" id="auth-reset">비밀번호 재설정</button><span style="font-size:11px;color:#9b9eaa">비밀번호는 안전하게 인증 서비스에서 처리돼요.</span></div><div id="auth-message" class="auth-message" role="status" aria-live="polite"></div></form><p class="note">계정 인증을 사용하려면 무료 Supabase 프로젝트를 연결해야 해요. 아직 연결 전이면 로그인·회원가입은 작동하지 않으며, 아래에서 설정 안내를 확인할 수 있어요.</p><button class="btn btn-plain wide" id="auth-setup-help" type="button">인증 설정 안내</button></div></div>
+<div class="backdrop" id="report-modal" role="dialog" aria-modal="true" aria-labelledby="report-title"><div class="modal"><div class="modal-head"><h2 id="report-title">신고하기</h2><button class="close" data-close="report-modal" aria-label="닫기">×</button></div><form id="report-form"><p class="note" id="report-target-label"></p><div class="report-reasons"><label><input type="radio" name="report-reason" value="선정적·성적인 내용">선정적·성적인 내용</label><label><input type="radio" name="report-reason" value="폭력적·잔인한 내용">폭력적·잔인한 내용</label><label><input type="radio" name="report-reason" value="혐오·차별 표현">혐오·차별 표현</label><label><input type="radio" name="report-reason" value="스팸·광고">스팸·광고</label><label><input type="radio" name="report-reason" value="저작권·초상권 침해">저작권·초상권 침해</label><label><input type="radio" name="report-reason" value="미성년자 관련 부적절한 내용">미성년자 관련 부적절한 내용</label><label><input type="radio" name="report-reason" value="기타">기타</label></div><div class="field"><label for="report-detail">자세한 내용 (선택)</label><textarea id="report-detail" maxlength="400" rows="3" placeholder="신고 이유를 더 알려 주시면 검토에 도움이 돼요."></textarea></div><div id="report-message" class="auth-message" role="status" aria-live="polite"></div><button class="btn btn-primary" id="report-submit" type="submit" style="width:100%;margin-top:12px">신고 접수</button></form></div></div><div class="backdrop" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title"><div class="modal"><div class="modal-head"><h2 id="auth-title">Cozy Chat 계정</h2><button class="close" data-close="auth-modal" aria-label="닫기">×</button></div><div class="auth-tabs"><button type="button" id="auth-tab-login" class="active">로그인</button><button type="button" id="auth-tab-signup">회원가입</button></div><form id="auth-form"><div class="field"><label for="auth-email">이메일</label><input id="auth-email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></div><div class="field"><label for="auth-password">비밀번호</label><input id="auth-password" type="password" autocomplete="current-password" required minlength="6" maxlength="128" placeholder="6자 이상"></div><button class="btn btn-primary wide" id="auth-submit" type="submit">로그인</button><div class="auth-actions"><button class="text-button" type="button" id="auth-reset">비밀번호 재설정</button><span style="font-size:11px;color:#9b9eaa">비밀번호는 안전하게 인증 서비스에서 처리돼요.</span></div><div id="auth-message" class="auth-message" role="status" aria-live="polite"></div></form><p class="note">계정 인증을 사용하려면 무료 Supabase 프로젝트를 연결해야 해요. 아직 연결 전이면 로그인·회원가입은 작동하지 않으며, 아래에서 설정 안내를 확인할 수 있어요.</p><button class="btn btn-plain wide" id="auth-setup-help" type="button">인증 설정 안내</button></div></div>
 <div class="backdrop" id="chat-modal" role="dialog" aria-modal="true" aria-labelledby="chat-title"><div class="modal chat-window"><header class="chat-topbar"><button type="button" class="chat-back-button" id="chat-back-button" aria-label="뒤로 가기">‹</button><div class="chat-head-copy"><strong id="chat-title">캐릭터와 대화</strong><small id="chat-subtitle"></small></div><div class="chat-top-actions"><button type="button" class="chat-settings-toggle" id="chat-settings-toggle" aria-label="채팅방 설정 열기" aria-expanded="false">⋮</button></div></header><div class="chat-content"><div class="chat-log" id="chat-log" aria-live="polite"></div><aside class="chat-settings-panel" id="chat-settings-panel" aria-hidden="true"><div class="chat-settings-header"><strong>채팅방 설정</strong><button type="button" class="close" id="chat-settings-close" aria-label="설정 닫기">×</button></div><nav class="chat-settings-nav" aria-label="채팅방 설정 항목"><button type="button" data-settings-view="persona" class="active">페르소나</button><button type="button" data-settings-view="note">유저 노트</button><button type="button" data-settings-view="output">출력량 설정</button><button type="button" data-settings-view="chat">채팅 설정</button><button type="button" data-settings-view="model">AI 모델</button></nav><div class="chat-settings-body"><section class="chat-settings-view active" data-settings-panel="persona"><h3>페르소나</h3><p class="settings-help">이번 대화에서 내가 어떤 인물인지 선택해.</p><div class="field"><label for="chat-persona-select">사용할 페르소나</label><select id="chat-persona-select"><option value="">선택 안 함</option></select><small class="note" id="chat-persona-status" role="status">현재 적용: 페르소나 없음</small></div><button type="button" class="settings-primary" id="chat-open-persona-tab">페르소나 탭 열기</button></section><section class="chat-settings-view" data-settings-panel="note"><h3>유저 노트</h3><p class="settings-help">AI가 대화 중 계속 참고할 정보야. 이 캐릭터의 대화에만 저장돼.</p><div class="field"><label for="chat-user-note">유저 노트</label><textarea id="chat-user-note" maxlength="2000" rows="8" placeholder="인물 관계, 중요한 사실, 현재 상황 등을 적어 줘."></textarea><small class="note">최대 2,000자 · 입력하면 자동 저장돼.</small></div></section><section class="chat-settings-view" data-settings-panel="output"><h3>출력량 설정</h3><p class="settings-help">배수가 높을수록 더 긴 답변을 만들 수 있지만, 한 번의 응답에 사용하는 쿠키도 늘어나.</p><div class="field"><label for="chat-output-groq">Groq · GPT-OSS 120B <output id="chat-output-groq-value">1×</output></label><input id="chat-output-groq" type="range" min="1" max="5" step="0.5" value="1"><small class="note">약 <span id="chat-output-groq-tokens">1,280</span> 출력 토큰</small></div><div class="field"><label for="chat-output-gemini">Gemini <output id="chat-output-gemini-value">1×</output></label><input id="chat-output-gemini" type="range" min="1" max="5" step="0.5" value="1"><small class="note">약 <span id="chat-output-gemini-tokens">1,280</span> 출력 토큰</small></div><div class="field"><label for="chat-output-openai">OpenAI 호환 <output id="chat-output-openai-value">1×</output></label><input id="chat-output-openai" type="range" min="1" max="5" step="0.5" value="1"><small class="note">약 <span id="chat-output-openai-tokens">1,280</span> 출력 토큰</small></div><p class="settings-cost-note" id="chat-output-cost-note">1× 기준 쿠키 1개 · 배수에 따라 응답당 사용량 증가</p></section><section class="chat-settings-view" data-settings-panel="chat"><h3>채팅 설정</h3><p class="settings-help">이 캐릭터 대화에 적용되는 표시 설정이야.</p><div class="field"><label for="chat-font-select">글꼴</label><select id="chat-font-select"><option value="system">기본 글꼴</option><option value="noto">고딕체</option><option value="serif">명조체</option><option value="mono">고정폭 글꼴</option></select></div><div class="field"><label for="chat-font-size">글자 크기 <output id="chat-font-size-value">16px</output></label><input id="chat-font-size" type="range" min="12" max="24" step="1" value="16"></div></section><section class="chat-settings-view" data-settings-panel="model"><h3>AI 모델</h3><p class="settings-help">이 대화에서 사용할 모델을 선택해.</p><div class="field"><label for="chat-model-select">모델 선택</label><select id="chat-model-select"><option value="auto">자동 선택 (캐릭터 권장 모델)</option><option value="groq">Groq Cloud · GPT-OSS 120B</option><option value="gemini">Gemini · 2.5 Flash</option><option value="openai-compatible">OpenAI 호환 모델</option></select></div></section></div></aside><div class="chat-profile-panel" id="chat-profile-panel" aria-hidden="true"><div class="chat-profile-head"><strong>캐릭터 정보</strong><button type="button" class="close" id="chat-profile-close" aria-label="정보 닫기">×</button></div><div id="chat-profile-content" class="chat-profile-content"></div></div></div><form class="chat-compose" id="chat-form"><div class="chat-input-shell"><button type="button" id="chat-action-toggle" class="chat-action-button" aria-label="행동 묘사 모드" aria-pressed="false">*</button><input id="chat-input" autocomplete="off" maxlength="1000" placeholder="메시지를 입력하세요…" required aria-label="메시지 입력"></div><button type="submit" class="chat-send-button" aria-label="전송">➤</button></form></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"></script>
@@ -137,7 +178,7 @@ document.getElementById('filters').onclick=e=>{let b=e.target.closest('[data-fil
 document.getElementById('cards').onclick=async e=>{let f=e.target.closest('[data-like]');if(f){e.stopPropagation();const c=all().find(x=>x.id===f.dataset.like);if(c)await toggleCharacterLike(c);return}const card=e.target.closest('[data-character-detail]');if(card)openCharacterDetail(card.dataset.characterDetail)};document.getElementById('cards').onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-character-detail]')){e.preventDefault();openCharacterDetail(e.target.dataset.characterDetail)}};
 function show(id){document.getElementById(id).classList.add('show')}function hide(id){document.getElementById(id).classList.remove('show')}document.getElementById('open-create').onclick=()=>openCharacterCreator();document.getElementById('hero-create').onclick=()=>openCharacterCreator();document.getElementById('jump-discover').onclick=()=>document.getElementById('discover').scrollIntoView({behavior:'smooth'});document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>hide(b.dataset.close));document.querySelectorAll('.backdrop').forEach(m=>m.onclick=e=>{if(e.target===m)hide(m.id)});document.onkeydown=e=>{if(e.key==='Escape')document.querySelectorAll('.backdrop.show').forEach(m=>hide(m.id))};
 document.getElementById('create-form').onsubmit=async e=>{e.preventDefault();let name=document.getElementById('char-name').value.trim(),tag=document.getElementById('char-tag').value,personality=document.getElementById('char-personality').value.trim(),greeting=document.getElementById('char-greeting').value.trim();if(!name||!personality)return;let em={일상:'🌷',로맨스:'💌',판타지:'✨',힐링:'☁'};const updated={id:editingCharacterId||'custom-'+Date.now(),name,tag,personality,greeting:greeting||'안녕! 만나서 반가워.',desc:personality.slice(0,95),emoji:em[tag],custom:true,...(currentUser?{user_id:currentUser.id}:{})};if(editingCharacterId){custom=custom.map(c=>c.id===editingCharacterId?{...c,...updated}:c)}else custom.unshift(updated);editingCharacterId=null;save(K,custom);if(currentUser)await saveCharactersToCloud();e.target.reset();document.getElementById('create-title').textContent='새 캐릭터 만들기';e.target.querySelector('[type=submit]').textContent='캐릭터 저장하기';hide('create-modal');filter='전체';document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x.dataset.filter==='전체'));render();renderManagedCharacters();document.getElementById('discover').scrollIntoView({behavior:'smooth'})};
-let detailCharacter=null;function characterViewKey(c){return String(c.user_id||currentUser?.id||'')+'|'+String(c.character_id||c.id||'')}function getCharacterViews(c){const views=read('cozy-chat-character-views-v1',{});return Number(views[characterViewKey(c)]||0)}function openCharacterDetail(id){const c=all().find(x=>x.id===id);if(!c)return;detailCharacter=c;const views=read('cozy-chat-character-views-v1',{}),key=characterViewKey(c);views[key]=(Number(views[key])||0)+1;save('cozy-chat-character-views-v1',views);document.getElementById('character-detail-image').innerHTML=c.image?'<img src="'+esc(c.image)+'" alt="'+esc(c.name)+'">':'<span class="emoji">'+esc(c.emoji||'✦')+'</span>';document.getElementById('character-detail-name').textContent=c.name||'이름 없는 캐릭터';document.getElementById('character-detail-tag').textContent=c.tag||'기타';document.getElementById('character-detail-likes').textContent=getLikeCount(c);const like=document.getElementById('character-detail-like');like.setAttribute('aria-pressed',String(isCharacterLiked(c)));like.innerHTML=(isCharacterLiked(c)?'♥':'♡')+' 좋아요 <span id="character-detail-likes">'+getLikeCount(c)+'</span>';document.getElementById('character-detail-views').textContent=views[key];document.getElementById('character-detail-description').innerHTML=md(c.detail||c.description||c.desc||'아직 상세설명이 없어요.');const starts=Array.isArray(c.startSettings)&&c.startSettings.length?c.startSettings:[{name:'기본 설정',prologue:c.prologue||c.greeting||'프롤로그가 등록되지 않았어요.',situation:c.greeting||''}];const startSelect=document.getElementById('character-detail-start');startSelect.innerHTML=starts.map((st,i)=>'<option value="'+i+'">'+esc(st.name||('시작설정 '+(i+1)))+'</option>').join('');startSelect.onchange=()=>{const st=starts[Number(startSelect.value)]||starts[0];document.getElementById('character-detail-prologue').innerHTML=md(st.prologue||'프롤로그가 등록되지 않았어요.')};startSelect.value='0';startSelect.onchange();const personaSelect=document.getElementById('character-detail-persona'),personas=read('cozy-chat-personas-v1',[]),selected=read('cozy-chat-selected-persona-v1','');personaSelect.innerHTML='<option value="">선택 안 함</option>'+personas.map(p=>'<option value="'+esc(p.id)+'">'+esc(p.name)+'</option>').join('');personaSelect.value=personas.some(p=>p.id===selected)?selected:'';setPage('character-detail')}document.getElementById('character-detail-back').onclick=()=>setPage('home');document.getElementById('character-detail-like').onclick=async()=>{if(!detailCharacter)return;await toggleCharacterLike(detailCharacter);document.getElementById('character-detail-likes').textContent=getLikeCount(detailCharacter);const b=document.getElementById('character-detail-like');b.setAttribute('aria-pressed',String(isCharacterLiked(detailCharacter)));b.innerHTML=(isCharacterLiked(detailCharacter)?'♥':'♡')+' 좋아요 <span id="character-detail-likes">'+getLikeCount(detailCharacter)+'</span>'};document.getElementById('character-detail-chat').onclick=()=>{try{const c=detailCharacter||null;if(!c){alert('캐릭터 정보를 불러오지 못했어요. 캐릭터 상세 페이지를 다시 열어 주세요.');return}const personaId=document.getElementById('character-detail-persona').value;save('cozy-chat-selected-persona-v1',personaId);const starts=Array.isArray(c.startSettings)?c.startSettings:[];const idx=Number(document.getElementById('character-detail-start').value)||0;const start=starts[idx]||{name:'기본 설정',prologue:c.prologue||c.greeting||'',situation:c.greeting||''};openChat(c.id,start)}catch(err){console.error('대화 시작 오류:',err);alert('대화방을 여는 중 오류가 발생했어요. 페이지를 새로고침한 뒤 다시 시도해 주세요.')}};function refreshChatPersonaSelect(){const select=document.getElementById('chat-persona-select');if(!select)return;const previous=read('cozy-chat-selected-persona-v1','');const personas=read('cozy-chat-personas-v1',[]);select.innerHTML='<option value="">선택 안 함</option>'+personas.map(p=>'<option value="'+esc(p.id)+'">'+esc(p.name)+'</option>').join('');select.value=personas.some(p=>p.id===previous)?previous:'';updateChatPersonaStatus()}function updateChatPersonaStatus(){const select=document.getElementById('chat-persona-select'),status=document.getElementById('chat-persona-status');if(!select||!status)return;const selected=select.options[select.selectedIndex];status.textContent=select.value?'✓ 현재 적용 중: '+(selected?selected.textContent:'선택한 페르소나'):'현재 적용: 페르소나 없음 (선택 안 함)';status.style.color=select.value?'#198754':'var(--muted)'}document.getElementById('chat-persona-select').onchange=e=>{save('cozy-chat-selected-persona-v1',e.target.value);updateChatPersonaStatus()};function getChatRoomSettings(){const allSettings=read('cozy-chat-room-settings-v1',{}),saved=allSettings[active?.id||'']||{};const oldTokens=saved.outputTokens||{};const mult=saved.outputMultipliers||{groq:Number(oldTokens.groq)?Math.max(1,Math.min(5,Number(oldTokens.groq)/1280)):1,gemini:Number(oldTokens.gemini)?Math.max(1,Math.min(5,Number(oldTokens.gemini)/1280)):1,'openai-compatible':Number(oldTokens['openai-compatible'])?Math.max(1,Math.min(5,Number(oldTokens['openai-compatible'])/1280)):1};return {...saved,outputMultipliers:{groq:1,gemini:1,'openai-compatible':1,...mult},outputTokens:{groq:Math.round(1280*(mult.groq||1)) ,gemini:Math.round(1280*(mult.gemini||1)),'openai-compatible':Math.round(1280*(mult['openai-compatible']||1))},userNote:String(saved.userNote||''),fontFamily:saved.fontFamily||'system',fontSize:Number(saved.fontSize)||16}}function saveChatRoomSettings(patch){if(!active)return;const allSettings=read('cozy-chat-room-settings-v1',{}),current=getChatRoomSettings(),next={...current,...patch,outputMultipliers:{...current.outputMultipliers,...(patch.outputMultipliers||{})}};next.outputTokens={groq:Math.round(1280*next.outputMultipliers.groq),gemini:Math.round(1280*next.outputMultipliers.gemini),'openai-compatible':Math.round(1280*next.outputMultipliers['openai-compatible'])};allSettings[active.id]=next;save('cozy-chat-room-settings-v1',allSettings);return next}function applyChatAppearance(settings=getChatRoomSettings()){const log=document.getElementById('chat-log'),families={system:'Inter,"Noto Sans KR",system-ui,sans-serif',noto:'"Noto Sans KR",system-ui,sans-serif',serif:'Georgia,"Noto Serif KR",serif',mono:'ui-monospace,SFMono-Regular,monospace'};log.style.fontFamily=families[settings.fontFamily]||families.system;log.style.fontSize=(Math.min(24,Math.max(12,Number(settings.fontSize)||16)))+'px';document.getElementById('chat-font-select').value=settings.fontFamily;document.getElementById('chat-font-size').value=settings.fontSize;document.getElementById('chat-font-size-value').textContent=settings.fontSize+'px'}function setChatSettingsView(view){document.querySelectorAll('[data-settings-view]').forEach(b=>b.classList.toggle('active',b.dataset.settingsView===view));document.querySelectorAll('[data-settings-panel]').forEach(p=>p.classList.toggle('active',p.dataset.settingsPanel===view));const titles={persona:'페르소나',note:'유저 노트',output:'출력량 설정',chat:'채팅 설정',model:'AI 모델'};document.querySelector('#chat-settings-panel .chat-settings-header strong').textContent=titles[view]||'채팅방 설정'}document.querySelectorAll('[data-settings-view]').forEach(b=>b.onclick=()=>setChatSettingsView(b.dataset.settingsView));function updateOutputMultiplierUI(key){const id={groq:'chat-output-groq',gemini:'chat-output-gemini','openai-compatible':'chat-output-openai'}[key],value=Number(document.getElementById(id).value),out=document.getElementById(id+'-value');out.textContent=String(value).replace('.0','')+'×';document.getElementById(id+'-tokens').textContent=(1280*value).toLocaleString();document.getElementById('chat-output-cost-note').textContent=value+'× 기준 응답당 쿠키 '+Math.ceil(value)+'개 사용 · 출력량이 많을수록 쿠키 소모 증가'}function syncChatRoomSettings(){const settings=getChatRoomSettings();document.getElementById('chat-user-note').value=settings.userNote;[['groq','chat-output-groq'],['gemini','chat-output-gemini'],['openai-compatible','chat-output-openai']].forEach(([key,id])=>{document.getElementById(id).value=settings.outputMultipliers[key];updateOutputMultiplierUI(key)});document.getElementById('chat-model-select').value=read('cozy-chat-model-v1','auto');const convoModel=document.getElementById('conversation-model-select');if(convoModel)convoModel.value=document.getElementById('chat-model-select').value;applyChatAppearance(settings);setChatSettingsView('persona')}document.getElementById('chat-user-note').oninput=e=>saveChatRoomSettings({userNote:e.target.value});[['groq','chat-output-groq'],['gemini','chat-output-gemini'],['openai-compatible','chat-output-openai']].forEach(([key,id])=>document.getElementById(id).oninput=e=>{updateOutputMultiplierUI(key);saveChatRoomSettings({outputMultipliers:{[key]:Number(e.target.value)}})});document.getElementById('chat-font-select').onchange=e=>applyChatAppearance(saveChatRoomSettings({fontFamily:e.target.value}));document.getElementById('chat-font-size').oninput=e=>applyChatAppearance(saveChatRoomSettings({fontSize:Number(e.target.value)}));document.getElementById('chat-model-select').onchange=e=>{save('cozy-chat-model-v1',e.target.value);const other=document.getElementById('conversation-model-select');if(other)other.value=e.target.value};document.getElementById('conversation-model-select').onchange=e=>{save('cozy-chat-model-v1',e.target.value);document.getElementById('chat-model-select').value=e.target.value};document.getElementById('chat-open-persona-tab').onclick=()=>{toggleChatSettings(false);hide('chat-modal');setPage('profile');document.querySelectorAll('[data-profile-tab]').forEach(b=>{if(/페르소나/.test(b.textContent))b.click()})};const chatInput=document.getElementById('chat-input');document.getElementById('chat-action-toggle').onclick=()=>{const i=chatInput,start=i.selectionStart??i.value.length,end=i.selectionEnd??i.value.length;const before=i.value.slice(0,start),after=i.value.slice(end);i.value=before+'**'+after;i.setSelectionRange(before.length+1,before.length+1);i.placeholder='행동 묘사를 *별표 사이에* 입력하세요…';document.getElementById('chat-action-toggle').setAttribute('aria-pressed','true');i.focus()};function openChat(id,selectedStart=null){active=all().find(c=>String(c.id)===String(id))||(detailCharacter&&String(detailCharacter.id)===String(id)?detailCharacter:null);if(!active){console.error('캐릭터를 찾을 수 없습니다:',id);alert('캐릭터 정보를 찾을 수 없어요. 캐릭터 목록을 새로고침한 뒤 다시 시도해 주세요.');return}show('chat-modal');try{const savedStarts=read('cozy-chat-selected-starts-v1',{});if(selectedStart){savedStarts[id]=selectedStart;save('cozy-chat-selected-starts-v1',savedStarts)}else selectedStart=savedStarts[id]||null;if(selectedStart)active={...active,selectedStart,prologue:selectedStart.prologue||active.prologue,greeting:selectedStart.prologue||active.prologue||active.greeting};document.getElementById('chat-title').textContent=active.name||'캐릭터';document.getElementById('chat-subtitle').textContent=(active.tag||'캐릭터')+' · '+(active.description||active.desc||'캐릭터 소개');const chatCharacterAvatar=document.getElementById('chat-character-avatar');if(chatCharacterAvatar)chatCharacterAvatar.innerHTML=active.image?'<img src="'+esc(active.image)+'" alt="">':esc(active.emoji||'✦');document.getElementById('chat-settings-panel').classList.remove('open');document.getElementById('chat-settings-panel').setAttribute('aria-hidden','true');document.getElementById('chat-settings-toggle').setAttribute('aria-expanded','false');document.getElementById('chat-profile-panel').classList.remove('open');document.getElementById('chat-profile-panel').setAttribute('aria-hidden','true');try{refreshChatPersonaSelect();syncChatRoomSettings()}catch(settingsError){console.error('채팅 설정을 불러오지 못했어요:',settingsError)}const hist=read(H,{}),msgs=hist[id]||[{role:'ai',text:active.prologue||active.greeting||'안녕! 만나서 반가워.'}];try{renderChatMessages(msgs)}catch(renderError){console.error('채팅 메시지 렌더링 오류:',renderError);document.getElementById('chat-log').textContent='대화 내용을 표시하지 못했어요. 새 메시지를 보내 다시 시도해 주세요.'}setTimeout(()=>{const l=document.getElementById('chat-log');if(l)l.scrollTop=l.scrollHeight;document.getElementById('chat-input')?.focus()},30)}catch(err){console.error('채팅방 초기화 오류:',err);const log=document.getElementById('chat-log');if(log)log.textContent='채팅방 초기화 오류: '+(err&&err.message?err.message:String(err));const modal=document.getElementById('chat-modal');if(modal)modal.classList.add('show');}}function renderChatProfile(){if(!active)return;const c=active,description=c.description||c.desc||'아직 등록된 캐릭터 소개가 없어요.',start=c.selectedStart;document.getElementById('chat-profile-content').innerHTML=(c.image?'<img class="chat-profile-image" src="'+esc(c.image)+'" alt="'+esc(c.name)+'">':'')+'<h3>'+esc(c.name||'이름 없는 캐릭터')+'</h3><p><span class="tag">'+esc(c.tag||'기타')+'</span></p><div>'+md(description)+'</div>'+(start?'<section class="character-detail-section"><h4>선택한 시작 설정</h4><p><strong>'+esc(start.name||'시작 설정')+'</strong></p><div>'+md(start.prologue||start.situation||'')+'</div></section>':'')}document.getElementById('chat-back-button').onclick=()=>{document.getElementById('chat-profile-panel').classList.remove('open');toggleChatSettings(false);hide('chat-modal')};document.getElementById('chat-profile-close').onclick=()=>{document.getElementById('chat-profile-panel').classList.remove('open');document.getElementById('chat-profile-panel').setAttribute('aria-hidden','true')};document.getElementById('chat-title').style.cursor='pointer';document.getElementById('chat-title').title='캐릭터 상세정보 보기';document.getElementById('chat-title').onclick=()=>{renderChatProfile();const p=document.getElementById('chat-profile-panel');p.classList.add('open');p.setAttribute('aria-hidden','false')};document.getElementById('chat-character-avatar')?.addEventListener('click',()=>{renderChatProfile();const p=document.getElementById('chat-profile-panel');p.classList.add('open');p.setAttribute('aria-hidden','false')});function toggleChatSettings(open){const panel=document.getElementById('chat-settings-panel'),next=typeof open==='boolean'?open:!panel.classList.contains('open');panel.classList.toggle('open',next);panel.setAttribute('aria-hidden',String(!next));document.getElementById('chat-settings-toggle').setAttribute('aria-expanded',String(next))}document.getElementById('chat-settings-toggle').onclick=()=>toggleChatSettings();document.getElementById('chat-settings-close').onclick=()=>toggleChatSettings(false);document.getElementById('chat-user-note').oninput=e=>saveChatRoomSettings({userNote:e.target.value});[['groq','chat-output-groq'],['gemini','chat-output-gemini'],['openai-compatible','chat-output-openai']].forEach(([key,id])=>document.getElementById(id).oninput=e=>{document.getElementById(id+'-value').textContent=Number(e.target.value).toLocaleString()+' 토큰';saveChatRoomSettings({outputTokens:{[key]:Number(e.target.value)}})});document.getElementById('chat-font-select').onchange=e=>{const settings=saveChatRoomSettings({fontFamily:e.target.value});applyChatAppearance(settings)};document.getElementById('chat-font-size').oninput=e=>{const settings=saveChatRoomSettings({fontSize:Number(e.target.value)});applyChatAppearance(settings)};document.getElementById('chat-model-select').onchange=e=>{save('cozy-chat-model-v1',e.target.value);const other=document.getElementById('conversation-model-select');if(other)other.value=e.target.value};document.getElementById('conversation-model-select').onchange=e=>{save('cozy-chat-model-v1',e.target.value);document.getElementById('chat-model-select').value=e.target.value};document.getElementById('chat-form').onsubmit=async e=>{e.preventDefault();const input=document.getElementById('chat-input'),rawText=input.value.trim();if(!rawText||!active)return;const text=rawText;actionMode=false;document.getElementById('chat-action-toggle').setAttribute('aria-pressed','false');input.placeholder='메시지를 입력하세요…';const roomSettings=getChatRoomSettings(),model=document.getElementById('chat-model-select')?.value||'auto',hist=read(H,{}),msgs=hist[active.id]||[{role:'ai',text:active.prologue||active.greeting||'안녕! 만나서 반가워.'}];msgs.push({role:'user',text,time:Date.now()});hist[active.id]=msgs.slice(-80);save(H,hist);input.value='';renderChatMessages(hist[active.id]);const submit=document.querySelector('#chat-form button[type=submit]');submit.disabled=true;submit.textContent='…';try{const session=currentUser&&supabaseClient?(await supabaseClient.auth.getSession()).data.session:null;if(!session?.access_token)throw Error('실제 AI 대화와 크레딧 처리를 위해 로그인 및 서버 연결이 필요해요.');const response=await fetch(SUPABASE_URL+'/functions/v1/character-chat',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_ANON_KEY},body:JSON.stringify({character:{id:active.id,name:active.name,description:active.description||active.desc,detail:active.detail||'',prompt:active.prompt||active.personality,template:active.template||'1:1',prologue:active.prologue,startSituation:active.selectedStart?.situation||'',selectedStart:active.selectedStart||null,startSettings:active.startSettings,assets:active.assets,keywordBook:active.keywordBook},userPersona:(read('cozy-chat-personas-v1',[]).find(p=>p.id===read('cozy-chat-selected-persona-v1',''))||{}).description||'',userPersonaName:(read('cozy-chat-profile-v1',{}).name||read('cozy-chat-profile-v1',{}).username||currentUser?.user_metadata?.username||currentUser?.email?.split('@')[0]||'사용자'),messages:msgs.slice(-40),userNote:roomSettings.userNote,chatSettings:{outputTokens:roomSettings.outputTokens,outputMultipliers:roomSettings.outputMultipliers},model:model==='auto'?(active.recommendedModel||'auto'):model})});const data=await response.json().catch(()=>({}));if(!response.ok||!data.reply)throw Error(data.error||'AI 서버를 사용할 수 없어요. Supabase Edge Function 배포와 모델 키 설정을 확인해 주세요.');msgs.push({role:'ai',text:String(data.reply),time:Date.now()});hist[active.id]=msgs.slice(-80);save(H,hist);if(typeof data.credits==='number')document.getElementById('credit-balance').textContent=data.credits.toLocaleString();await saveHistoryToCloud();renderChatMessages(hist[active.id]);renderDrawerChats();if(document.getElementById('conversations-page').classList.contains('active'))renderHistory()}catch(err){renderChatMessages([...hist[active.id],{role:'ai',text:'[AI 연결 안내] '+(err.message||'AI 서버 연결에 실패했어요.'),time:Date.now(),system:true}])}finally{submit.disabled=false;submit.textContent='➤'}};function renderChatMessages(msgs){const characterAvatar=active?.image?'<img src="'+esc(active.image)+'" alt="">':esc(active?.emoji||'✦');const userProfile=read('cozy-chat-profile-v1',{}),userAvatar=userProfile.avatar||userProfile.image;const userBadge=userAvatar?'<img src="'+esc(userAvatar)+'" alt="">':esc((userProfile.displayName||userProfile.name||currentUser?.email||'나').slice(0,1).toUpperCase());document.getElementById('chat-log').innerHTML=msgs.map(m=>{const isUser=m.role==='user',avatar=isUser?userBadge:characterAvatar,label=isUser?'내 프로필':(active?.name||'캐릭터');return '<div class="chat-message-row '+(isUser?'user':'ai')+'"><span class="chat-message-avatar" aria-label="'+esc(label)+'">'+avatar+'</span><div class="bubble '+(isUser?'user':'ai')+(m.system?' system':'')+'">'+md(m.text,active?.assets||[])+'</div></div>'}).join('');document.getElementById('chat-log').onclick=e=>{if(e.target.closest('.chat-message-row.ai .chat-message-avatar')){renderChatProfile();const p=document.getElementById('chat-profile-panel');p.classList.add('open');p.setAttribute('aria-hidden','false')}};document.getElementById('chat-log').onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.chat-message-row.ai .chat-message-avatar')){e.preventDefault();renderChatProfile();const p=document.getElementById('chat-profile-panel');p.classList.add('open');p.setAttribute('aria-hidden','false')}};const l=document.getElementById('chat-log');l.scrollTop=l.scrollHeight}document.getElementById('chat-model-select').value=read('cozy-chat-model-v1','auto');document.getElementById('conversation-model-select').value=read('cozy-chat-model-v1','auto');render();
+let detailCharacter=null;function characterViewKey(c){return String(c.user_id||currentUser?.id||'')+'|'+String(c.character_id||c.id||'')}function getCharacterViews(c){const views=read('cozy-chat-character-views-v1',{});return Number(views[characterViewKey(c)]||0)}function openCharacterDetail(id){const c=all().find(x=>x.id===id);if(!c)return;detailCharacter=c;const views=read('cozy-chat-character-views-v1',{}),key=characterViewKey(c);views[key]=(Number(views[key])||0)+1;save('cozy-chat-character-views-v1',views);document.getElementById('character-detail-image').innerHTML=c.image?'<img src="'+esc(c.image)+'" alt="'+esc(c.name)+'">':'<span class="emoji">'+esc(c.emoji||'✦')+'</span>';document.getElementById('character-detail-name').textContent=c.name||'이름 없는 캐릭터';document.getElementById('character-detail-tag').textContent=c.tag||'기타';document.getElementById('character-detail-likes').textContent=getLikeCount(c);const like=document.getElementById('character-detail-like');like.setAttribute('aria-pressed',String(isCharacterLiked(c)));like.innerHTML=(isCharacterLiked(c)?'♥':'♡')+' 좋아요 <span id="character-detail-likes">'+getLikeCount(c)+'</span>';document.getElementById('character-detail-views').textContent=views[key];document.getElementById('character-detail-description').innerHTML=md(c.detail||c.description||c.desc||'아직 상세설명이 없어요.');const starts=Array.isArray(c.startSettings)&&c.startSettings.length?c.startSettings:[{name:'기본 설정',prologue:c.prologue||c.greeting||'프롤로그가 등록되지 않았어요.',situation:c.greeting||''}];const startSelect=document.getElementById('character-detail-start');startSelect.innerHTML=starts.map((st,i)=>'<option value="'+i+'">'+esc(st.name||('시작설정 '+(i+1)))+'</option>').join('');startSelect.onchange=()=>{const st=starts[Number(startSelect.value)]||starts[0];document.getElementById('character-detail-prologue').innerHTML=md(st.prologue||'프롤로그가 등록되지 않았어요.')};startSelect.value='0';startSelect.onchange();const personaSelect=document.getElementById('character-detail-persona'),personas=read('cozy-chat-personas-v1',[]),selected=read('cozy-chat-selected-persona-v1','');personaSelect.innerHTML='<option value="">선택 안 함</option>'+personas.map(p=>'<option value="'+esc(p.id)+'">'+esc(p.name)+'</option>').join('');personaSelect.value=personas.some(p=>p.id===selected)?selected:'';setPage('character-detail')}document.getElementById('character-detail-back').onclick=()=>setPage('home');document.getElementById('character-detail-like').onclick=async()=>{if(!detailCharacter)return;await toggleCharacterLike(detailCharacter);document.getElementById('character-detail-likes').textContent=getLikeCount(detailCharacter);const b=document.getElementById('character-detail-like');b.setAttribute('aria-pressed',String(isCharacterLiked(detailCharacter)));b.innerHTML=(isCharacterLiked(detailCharacter)?'♥':'♡')+' 좋아요 <span id="character-detail-likes">'+getLikeCount(detailCharacter)+'</span>'};document.getElementById('character-detail-chat').onclick=()=>{try{const c=detailCharacter||null;if(!c){alert('캐릭터 정보를 불러오지 못했어요. 캐릭터 상세 페이지를 다시 열어 주세요.');return}const personaId=document.getElementById('character-detail-persona').value;save('cozy-chat-selected-persona-v1',personaId);const starts=Array.isArray(c.startSettings)?c.startSettings:[];const idx=Number(document.getElementById('character-detail-start').value)||0;const start=starts[idx]||{name:'기본 설정',prologue:c.prologue||c.greeting||'',situation:c.greeting||''};openChat(c.id,start)}catch(err){console.error('대화 시작 오류:',err);alert('대화방을 여는 중 오류가 발생했어요. 페이지를 새로고침한 뒤 다시 시도해 주세요.')}};function refreshChatPersonaSelect(){const select=document.getElementById('chat-persona-select');if(!select)return;const previous=read('cozy-chat-selected-persona-v1','');const personas=read('cozy-chat-personas-v1',[]);select.innerHTML='<option value="">선택 안 함</option>'+personas.map(p=>'<option value="'+esc(p.id)+'">'+esc(p.name)+'</option>').join('');select.value=personas.some(p=>p.id===previous)?previous:'';updateChatPersonaStatus()}function updateChatPersonaStatus(){const select=document.getElementById('chat-persona-select'),status=document.getElementById('chat-persona-status');if(!select||!status)return;const selected=select.options[select.selectedIndex];status.textContent=select.value?'✓ 현재 적용 중: '+(selected?selected.textContent:'선택한 페르소나'):'현재 적용: 페르소나 없음 (선택 안 함)';status.style.color=select.value?'#198754':'var(--muted)'}document.getElementById('chat-persona-select').onchange=e=>{save('cozy-chat-selected-persona-v1',e.target.value);updateChatPersonaStatus()};function getChatRoomSettings(){const allSettings=read('cozy-chat-room-settings-v1',{}),saved=allSettings[active?.id||'']||{};const oldTokens=saved.outputTokens||{};const mult=saved.outputMultipliers||{groq:Number(oldTokens.groq)?Math.max(1,Math.min(5,Number(oldTokens.groq)/1280)):1,gemini:Number(oldTokens.gemini)?Math.max(1,Math.min(5,Number(oldTokens.gemini)/1280)):1,'openai-compatible':Number(oldTokens['openai-compatible'])?Math.max(1,Math.min(5,Number(oldTokens['openai-compatible'])/1280)):1};return {...saved,outputMultipliers:{groq:1,gemini:1,'openai-compatible':1,...mult},outputTokens:{groq:Math.round(1280*(mult.groq||1)) ,gemini:Math.round(1280*(mult.gemini||1)),'openai-compatible':Math.round(1280*(mult['openai-compatible']||1))},userNote:String(saved.userNote||''),fontFamily:saved.fontFamily||'system',fontSize:Number(saved.fontSize)||16}}function saveChatRoomSettings(patch){if(!active)return;const allSettings=read('cozy-chat-room-settings-v1',{}),current=getChatRoomSettings(),next={...current,...patch,outputMultipliers:{...current.outputMultipliers,...(patch.outputMultipliers||{})}};next.outputTokens={groq:Math.round(1280*next.outputMultipliers.groq),gemini:Math.round(1280*next.outputMultipliers.gemini),'openai-compatible':Math.round(1280*next.outputMultipliers['openai-compatible'])};allSettings[active.id]=next;save('cozy-chat-room-settings-v1',allSettings);return next}function applyChatAppearance(settings=getChatRoomSettings()){const log=document.getElementById('chat-log'),families={system:'Inter,"Noto Sans KR",system-ui,sans-serif',noto:'"Noto Sans KR",system-ui,sans-serif',serif:'Georgia,"Noto Serif KR",serif',mono:'ui-monospace,SFMono-Regular,monospace'};log.style.fontFamily=families[settings.fontFamily]||families.system;log.style.fontSize=(Math.min(24,Math.max(12,Number(settings.fontSize)||16)))+'px';document.getElementById('chat-font-select').value=settings.fontFamily;document.getElementById('chat-font-size').value=settings.fontSize;document.getElementById('chat-font-size-value').textContent=settings.fontSize+'px'}function setChatSettingsView(view){document.querySelectorAll('[data-settings-view]').forEach(b=>b.classList.toggle('active',b.dataset.settingsView===view));document.querySelectorAll('[data-settings-panel]').forEach(p=>p.classList.toggle('active',p.dataset.settingsPanel===view));const titles={persona:'페르소나',note:'유저 노트',output:'출력량 설정',chat:'채팅 설정',model:'AI 모델'};document.querySelector('#chat-settings-panel .chat-settings-header strong').textContent=titles[view]||'채팅방 설정'}document.querySelectorAll('[data-settings-view]').forEach(b=>b.onclick=()=>setChatSettingsView(b.dataset.settingsView));function updateOutputMultiplierUI(key){const id={groq:'chat-output-groq',gemini:'chat-output-gemini','openai-compatible':'chat-output-openai'}[key],value=Number(document.getElementById(id).value),out=document.getElementById(id+'-value');out.textContent=String(value).replace('.0','')+'×';document.getElementById(id+'-tokens').textContent=(1280*value).toLocaleString();document.getElementById('chat-output-cost-note').textContent=value+'× 기준 응답당 쿠키 '+Math.ceil(value)+'개 사용 · 출력량이 많을수록 쿠키 소모 증가'}function syncChatRoomSettings(){const settings=getChatRoomSettings();document.getElementById('chat-user-note').value=settings.userNote;[['groq','chat-output-groq'],['gemini','chat-output-gemini'],['openai-compatible','chat-output-openai']].forEach(([key,id])=>{document.getElementById(id).value=settings.outputMultipliers[key];updateOutputMultiplierUI(key)});document.getElementById('chat-model-select').value=read('cozy-chat-model-v1','auto');const convoModel=document.getElementById('conversation-model-select');if(convoModel)convoModel.value=document.getElementById('chat-model-select').value;applyChatAppearance(settings);setChatSettingsView('persona')}document.getElementById('chat-user-note').oninput=e=>saveChatRoomSettings({userNote:e.target.value});[['groq','chat-output-groq'],['gemini','chat-output-gemini'],['openai-compatible','chat-output-openai']].forEach(([key,id])=>document.getElementById(id).oninput=e=>{updateOutputMultiplierUI(key);saveChatRoomSettings({outputMultipliers:{[key]:Number(e.target.value)}})});document.getElementById('chat-font-select').onchange=e=>applyChatAppearance(saveChatRoomSettings({fontFamily:e.target.value}));document.getElementById('chat-font-size').oninput=e=>applyChatAppearance(saveChatRoomSettings({fontSize:Number(e.target.value)}));document.getElementById('chat-model-select').onchange=e=>{save('cozy-chat-model-v1',e.target.value);const other=document.getElementById('conversation-model-select');if(other)other.value=e.target.value};document.getElementById('conversation-model-select').onchange=e=>{save('cozy-chat-model-v1',e.target.value);document.getElementById('chat-model-select').value=e.target.value};document.getElementById('chat-open-persona-tab').onclick=()=>{toggleChatSettings(false);hide('chat-modal');setPage('profile');document.querySelectorAll('[data-profile-tab]').forEach(b=>{if(/페르소나/.test(b.textContent))b.click()})};const chatInput=document.getElementById('chat-input');document.getElementById('chat-action-toggle').onclick=()=>{const i=chatInput,start=i.selectionStart??i.value.length,end=i.selectionEnd??i.value.length;const before=i.value.slice(0,start),after=i.value.slice(end);i.value=before+'**'+after;i.setSelectionRange(before.length+1,before.length+1);i.placeholder='행동 묘사를 *별표 사이에* 입력하세요…';document.getElementById('chat-action-toggle').setAttribute('aria-pressed','true');i.focus()};function openChat(id,selectedStart=null){active=all().find(c=>String(c.id)===String(id))||(detailCharacter&&String(detailCharacter.id)===String(id)?detailCharacter:null);if(!active){console.error('캐릭터를 찾을 수 없습니다:',id);alert('캐릭터 정보를 찾을 수 없어요. 캐릭터 목록을 새로고침한 뒤 다시 시도해 주세요.');return}show('chat-modal');try{const savedStarts=read('cozy-chat-selected-starts-v1',{});if(selectedStart){savedStarts[id]=selectedStart;save('cozy-chat-selected-starts-v1',savedStarts)}else selectedStart=savedStarts[id]||null;if(selectedStart)active={...active,selectedStart,prologue:selectedStart.prologue||active.prologue,greeting:selectedStart.prologue||active.prologue||active.greeting};document.getElementById('chat-title').textContent=active.name||'캐릭터';document.getElementById('chat-subtitle').textContent=(active.tag||'캐릭터')+' · '+(active.description||active.desc||'캐릭터 소개');const chatCharacterAvatar=document.getElementById('chat-character-avatar');if(chatCharacterAvatar)chatCharacterAvatar.innerHTML=active.image?'<img src="'+esc(active.image)+'" alt="">':esc(active.emoji||'✦');document.getElementById('chat-settings-panel').classList.remove('open');document.getElementById('chat-settings-panel').setAttribute('aria-hidden','true');document.getElementById('chat-settings-toggle').setAttribute('aria-expanded','false');document.getElementById('chat-profile-panel').classList.remove('open');document.getElementById('chat-profile-panel').setAttribute('aria-hidden','true');try{refreshChatPersonaSelect();syncChatRoomSettings()}catch(settingsError){console.error('채팅 설정을 불러오지 못했어요:',settingsError)}const hist=read(H,{}),msgs=hist[id]||[{role:'ai',text:active.prologue||active.greeting||'안녕! 만나서 반가워.'}];try{renderChatMessages(msgs)}catch(renderError){console.error('채팅 메시지 렌더링 오류:',renderError);document.getElementById('chat-log').textContent='대화 내용을 표시하지 못했어요. 새 메시지를 보내 다시 시도해 주세요.'}setTimeout(()=>{const l=document.getElementById('chat-log');if(l)l.scrollTop=l.scrollHeight;document.getElementById('chat-input')?.focus()},30)}catch(err){console.error('채팅방 초기화 오류:',err);const log=document.getElementById('chat-log');if(log)log.textContent='채팅방 초기화 오류: '+(err&&err.message?err.message:String(err));const modal=document.getElementById('chat-modal');if(modal)modal.classList.add('show');}}function renderChatProfile(){if(!active)return;const c=active,description=c.description||c.desc||'아직 등록된 캐릭터 소개가 없어요.',start=c.selectedStart;document.getElementById('chat-profile-content').innerHTML=(c.image?'<img class="chat-profile-image" src="'+esc(c.image)+'" alt="'+esc(c.name)+'">':'')+'<h3>'+esc(c.name||'이름 없는 캐릭터')+'</h3><p><span class="tag">'+esc(c.tag||'기타')+'</span></p><div>'+md(description)+'</div>'+(start?'<section class="character-detail-section"><h4>선택한 시작 설정</h4><p><strong>'+esc(start.name||'시작 설정')+'</strong></p><div>'+md(start.prologue||start.situation||'')+'</div></section>':'')}document.getElementById('chat-back-button').onclick=()=>{document.getElementById('chat-profile-panel').classList.remove('open');toggleChatSettings(false);hide('chat-modal')};document.getElementById('chat-profile-close').onclick=()=>{document.getElementById('chat-profile-panel').classList.remove('open');document.getElementById('chat-profile-panel').setAttribute('aria-hidden','true')};document.getElementById('chat-title').style.cursor='pointer';document.getElementById('chat-title').title='캐릭터 상세정보 보기';document.getElementById('chat-title').onclick=()=>{renderChatProfile();const p=document.getElementById('chat-profile-panel');p.classList.add('open');p.setAttribute('aria-hidden','false')};document.getElementById('chat-character-avatar')?.addEventListener('click',()=>{renderChatProfile();const p=document.getElementById('chat-profile-panel');p.classList.add('open');p.setAttribute('aria-hidden','false')});function toggleChatSettings(open){const panel=document.getElementById('chat-settings-panel'),next=typeof open==='boolean'?open:!panel.classList.contains('open');panel.classList.toggle('open',next);panel.setAttribute('aria-hidden',String(!next));document.getElementById('chat-settings-toggle').setAttribute('aria-expanded',String(next))}document.getElementById('chat-settings-toggle').onclick=()=>toggleChatSettings();document.getElementById('chat-settings-close').onclick=()=>toggleChatSettings(false);document.getElementById('chat-user-note').oninput=e=>saveChatRoomSettings({userNote:e.target.value});[['groq','chat-output-groq'],['gemini','chat-output-gemini'],['openai-compatible','chat-output-openai']].forEach(([key,id])=>document.getElementById(id).oninput=e=>{document.getElementById(id+'-value').textContent=Number(e.target.value).toLocaleString()+' 토큰';saveChatRoomSettings({outputTokens:{[key]:Number(e.target.value)}})});document.getElementById('chat-font-select').onchange=e=>{const settings=saveChatRoomSettings({fontFamily:e.target.value});applyChatAppearance(settings)};document.getElementById('chat-font-size').oninput=e=>{const settings=saveChatRoomSettings({fontSize:Number(e.target.value)});applyChatAppearance(settings)};document.getElementById('chat-model-select').onchange=e=>{save('cozy-chat-model-v1',e.target.value);const other=document.getElementById('conversation-model-select');if(other)other.value=e.target.value};document.getElementById('conversation-model-select').onchange=e=>{save('cozy-chat-model-v1',e.target.value);document.getElementById('chat-model-select').value=e.target.value};document.getElementById('chat-form').onsubmit=async e=>{e.preventDefault();const input=document.getElementById('chat-input'),rawText=input.value.trim();if(!rawText||!active)return;const text=rawText;actionMode=false;document.getElementById('chat-action-toggle').setAttribute('aria-pressed','false');input.placeholder='메시지를 입력하세요…';const roomSettings=getChatRoomSettings(),model=document.getElementById('chat-model-select')?.value||'auto',hist=read(H,{}),msgs=hist[active.id]||[{role:'ai',text:active.prologue||active.greeting||'안녕! 만나서 반가워.'}];msgs.push({role:'user',text,time:Date.now()});hist[active.id]=msgs.slice(-80);save(H,hist);input.value='';renderChatMessages(hist[active.id]);const submit=document.querySelector('#chat-form button[type=submit]');submit.disabled=true;submit.textContent='…';try{const session=currentUser&&supabaseClient?(await supabaseClient.auth.getSession()).data.session:null;if(!session?.access_token)throw Error('실제 AI 대화와 쿠키 처리를 위해 로그인 및 서버 연결이 필요해요.');const response=await fetch(SUPABASE_URL+'/functions/v1/character-chat',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_ANON_KEY},body:JSON.stringify({character:{id:active.id,name:active.name,description:active.description||active.desc,detail:active.detail||'',prompt:active.prompt||active.personality,template:active.template||'1:1',prologue:active.prologue,startSituation:active.selectedStart?.situation||'',selectedStart:active.selectedStart||null,startSettings:active.startSettings,assets:active.assets,keywordBook:active.keywordBook},userPersona:(read('cozy-chat-personas-v1',[]).find(p=>p.id===read('cozy-chat-selected-persona-v1',''))||{}).description||'',userPersonaName:(read('cozy-chat-profile-v1',{}).name||read('cozy-chat-profile-v1',{}).username||currentUser?.user_metadata?.username||currentUser?.email?.split('@')[0]||'사용자'),messages:msgs.slice(-40),userNote:roomSettings.userNote,chatSettings:{outputTokens:roomSettings.outputTokens,outputMultipliers:roomSettings.outputMultipliers},model:model==='auto'?(active.recommendedModel||'auto'):model})});const data=await response.json().catch(()=>({}));if(!response.ok||!data.reply)throw Error(data.error||'AI 서버를 사용할 수 없어요. Supabase Edge Function 배포와 모델 키 설정을 확인해 주세요.');msgs.push({role:'ai',text:String(data.reply),time:Date.now()});hist[active.id]=msgs.slice(-80);save(H,hist);if(typeof data.credits==='number')document.getElementById('credit-balance').textContent=data.credits.toLocaleString();await saveHistoryToCloud();renderChatMessages(hist[active.id]);renderDrawerChats();if(document.getElementById('conversations-page').classList.contains('active'))renderHistory()}catch(err){renderChatMessages([...hist[active.id],{role:'ai',text:'[AI 연결 안내] '+(err.message||'AI 서버 연결에 실패했어요.'),time:Date.now(),system:true}])}finally{submit.disabled=false;submit.textContent='➤'}};function renderChatMessages(msgs){const characterAvatar=active?.image?'<img src="'+esc(active.image)+'" alt="">':esc(active?.emoji||'✦');const userProfile=read('cozy-chat-profile-v1',{}),userAvatar=userProfile.avatar||userProfile.image;const userBadge=userAvatar?'<img src="'+esc(userAvatar)+'" alt="">':esc((userProfile.displayName||userProfile.name||currentUser?.email||'나').slice(0,1).toUpperCase());document.getElementById('chat-log').innerHTML=msgs.map(m=>{const isUser=m.role==='user',avatar=isUser?userBadge:characterAvatar,label=isUser?'내 프로필':(active?.name||'캐릭터');return '<div class="chat-message-row '+(isUser?'user':'ai')+'"><span class="chat-message-avatar" aria-label="'+esc(label)+'">'+avatar+'</span><div class="bubble '+(isUser?'user':'ai')+(m.system?' system':'')+'">'+md(m.text,active?.assets||[])+'</div></div>'}).join('');document.getElementById('chat-log').onclick=e=>{if(e.target.closest('.chat-message-row.ai .chat-message-avatar')){renderChatProfile();const p=document.getElementById('chat-profile-panel');p.classList.add('open');p.setAttribute('aria-hidden','false')}};document.getElementById('chat-log').onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.chat-message-row.ai .chat-message-avatar')){e.preventDefault();renderChatProfile();const p=document.getElementById('chat-profile-panel');p.classList.add('open');p.setAttribute('aria-hidden','false')}};const l=document.getElementById('chat-log');l.scrollTop=l.scrollHeight}document.getElementById('chat-model-select').value=read('cozy-chat-model-v1','auto');document.getElementById('conversation-model-select').value=read('cozy-chat-model-v1','auto');render();
 
 
 function showAuthMessage(message,type=''){const el=document.getElementById('auth-message');el.textContent=message;el.className='auth-message show'+(type?' '+type:'')}
@@ -304,7 +345,7 @@ document.getElementById('creator-add-asset').onclick=()=>addAssetCard();document
 let creatorSubmitting=false;document.getElementById('creator-form').onsubmit=async e=>{e.preventDefault();if(creatorSubmitting)return;creatorSubmitting=true;const submitButton=document.getElementById('creator-submit');submitButton.disabled=true;submitButton.textContent='저장 중…';try{await saveCharacterSubmission(e)}catch(err){console.error('Character save failed:',err);creatorMessage('저장 중 오류가 발생했어요. 다시 시도해 주세요.','error')}finally{creatorSubmitting=false;submitButton.disabled=false;submitButton.textContent=document.getElementById('creator-page-title').textContent==='캐릭터 수정'?'수정하기':'캐릭터 등록하기'}};async function saveCharacterSubmission(e){const name=document.getElementById('creator-name').value.trim(),template=document.getElementById('creator-template').value,prompt=document.getElementById('creator-prompt').value.trim(),limit=template==='custom'?10000:6000;if(!name){creatorMessage('이름을 입력해 주세요.','error');setCreatorChapter(0);document.getElementById('creator-name').focus();return}if(!creatorImageData){creatorMessage('캐릭터 이미지를 선택해 주세요.','error');setCreatorChapter(0);document.getElementById('creator-image').focus();return}if(!document.getElementById('creator-genre').value||!document.getElementById('creator-target').value||!document.getElementById('creator-visibility').value){creatorMessage('장르, 타겟, 공개 설정을 확인해 주세요.','error');setCreatorChapter(5);return}if(prompt.length>limit){creatorMessage('프롬프트는 '+limit+'자까지 입력할 수 있어요.','error');setCreatorChapter(1);document.getElementById('creator-prompt').focus();return}const starts=[...document.querySelectorAll('[data-start-item]')].map(x=>({name:x.querySelector('[data-start-name]').value.trim(),prologue:x.querySelector('[data-start-prologue]').value.trim(),situation:x.querySelector('[data-start-situation]').value.trim()}));if(!starts.length||starts.some(x=>!x.name||!x.prologue||!x.situation)){creatorMessage('시작설정 이름, 프롤로그, 시작상황을 모두 입력해 주세요.','error');setCreatorChapter(2);return}if(!prompt){creatorMessage('캐릭터 프롬프트를 입력해 주세요.','error');setCreatorChapter(1);document.getElementById('creator-prompt').focus();return}const assetCards=[...document.querySelectorAll('[data-asset-card]')],noteCards=[...document.querySelectorAll('[data-note-card]')];const missingAsset=assetCards.find(x=>!x.assetData||!x.querySelector('[data-name]').value.trim()||!x.querySelector('[data-situation]').value.trim());if(missingAsset){creatorMessage('추가한 각 에셋의 이미지, 이름, 상황/표시 조건을 모두 입력해 주세요.','error');setCreatorChapter(3);missingAsset.scrollIntoView({behavior:'smooth',block:'center'});const missingInput=!missingAsset.assetData?missingAsset.querySelector('[data-file]'):!missingAsset.querySelector('[data-name]').value.trim()?missingAsset.querySelector('[data-name]'):missingAsset.querySelector('[data-situation]');missingInput.focus();return}const missingNote=noteCards.find(x=>!x.querySelector('[data-title]').textContent.trim()||!x.querySelector('[data-info]').value.trim()||!x.querySelector('[data-words]').value.split(',').some(x=>x.trim()));if(missingNote){creatorMessage('추가한 각 키워드북 항목의 제목, 정보, 키워드를 모두 입력해 주세요.','error');setCreatorChapter(4);missingNote.scrollIntoView({behavior:'smooth',block:'center'});const missingInput=!missingNote.querySelector('[data-title]').textContent.trim()?missingNote.querySelector('[data-title]'):!missingNote.querySelector('[data-info]').value.trim()?missingNote.querySelector('[data-info]'):missingNote.querySelector('[data-words]');missingInput.focus();return}const assets=assetCards.map(x=>({code:x.assetCode||x.querySelector('[data-code]').value.trim(),name:x.querySelector('[data-name]').value.trim(),situation:x.querySelector('[data-situation]').value.trim(),image:x.assetData||''})),notes=noteCards.map(x=>({name:x.querySelector('[data-title]').textContent.trim(),info:x.querySelector('[data-info]').value.trim(),keywords:x.querySelector('[data-words]').value.split(',').map(x=>x.trim()).filter(Boolean).slice(0,5)})),genre=document.getElementById('creator-genre').value,existing=custom.find(c=>c.id===editingCharacterId),obj={...(existing||{}),id:editingCharacterId||'custom-'+Date.now(),name,tag:genre,emoji:({일상:'🌷',로맨스:'💌',판타지:'✨',힐링:'☁',공포:'🌑',SF:'🚀',역사:'📜',기타:'✦'})[genre]||'✦',desc:document.getElementById('creator-description').value.trim()||document.getElementById('creator-detail').value.trim().slice(0,120),description:document.getElementById('creator-description').value.trim(),detail:document.getElementById('creator-detail').value.trim(),image:creatorImageData,template,prompt,personality:prompt||document.getElementById('creator-description').value.trim(),prologue:starts[0]?.prologue||'',startSettings:starts,assets,keywordBook:notes,target:document.getElementById('creator-target').value,recommendedModel:document.getElementById('creator-recommended-model').value,hashtags:document.getElementById('creator-tags').value.split(/[ ,]+/).map(x=>x.trim()).filter(Boolean),visibility:document.getElementById('creator-visibility').value,greeting:starts[0]?.prologue||'안녕! 만나서 반가워.',custom:true,...(currentUser?{user_id:currentUser.id}:{})};if(existing)custom=custom.map(c=>c.id===editingCharacterId?obj:c);else custom.unshift(obj);editingCharacterId=null;save(K,custom);let publishStatus='';if(currentUser){await saveCharactersToCloud();try{await syncPublicCharacter(obj);publishStatus=obj.visibility==='private'?' 비공개로 저장했어요.':' 공개 캐릭터 목록에 반영했어요.'}catch(err){publishStatus=' 공개 등록에 실패했어요: '+(err.message||'서버 설정을 확인해 주세요.')}}else if(obj.visibility!=='private')publishStatus=' 공개 등록은 로그인 후 가능해요.';render();renderManagedCharacters();creatorMessage('캐릭터를 저장했어요.'+publishStatus,'success');document.getElementById('creator-submit').textContent='저장 완료';setTimeout(()=>setPage('character-manage'),600)}
 
 async function syncPublicCharacter(character){if(!currentUser||!supabaseClient)return;if(character.visibility==='public'||character.visibility==='unlisted'){const {error}=await supabaseClient.from('public_characters').upsert({user_id:currentUser.id,character_id:character.id,character_data:character,visibility:character.visibility,updated_at:new Date().toISOString()},{onConflict:'user_id,character_id'});if(error)throw error}else{const {error}=await supabaseClient.from('public_characters').delete().eq('user_id',currentUser.id).eq('character_id',character.id);if(error)throw error}await loadPublicCharacters()}
-async function refreshCreditBalance(){const out=document.getElementById('credit-balance'),status=document.getElementById('credit-status');if(!currentUser||!supabaseClient){out.textContent='로그인 필요';status.textContent='로그인하면 기본 크레딧 잔액을 확인할 수 있어요.';return}out.textContent='확인 중…';status.textContent='서버에서 크레딧 잔액을 불러오는 중이에요.';try{const session=(await supabaseClient.auth.getSession()).data.session;if(!session?.access_token)throw Error('로그인 세션을 확인할 수 없어요.');const res=await fetch(SUPABASE_URL+'/functions/v1/character-chat',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_ANON_KEY},body:JSON.stringify({action:'balance'})});const data=await res.json().catch(()=>({}));if(!res.ok||typeof data.credits!=='number')throw Error(data.error||'잔액을 불러오지 못했어요.');out.textContent=data.credits.toLocaleString();status.textContent='대화 1회당 현재 1크레딧이 사용돼요.'}catch(err){out.textContent='확인 실패';status.textContent=err.message||'크레딧 서버 연결을 확인해 주세요.'}}
+async function refreshCreditBalance(){const out=document.getElementById('credit-balance'),status=document.getElementById('credit-status');if(!currentUser||!supabaseClient){out.textContent='로그인 필요';status.textContent='로그인하면 기본 쿠키 잔액을 확인할 수 있어요.';return}out.textContent='확인 중…';status.textContent='서버에서 쿠키 잔액을 불러오는 중이에요.';try{const session=(await supabaseClient.auth.getSession()).data.session;if(!session?.access_token)throw Error('로그인 세션을 확인할 수 없어요.');const res=await fetch(SUPABASE_URL+'/functions/v1/character-chat',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SUPABASE_ANON_KEY},body:JSON.stringify({action:'balance'})});const data=await res.json().catch(()=>({}));if(!res.ok||typeof data.credits!=='number')throw Error(data.error||'잔액을 불러오지 못했어요.');out.textContent=data.credits.toLocaleString();status.textContent='대화 1회당 현재 1쿠키가 사용돼요.'}catch(err){out.textContent='확인 실패';status.textContent=err.message||'쿠키 서버 연결을 확인해 주세요.'}}
 function renderManagedCharacters(){const box=document.getElementById('manage-character-list');if(!box)return;const mine=custom.filter(c=>!String(c.id||'').startsWith('public-')||String(c.user_id||'')===String(currentUser?.id||''));box.innerHTML=mine.length?'<div class="cards">'+mine.map(c=>'<article class="card"><div class="portrait">'+(c.image?'<img class="character-card-image" src="'+esc(c.image)+'" alt="'+esc(c.name)+'">':'<span class="emoji">'+esc(c.emoji||'✦')+'</span>')+'<div class="manage-image-actions"><button type="button" class="manage-image-action" data-edit-character="'+esc(c.id)+'" aria-label="'+esc(c.name)+' 수정" title="수정"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg></button><button type="button" class="manage-image-action delete" data-delete-character="'+esc(c.id)+'" aria-label="'+esc(c.name)+' 삭제" title="삭제"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="m19 6-1 14H6L5 6"/><path d="M10 11v5M14 11v5"/></svg></button></div><button type="button" class="heart" data-like="'+esc(c.id)+'" aria-label="좋아요" aria-pressed="'+isCharacterLiked(c)+'">'+(isCharacterLiked(c)?'♥':'♡')+'</button><span class="like-count" aria-label="좋아요 수">'+getLikeCount(c)+'</span></div><div class="card-body"><div class="card-title"><h3>'+esc(c.name)+'</h3><span class="tag">'+esc(c.tag||'기타')+'</span></div><p>'+md(c.desc||c.description||c.personality||'설명이 없어요.')+'</p></div></article>').join('')+'</div>':'<div class="empty-state">아직 만든 캐릭터가 없어요.<br>새 캐릭터 버튼으로 만들어 보세요.</div>'}
 document.getElementById('manage-character-list').addEventListener('click',async e=>{const like=e.target.closest('[data-like]');if(like){const c=custom.find(x=>x.id===like.dataset.like);if(c)await toggleCharacterLike(c);return}const edit=e.target.closest('[data-edit-character]');if(edit){const c=custom.find(x=>x.id===edit.dataset.editCharacter);if(!c)return;editingCharacterId=c.id;populateCharacterCreator(c);setPage('character-create');return}const del=e.target.closest('[data-delete-character]');if(del){const c=custom.find(x=>x.id===del.dataset.deleteCharacter);if(!c||!confirm('「'+c.name+'」 캐릭터를 삭제할까요? 대화 기록은 별도로 남을 수 있어요.'))return;custom=custom.filter(x=>x.id!==c.id);save(K,custom);publicCharacters=publicCharacters.filter(x=>!(String(x.user_id||'')===String(c.user_id||currentUser?.id||'')&&String(x.character_id||x.id||'')===String(c.character_id||c.id)));save('cozy-chat-public-characters-cache-v1',publicCharacters);if(currentUser&&supabaseClient){try{const {error}=await supabaseClient.from('public_characters').delete().eq('user_id',currentUser.id).eq('character_id',c.character_id||c.id);if(error)throw error;await saveCharactersToCloud();await loadPublicCharacters()}catch(err){console.error('Character delete sync failed:',err);creatorMessage('이 브라우저에서는 삭제했지만 서버 목록 갱신에 실패했어요.','error')}}render();renderManagedCharacters()}});
 document.getElementById('manage-back').onclick=()=>setPage('profile');document.getElementById('settings-back').onclick=()=>setPage('profile');document.getElementById('profile-settings-open').onclick=()=>setPage('settings');document.getElementById('manage-create').onclick=()=>openCharacterCreator();
@@ -321,4 +362,596 @@ document.getElementById('persona-form').onsubmit=e=>{e.preventDefault();const id
 document.getElementById('persona-list').onclick=e=>{const choose=e.target.closest('[data-persona-select]'),edit=e.target.closest('[data-persona-edit]'),del=e.target.closest('[data-persona-delete]');if(choose){save('cozy-chat-selected-persona-v1',choose.dataset.personaSelect);renderPersonas();refreshChatPersonaSelect();return}if(edit){const p=savedPersonas.find(x=>x.id===edit.dataset.personaEdit);if(!p)return;document.getElementById('persona-edit-id').value=p.id;document.getElementById('persona-name').value=p.name;document.getElementById('persona-description').value=p.description;document.getElementById('persona-description-count').textContent=p.description.length.toLocaleString()+' / 500';document.getElementById('persona-save').textContent='수정 내용 저장';document.getElementById('persona-cancel').hidden=false;document.getElementById('persona-form').scrollIntoView({behavior:'smooth'});return}if(del){const p=savedPersonas.find(x=>x.id===del.dataset.personaDelete);if(!p||!confirm('「'+p.name+'」 페르소나를 삭제할까요?'))return;savedPersonas=savedPersonas.filter(x=>x.id!==p.id);save('cozy-chat-personas-v1',savedPersonas);if(read('cozy-chat-selected-persona-v1','')===p.id)save('cozy-chat-selected-persona-v1','');renderPersonas();refreshChatPersonaSelect()}};
 </script>
 
+<script id="cozy-v2">
+/* Cozy Chat v2: 이미지 저장소 · 스트리밍 · 대화방 기록 · 신고/차단 · 쿠키 충전 */
+(() => {
+  'use strict';
+  if (window.__cozyV2) return;
+  window.__cozyV2 = true;
+
+  const BUCKET = 'cozy-images';
+  const $ = id => document.getElementById(id);
+  const uid = () => (currentUser && currentUser.id) || '';
+  const newId = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2));
+
+  async function accessToken() {
+    if (!supabaseClient || !currentUser) return '';
+    const { data } = await supabaseClient.auth.getSession();
+    return data.session?.access_token || '';
+  }
+  async function callChatFunction(payload) {
+    const token = await accessToken();
+    if (!token) throw Error('로그인이 필요해요.');
+    return fetch(SUPABASE_URL + '/functions/v1/character-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, 'apikey': SUPABASE_ANON_KEY },
+      body: JSON.stringify(payload)
+    });
+  }
+
+  /* ================= 1) 이미지: Supabase Storage ================= */
+  const isDataImage = v => typeof v === 'string' && /^data:image\//.test(v);
+  async function uploadImage(dataUrl, folder) {
+    const blob = await (await fetch(dataUrl)).blob();
+    const ext = ((blob.type.split('/')[1] || 'jpg').replace('jpeg', 'jpg')).replace(/[^a-z0-9]/g, '') || 'jpg';
+    const path = uid() + '/' + folder + '/' + newId() + '.' + ext;
+    const { error } = await supabaseClient.storage.from(BUCKET).upload(path, blob, { contentType: blob.type || 'image/jpeg', cacheControl: '31536000', upsert: false });
+    if (error) throw error;
+    return supabaseClient.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+  }
+  async function toStoredImage(dataUrl, folder) {
+    if (!isDataImage(dataUrl) || !currentUser || !supabaseClient) return dataUrl;
+    try { return await uploadImage(dataUrl, folder) } catch (e) { console.warn('이미지 업로드 실패, 브라우저 사본을 사용해요:', e); return dataUrl }
+  }
+
+  const originalReadCreatorImage = window.readCreatorImage;
+  if (typeof originalReadCreatorImage === 'function') {
+    window.readCreatorImage = function (file, cb) {
+      return originalReadCreatorImage(file, async img => cb(await toStoredImage(img, 'characters')));
+    };
+  }
+  const originalResizeProfileImage = window.resizeProfileImage;
+  if (typeof originalResizeProfileImage === 'function') {
+    window.resizeProfileImage = async function (file) {
+      return toStoredImage(await originalResizeProfileImage(file), 'avatars');
+    };
+  }
+
+  async function replaceInlineImages(value, folder, counter) {
+    if (isDataImage(value)) {
+      const url = await toStoredImage(value, folder);
+      if (url !== value) counter.n++;
+      return url;
+    }
+    if (Array.isArray(value)) {
+      for (let i = 0; i < value.length; i++) value[i] = await replaceInlineImages(value[i], folder, counter);
+      return value;
+    }
+    if (value && typeof value === 'object') {
+      for (const k of Object.keys(value)) value[k] = await replaceInlineImages(value[k], folder, counter);
+      return value;
+    }
+    return value;
+  }
+  let migratingImages = false;
+  async function migrateInlineImages() {
+    if (migratingImages || !currentUser || !supabaseClient) return;
+    migratingImages = true;
+    try {
+      for (let i = 0; i < 60 && characterSyncInProgress; i++) await new Promise(r => setTimeout(r, 250));
+      const me = uid(), counter = { n: 0 };
+      for (const c of custom) {
+        if (c.user_id && String(c.user_id) !== me) continue;
+        const before = counter.n;
+        await replaceInlineImages(c, 'characters', counter);
+        if (counter.n > before && (c.visibility === 'public' || c.visibility === 'unlisted')) {
+          try { await syncPublicCharacter(c) } catch (e) { console.warn('공개 캐릭터 이미지 갱신 실패:', e) }
+        }
+      }
+      if (counter.n) {
+        save(K, custom);
+        await saveCharactersToCloud();
+        render();
+        if (typeof renderManagedCharacters === 'function') renderManagedCharacters();
+      }
+      if (isDataImage(currentAvatarData)) {
+        const url = await toStoredImage(currentAvatarData, 'avatars');
+        if (url !== currentAvatarData) {
+          currentAvatarData = url;
+          await supabaseClient.from('user_profiles').update({ avatar_data: url, updated_at: new Date().toISOString() }).eq('user_id', me);
+        }
+      }
+    } catch (e) {
+      console.error('이미지 이전 실패:', e);
+    } finally {
+      migratingImages = false;
+    }
+  }
+
+  /* ================= 2) 대화방 단위 기록 (conversations) ================= */
+  const lastTime = msgs => (msgs || []).reduce((n, m) => Math.max(n, Number(m?.time) || 0), 0);
+  const conversationRow = (key, msgs) => ({ user_id: uid(), character_key: String(key).slice(0, 300), messages: msgs, updated_at: new Date().toISOString() });
+
+  window.saveHistoryToCloud = async function (key) {
+    if (!supabaseClient || !currentUser) return;
+    const hist = getHistory();
+    const keys = key ? [String(key)] : active ? [String(active.id)] : Object.keys(hist);
+    const rows = keys.filter(k => Array.isArray(hist[k]) && hist[k].length).map(k => conversationRow(k, hist[k]));
+    if (!rows.length) return;
+    const { error } = await supabaseClient.from('conversations').upsert(rows, { onConflict: 'user_id,character_key' });
+    if (error) console.error('대화 기록 저장 실패:', error);
+  };
+
+  window.syncHistoryWithCloud = async function (user) {
+    if (!supabaseClient || !user || historySyncInProgress) return;
+    historySyncInProgress = true;
+    try {
+      const local = getHistory();
+      const { data, error } = await supabaseClient.from('conversations').select('character_key,messages').eq('user_id', user.id);
+      if (error) throw error;
+      const merged = { ...local }, cloudTimes = {};
+      for (const row of data || []) {
+        const msgs = Array.isArray(row.messages) ? row.messages : [];
+        cloudTimes[row.character_key] = lastTime(msgs);
+        if (!merged[row.character_key]?.length || lastTime(msgs) > lastTime(merged[row.character_key])) merged[row.character_key] = msgs;
+      }
+      save(H, merged);
+      const upload = Object.keys(merged).filter(k => Array.isArray(merged[k]) && merged[k].length && !(k in cloudTimes && cloudTimes[k] >= lastTime(merged[k])));
+      for (let i = 0; i < upload.length; i += 20) {
+        const rows = upload.slice(i, i + 20).map(k => conversationRow(k, merged[k]));
+        const { error: saveError } = await supabaseClient.from('conversations').upsert(rows, { onConflict: 'user_id,character_key' });
+        if (saveError) throw saveError;
+      }
+      renderHistory();
+      renderDrawerChats();
+      if (active && $('chat-modal')?.classList.contains('show')) openChat(active.id);
+    } catch (err) {
+      console.error('대화 기록 동기화 실패:', err);
+      const note = $('profile-sync-note');
+      if (note) note.textContent = '대화 기록 동기화에 실패했어요. 잠시 후 다시 시도해 주세요.';
+    } finally {
+      historySyncInProgress = false;
+    }
+  };
+
+  /* ================= 3) 스트리밍 대화 ================= */
+  async function* readSSE(response) {
+    const reader = response.body.getReader(), decoder = new TextDecoder();
+    let buf = '';
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      let i;
+      while ((i = buf.indexOf('\n\n')) >= 0) {
+        const block = buf.slice(0, i);
+        buf = buf.slice(i + 2);
+        const line = block.split('\n').find(l => l.startsWith('data:'));
+        if (line) { try { yield JSON.parse(line.slice(5).trim()) } catch {} }
+      }
+    }
+  }
+
+  function selectedPersona() {
+    return (read('cozy-chat-personas-v1', []).find(p => p.id === read('cozy-chat-selected-persona-v1', '')) || {}).description || '';
+  }
+  function personaName() {
+    const profile = read('cozy-chat-profile-v1', {});
+    return profile.name || profile.username || currentUser?.user_metadata?.username || currentUser?.email?.split('@')[0] || '사용자';
+  }
+
+  $('chat-form').onsubmit = async e => {
+    e.preventDefault();
+    const input = $('chat-input'), text = input.value.trim();
+    if (!text || !active) return;
+    const chatCharacter = active, key = String(chatCharacter.id);
+    window.actionMode = false;
+    $('chat-action-toggle').setAttribute('aria-pressed', 'false');
+    input.placeholder = '메시지를 입력하세요…';
+    const roomSettings = getChatRoomSettings(),
+      model = $('chat-model-select')?.value || 'auto',
+      hist = read(H, {}),
+      msgs = hist[key] || [{ role: 'ai', text: chatCharacter.prologue || chatCharacter.greeting || '안녕! 만나서 반가워.', time: Date.now() - 1 }];
+    msgs.push({ role: 'user', text, time: Date.now() });
+    hist[key] = msgs.slice(-80);
+    save(H, hist);
+    input.value = '';
+    renderChatMessages(hist[key]);
+    const submit = document.querySelector('#chat-form button[type=submit]');
+    submit.disabled = true;
+    submit.textContent = '…';
+
+    const persist = async aiText => {
+      const h = read(H, {}), list = h[key] || msgs;
+      list.push({ role: 'ai', text: aiText, time: Date.now() });
+      h[key] = list.slice(-80);
+      save(H, h);
+      if (active && String(active.id) === key) renderChatMessages(h[key]);
+      await window.saveHistoryToCloud(key);
+      renderDrawerChats();
+      if ($('conversations-page').classList.contains('active')) renderHistory();
+    };
+    const showError = message => {
+      if (active && String(active.id) === key) renderChatMessages([...(read(H, {})[key] || msgs), { role: 'ai', text: '[AI 연결 안내] ' + message, time: Date.now(), system: true }]);
+    };
+
+    try {
+      if (!currentUser || !supabaseClient) throw Error('실제 AI 대화와 쿠키 사용을 위해 로그인이 필요해요.');
+      const response = await callChatFunction({
+        stream: true,
+        conversationKey: key,
+        character: {
+          id: chatCharacter.id, name: chatCharacter.name,
+          description: chatCharacter.description || chatCharacter.desc, detail: chatCharacter.detail || '',
+          prompt: chatCharacter.prompt || chatCharacter.personality, template: chatCharacter.template || '1:1',
+          prologue: chatCharacter.prologue, startSituation: chatCharacter.selectedStart?.situation || '',
+          selectedStart: chatCharacter.selectedStart || null, startSettings: chatCharacter.startSettings,
+          assets: chatCharacter.assets, keywordBook: chatCharacter.keywordBook
+        },
+        userPersona: selectedPersona(),
+        userPersonaName: personaName(),
+        messages: msgs.slice(-40),
+        userNote: roomSettings.userNote,
+        chatSettings: { outputTokens: roomSettings.outputTokens, outputMultipliers: roomSettings.outputMultipliers },
+        model: model === 'auto' ? (chatCharacter.recommendedModel || 'auto') : model
+      });
+      const type = response.headers.get('content-type') || '';
+      if (!type.includes('text/event-stream')) {
+        const data = await response.json().catch(() => ({}));
+        if (typeof data.credits === 'number') updateCookieUI(data.credits);
+        if (!response.ok || !data.reply) throw Error(data.error || 'AI 서버를 사용할 수 없어요.');
+        await persist(String(data.reply));
+        return;
+      }
+
+      // 화면에 빈 말풍선을 만들고 글자가 오는 대로 채운다
+      renderChatMessages([...hist[key], { role: 'ai', text: '' }]);
+      const bubbles = document.querySelectorAll('#chat-log .bubble.ai');
+      const bubble = bubbles[bubbles.length - 1];
+      bubble?.classList.add('streaming');
+      let answer = '', pending = false, finished = false, failure = '';
+      const paint = () => {
+        pending = false;
+        if (!bubble || !bubble.isConnected) return;
+        const log = $('chat-log'), nearBottom = log.scrollHeight - log.scrollTop - log.clientHeight < 80;
+        bubble.innerHTML = md(answer, chatCharacter.assets || []);
+        if (nearBottom) log.scrollTop = log.scrollHeight;
+      };
+      for await (const evt of readSSE(response)) {
+        if (evt.type === 'delta') {
+          answer += evt.text || '';
+          if (!pending) { pending = true; requestAnimationFrame(paint) }
+        } else if (evt.type === 'done') {
+          finished = true;
+          if (typeof evt.credits === 'number') updateCookieUI(evt.credits);
+        } else if (evt.type === 'error') {
+          failure = evt.error || 'AI 응답을 받지 못했어요.';
+        }
+      }
+      if (failure && !answer.trim()) throw Error(failure);
+      if (!answer.trim()) throw Error('AI 응답이 비어 있어요. 다시 시도해 주세요.');
+      if (!finished) answer += '\n\n*(연결이 끊겨 답변이 중간에 멈췄어요.)*';
+      await persist(answer);
+    } catch (err) {
+      showError(err.message || 'AI 서버 연결에 실패했어요.');
+    } finally {
+      submit.disabled = false;
+      submit.textContent = '➤';
+    }
+  };
+
+  /* ================= 4) 쿠키 · 충전 탭 ================= */
+  let dailyClaimed = null;
+  function updateCookieUI(n) {
+    const text = typeof n === 'number' ? n.toLocaleString() : n;
+    ['credit-balance', 'cookie-balance', 'header-cookie-balance', 'cookie-page-balance'].forEach(id => { const el = $(id); if (el) el.textContent = text });
+  }
+  window.updateCookieUI = updateCookieUI;
+
+  function renderDailyButton() {
+    const btn = $('daily-claim'), status = $('daily-status');
+    if (!btn) return;
+    if (!currentUser) {
+      btn.disabled = false; btn.textContent = '로그인';
+      status.textContent = '로그인하면 매일 쿠키 20개를 받을 수 있어요.';
+      return;
+    }
+    btn.disabled = dailyClaimed === true;
+    btn.textContent = dailyClaimed ? '받음' : '받기';
+    status.textContent = dailyClaimed ? '오늘 출석 보상을 받았어요. 내일 또 만나요!' : '매일 한 번 쿠키 20개를 받을 수 있어요. (한국 시간 자정에 초기화)';
+  }
+
+  window.refreshCreditBalance = async function () {
+    const status = $('credit-status');
+    if (!currentUser || !supabaseClient) {
+      updateCookieUI('로그인 필요');
+      if (status) status.textContent = '로그인하면 쿠키 잔액을 확인할 수 있어요.';
+      dailyClaimed = null; renderDailyButton();
+      return;
+    }
+    if (status) status.textContent = '쿠키 잔액을 불러오는 중이에요.';
+    try {
+      const res = await callChatFunction({ action: 'balance' });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || typeof data.credits !== 'number') throw Error(data.error || '잔액을 불러오지 못했어요.');
+      updateCookieUI(data.credits);
+      dailyClaimed = !!data.dailyClaimed;
+      renderDailyButton();
+      if (status) status.textContent = '대화 1번에 쿠키 1개가 사용돼요. (출력 배율에 따라 최대 5개)';
+    } catch (err) {
+      updateCookieUI('확인 실패');
+      if (status) status.textContent = err.message || '쿠키 서버 연결을 확인해 주세요.';
+    }
+  };
+
+  const modelLabel = m => ({ groq: 'Groq', gemini: 'Gemini', 'openai-compatible': 'OpenAI' })[m] || m || '';
+  function historyLabel(t) {
+    if (t.kind === 'usage') return '대화' + (t.model ? ' · ' + modelLabel(t.model) : '');
+    if (t.kind === 'refund') return '돌려받음 (응답 실패)';
+    if (t.kind === 'grant' && t.model === 'daily') return '출석 보상';
+    return '지급';
+  }
+  async function renderCookieHistory() {
+    const box = $('cookie-history');
+    if (!box) return;
+    if (!currentUser || !supabaseClient) { box.innerHTML = '<div class="empty-state">로그인하면 쿠키 내역을 볼 수 있어요.</div>'; return }
+    box.innerHTML = '<div class="empty-state">내역을 불러오는 중…</div>';
+    const { data, error } = await supabaseClient.from('credit_transactions').select('delta,balance_after,kind,model,created_at').eq('user_id', uid()).order('created_at', { ascending: false }).limit(30);
+    if (error) { box.innerHTML = '<div class="empty-state">내역을 불러오지 못했어요.</div>'; return }
+    box.innerHTML = (data || []).length ? data.map(t => '<div class="cookie-history-item"><div><strong>' + esc(historyLabel(t)) + '</strong><small>' + esc(new Date(t.created_at).toLocaleString('ko-KR')) + '</small></div><div class="cookie-history-amount ' + (t.delta > 0 ? 'plus' : 'minus') + '">' + (t.delta > 0 ? '+' : '') + t.delta + '<small>잔액 ' + Number(t.balance_after).toLocaleString() + '</small></div></div>').join('') : '<div class="empty-state">아직 쿠키 내역이 없어요.</div>';
+  }
+  function renderCookiePage() {
+    $('cookie-login-hint').hidden = !!currentUser;
+    renderDailyButton();
+    refreshCreditBalance();
+    renderCookieHistory();
+  }
+
+  $('daily-claim')?.addEventListener('click', async () => {
+    if (!currentUser) { openAuth(); return }
+    const btn = $('daily-claim');
+    btn.disabled = true; btn.textContent = '…';
+    try {
+      const res = await callChatFunction({ action: 'claim_daily' });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw Error(data.error || '출석 보상을 받지 못했어요.');
+      updateCookieUI(data.credits);
+      dailyClaimed = true;
+      renderDailyButton();
+      $('daily-status').textContent = data.claimed ? '쿠키 ' + data.amount + '개를 받았어요! 내일 또 만나요.' : '오늘은 이미 출석 보상을 받았어요.';
+      renderCookieHistory();
+    } catch (err) {
+      $('daily-status').textContent = err.message;
+      btn.disabled = false; btn.textContent = '받기';
+    }
+  });
+  document.querySelectorAll('[data-cookie-package]').forEach(b => b.addEventListener('click', () => alert('결제 기능은 준비 중이에요. 그동안 출석 보상으로 쿠키를 모아 보세요!')));
+  $('cookie-login-button')?.addEventListener('click', () => openAuth());
+  $('cookie-charge').onclick = () => setPage('cookies');
+  $('header-cookies')?.addEventListener('click', () => setPage('cookies'));
+  $('credit-panel-charge')?.addEventListener('click', () => setPage('cookies'));
+
+  /* ================= 5) 신고 · 차단 · 글 삭제 ================= */
+  let blockedIds = new Set();
+  async function loadBlocks() {
+    blockedIds = new Set();
+    if (!currentUser || !supabaseClient) return;
+    const { data, error } = await supabaseClient.from('user_blocks').select('blocked_id').eq('blocker_id', uid());
+    if (!error) blockedIds = new Set((data || []).map(r => String(r.blocked_id)));
+  }
+  const isBlocked = userId => !!userId && blockedIds.has(String(userId));
+
+  const originalAll = window.all;
+  window.all = function () {
+    const list = originalAll();
+    return blockedIds.size ? list.filter(c => !isBlocked(c.user_id) || String(c.user_id) === uid()) : list;
+  };
+
+  async function blockUser(userId, name) {
+    if (!currentUser) { openAuth(); return false }
+    if (!userId || String(userId) === uid()) return false;
+    if (!confirm('「' + (name || '이 사용자') + '」님을 차단할까요?\n이 사용자의 캐릭터와 게시물이 더 이상 보이지 않아요. 설정에서 언제든 해제할 수 있어요.')) return false;
+    const { error } = await supabaseClient.from('user_blocks').insert({ blocker_id: uid(), blocked_id: userId });
+    if (error && error.code !== '23505') { alert('차단하지 못했어요: ' + error.message); return false }
+    blockedIds.add(String(userId));
+    render();
+    renderPosts();
+    return true;
+  }
+  async function unblockUser(userId) {
+    const { error } = await supabaseClient.from('user_blocks').delete().eq('blocker_id', uid()).eq('blocked_id', userId);
+    if (error) { alert('차단을 해제하지 못했어요: ' + error.message); return }
+    blockedIds.delete(String(userId));
+    render();
+    renderBlockedList();
+  }
+
+  // 신고 창
+  let reportTarget = null;
+  function openReport(target) {
+    if (!currentUser) { openAuth(); return }
+    if (!target.ownerId || String(target.ownerId) === uid()) return;
+    reportTarget = target;
+    $('report-target-label').textContent = target.label;
+    $('report-form').reset();
+    $('report-message').className = 'auth-message';
+    $('report-submit').disabled = false;
+    show('report-modal');
+  }
+  $('report-modal')?.addEventListener('click', e => { if (e.target.id === 'report-modal' || e.target.closest('[data-close="report-modal"]')) hide('report-modal') });
+  $('report-form')?.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!reportTarget) return;
+    const msg = $('report-message'), reason = document.querySelector('[name=report-reason]:checked')?.value;
+    if (!reason) { msg.textContent = '신고 사유를 골라 주세요.'; msg.className = 'auth-message show error'; return }
+    const detail = $('report-detail').value.trim();
+    $('report-submit').disabled = true;
+    const { error } = await supabaseClient.from('reports').insert({
+      reporter_id: uid(), target_type: reportTarget.type, target_owner_id: reportTarget.ownerId,
+      target_id: String(reportTarget.id), reason: (reason + (detail ? ' — ' + detail : '')).slice(0, 500)
+    });
+    if (error && error.code !== '23505') { msg.textContent = '신고하지 못했어요: ' + error.message; msg.className = 'auth-message show error'; $('report-submit').disabled = false; return }
+    msg.textContent = error ? '이미 신고한 대상이에요. 검토 후 조치할게요.' : '신고가 접수됐어요. 검토 후 조치할게요.';
+    msg.className = 'auth-message show success';
+    setTimeout(() => hide('report-modal'), 1400);
+  });
+
+  // 커뮤니티: 내 글 삭제 · 신고 · 차단
+  window.renderPosts = async function () {
+    const box = $('post-list');
+    if (supabaseClient && !postsLoading) {
+      postsLoading = true;
+      try {
+        const { data, error } = await supabaseClient.from('community_posts').select('id,content,created_at,user_id,author_name').order('created_at', { ascending: false }).limit(100);
+        if (error) throw error;
+        posts = (data || []).map(p => ({ id: p.id, text: p.content, date: new Date(p.created_at).toLocaleString('ko-KR'), author: p.author_name || '사용자', user_id: p.user_id }));
+        cloudPostsLoaded = true;
+      } catch (err) {
+        box.innerHTML = '<div class="empty-state">게시물을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</div>';
+        console.error('Posts load:', err);
+        return;
+      } finally {
+        postsLoading = false;
+      }
+    }
+    const visible = posts.filter(p => !isBlocked(p.user_id));
+    box.innerHTML = visible.length ? visible.map(p => {
+      const own = currentUser && String(p.user_id) === uid();
+      const actions = own
+        ? '<button type="button" class="post-action" data-post-delete="' + esc(p.id) + '">삭제</button>'
+        : (p.user_id ? '<button type="button" class="post-action" data-post-report="' + esc(p.id) + '">신고</button><button type="button" class="post-action" data-post-block="' + esc(p.id) + '">차단</button>' : '');
+      return '<article class="post-item"><div class="post-item-head"><strong><button type="button" class="text-button" data-public-user="' + esc(p.user_id || '') + '">' + esc(p.author || '사용자') + '</button></strong><span class="post-actions">' + actions + '</span></div><p>' + esc(p.text) + '</p><small>' + esc(p.date) + '</small></article>';
+    }).join('') : '<div class="empty-state">아직 게시물이 없어요.<br>로그인하고 첫 이야기를 공유해 보세요.</div>';
+  };
+  $('post-list').addEventListener('click', async e => {
+    const del = e.target.closest('[data-post-delete]'), rep = e.target.closest('[data-post-report]'), blk = e.target.closest('[data-post-block]');
+    if (!del && !rep && !blk) return;
+    e.stopPropagation();
+    const id = (del || rep || blk).dataset.postDelete || (del || rep || blk).dataset.postReport || (del || rep || blk).dataset.postBlock;
+    const p = posts.find(x => String(x.id) === String(id));
+    if (!p) return;
+    if (del) {
+      if (!confirm('이 게시물을 삭제할까요? 삭제하면 되돌릴 수 없어요.')) return;
+      const { error } = await supabaseClient.from('community_posts').delete().eq('id', p.id).eq('user_id', uid());
+      if (error) { alert('삭제하지 못했어요: ' + error.message); return }
+      posts = posts.filter(x => x.id !== p.id);
+      renderPosts();
+    } else if (rep) {
+      openReport({ type: 'post', ownerId: p.user_id, id: p.id, label: '「' + p.author + '」님의 게시물: ' + String(p.text).slice(0, 60) });
+    } else {
+      await blockUser(p.user_id, p.author);
+    }
+  }, true);
+
+  // 캐릭터 상세: 신고 · 차단
+  const detailLikeRow = $('character-detail-like')?.parentElement;
+  if (detailLikeRow && !$('character-detail-moderation')) {
+    const span = document.createElement('span');
+    span.id = 'character-detail-moderation';
+    span.className = 'detail-moderation';
+    span.hidden = true;
+    span.innerHTML = '<button type="button" class="btn btn-plain btn-small" id="character-detail-report">신고</button><button type="button" class="btn btn-plain btn-small" id="character-detail-block">차단</button>';
+    detailLikeRow.appendChild(span);
+  }
+  function updateDetailModeration() {
+    const c = detailCharacter, box = $('character-detail-moderation');
+    if (!box) return;
+    box.hidden = !(c && c.user_id && c.character_id && String(c.user_id) !== uid());
+  }
+  const originalOpenDetail = window.openCharacterDetail;
+  window.openCharacterDetail = function (id) {
+    const r = originalOpenDetail(id);
+    updateDetailModeration();
+    return r;
+  };
+  $('character-detail-report')?.addEventListener('click', () => {
+    const c = detailCharacter;
+    if (c) openReport({ type: 'character', ownerId: c.user_id, id: c.character_id, label: '캐릭터 「' + (c.name || '이름 없음') + '」' });
+  });
+  $('character-detail-block')?.addEventListener('click', async () => {
+    const c = detailCharacter;
+    if (c && await blockUser(c.user_id, c.name ? '「' + c.name + '」 제작자' : '')) setPage('home');
+  });
+
+  // 공개 프로필: 차단 버튼
+  const followBtn = $('public-profile-follow');
+  if (followBtn && !$('public-profile-block')) {
+    const b = document.createElement('button');
+    b.className = 'btn btn-plain';
+    b.id = 'public-profile-block';
+    b.hidden = true;
+    b.textContent = '차단';
+    followBtn.after(b);
+    b.addEventListener('click', async () => {
+      const target = publicProfileUserId;
+      if (!target) return;
+      if (isBlocked(target)) { await unblockUser(target); b.textContent = '차단'; return }
+      if (await blockUser(target, $('public-profile-name')?.textContent)) b.textContent = '차단 해제';
+    });
+  }
+  const originalRenderPublicProfile = window.renderPublicProfile;
+  window.renderPublicProfile = async function (...args) {
+    const r = await originalRenderPublicProfile(...args);
+    const b = $('public-profile-block'), target = publicProfileUserId || uid();
+    if (b) {
+      b.hidden = !currentUser || !target || String(target) === uid();
+      b.textContent = isBlocked(target) ? '차단 해제' : '차단';
+    }
+    return r;
+  };
+
+  // 설정: 차단한 사용자 목록
+  async function renderBlockedList() {
+    const box = $('blocked-list');
+    if (!box) return;
+    if (!currentUser) { box.innerHTML = '<p class="note">로그인하면 차단 목록을 관리할 수 있어요.</p>'; return }
+    const ids = [...blockedIds];
+    if (!ids.length) { box.innerHTML = '<p class="note">차단한 사용자가 없어요.</p>'; return }
+    const { data } = await supabaseClient.from('user_profiles').select('user_id,display_name').in('user_id', ids);
+    const names = Object.fromEntries((data || []).map(r => [String(r.user_id), r.display_name]));
+    box.innerHTML = ids.map(id => '<div class="blocked-item"><span>' + esc(names[id] || '이름 없는 사용자') + '</span><button type="button" class="btn btn-plain btn-small" data-unblock="' + esc(id) + '">차단 해제</button></div>').join('');
+  }
+  $('blocked-list')?.addEventListener('click', e => {
+    const b = e.target.closest('[data-unblock]');
+    if (b) unblockUser(b.dataset.unblock);
+  });
+
+  /* ================= 페이지 이동 · 로그인 상태 ================= */
+  const originalSetPage = window.setPage;
+  window.setPage = function (page) {
+    originalSetPage(page);
+    if (page === 'cookies') {
+      document.querySelectorAll('.app-page').forEach(x => x.classList.remove('active'));
+      $('cookie-page').classList.add('active');
+      renderCookiePage();
+    }
+    if (page === 'settings') renderBlockedList();
+  };
+
+  async function onAuthChanged(user) {
+    const pill = $('header-cookies');
+    if (pill) pill.hidden = !user;
+    if (!user) {
+      blockedIds = new Set();
+      dailyClaimed = null;
+      renderDailyButton();
+      return;
+    }
+    await loadBlocks();
+    render();
+    if ($('posts-page')?.classList.contains('active')) renderPosts();
+    refreshCreditBalance();
+    setTimeout(migrateInlineImages, 3000);
+  }
+  let lastAuthUser = null;
+  if (supabaseClient) {
+    supabaseClient.auth.onAuthStateChange((_event, session) => {
+      const id = session?.user?.id || null;
+      if (id === lastAuthUser) return;
+      lastAuthUser = id;
+      setTimeout(() => onAuthChanged(session?.user || null), 50);
+    });
+  }
+})();
+</script>
 </body></html>

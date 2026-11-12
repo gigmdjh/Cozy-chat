@@ -20,7 +20,21 @@ All schema lives in `supabase/migrations/` and matches the remote project's migr
 
 Like counts are served from the `character_like_counts` table, kept up to date by a trigger on `character_likes`. Who liked what is private: signed-in users can only read their own likes.
 
-## Credits
+## Request options
+
+- `stream: true` returns Server-Sent Events: `{type:"delta",text}` chunks, then `{type:"done",credits}` or `{type:"error",error}`. Without it the function returns `{reply, credits}` as before.
+- `conversationKey` (the character id) loads that room's long-term memory from `conversations.memory`. After a reply, once 12+ messages have scrolled out of the 40-message window, they are summarized into `memory` in the background.
+- `action: "balance"` returns `{credits, dailyClaimed}`; `action: "claim_daily"` grants the daily 20-cookie reward once per KST day.
+
+## Moderation
+
+Reports go to `public.reports`. Three distinct reporters automatically set `hidden = true` on a post or public character; review and un-hide from the Table Editor. Users can block others (`user_blocks`); blocked users' posts and characters are filtered client-side.
+
+## Images
+
+Character, asset, and profile images upload to the public `cozy-images` Storage bucket under `<user_id>/...`. Older base64 images are moved there automatically the next time their owner signs in.
+
+## Credits (shown to users as 쿠키)
 
 The database migrations `character_chat_credits`, `credit_balance_rpc`, and `public_character_catalog` were applied to the connected Supabase project. Public character records are stored separately so private characters are not exposed by the catalog. A user receives 100 initial credits when their balance is first created. A successful AI response costs 1–5 credits, rounded up from the output multiplier the user picks for that model (`chatSettings.outputMultipliers`). Failed provider calls attempt to refund that credit.
 
