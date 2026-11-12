@@ -270,6 +270,54 @@ input[type=file]::file-selector-button:hover{background:rgba(127,127,160,.08)}
 .chat-toast{position:absolute;left:50%;bottom:18px;transform:translate(-50%,10px);background:rgba(40,42,55,.92);color:#fff;font-size:13px;padding:8px 14px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:5}
 .chat-toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:760px){.chat-cost-chip{padding:6px 9px;font-size:11px}.msg-actions.ai{padding-left:36px}}
+/* ---- v7 ---- */
+.chat-settings-back{border:0;background:transparent;font-size:26px;line-height:1;color:var(--text);padding:0 8px 0 0;cursor:pointer}
+.chat-settings-back[hidden]{display:none}
+.chat-settings-header{display:flex;align-items:center}
+.chat-settings-header strong{flex:1}
+.chat-settings-panel .chat-settings-nav{display:flex!important;flex-direction:column;gap:0;padding:6px 10px!important;border-bottom:0!important;grid-template-columns:none!important}
+.chat-settings-panel .chat-settings-nav button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:13px 8px!important;border:0!important;border-bottom:1px solid var(--line)!important;border-radius:0!important;background:transparent!important;color:var(--text)!important;font:inherit;cursor:pointer;box-shadow:none!important}
+.chat-settings-panel .chat-settings-nav button:last-child{border-bottom:0!important}
+.chat-settings-panel .chat-settings-nav button:hover{background:rgba(127,127,160,.06)!important}
+.settings-item-icon{width:36px;height:36px;flex:0 0 36px;border-radius:11px;background:var(--soft,#f1f3fa);display:grid;place-items:center;font-size:17px}
+.settings-item-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.settings-item-text strong{font-size:14px}
+.settings-item-text small{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:400}
+.settings-item-arrow{color:#a7abb9;font-size:20px}
+.chat-settings-panel:not(.detail) .chat-settings-body{display:none}
+.chat-settings-panel.detail .chat-settings-nav{display:none!important}
+.chat-message-row.editable .bubble{cursor:pointer}
+.chat-message-row.selected .bubble{box-shadow:0 0 0 2px #b8c3ea}
+.msg-tools{display:flex;gap:6px;margin-top:-6px}
+.msg-tools.ai{padding-left:42px}
+.msg-tools.user{justify-content:flex-end;padding-right:38px}
+.msg-tools button{border:1px solid var(--line);background:var(--surface,#fff);color:var(--text);border-radius:999px;padding:5px 12px;font:inherit;font-size:12px;cursor:pointer}
+.msg-tools button[data-tool=delete]{color:#b5476f}
+.chat-message-row.editing .bubble{width:min(84%,820px);max-width:none;cursor:default}
+.msg-edit textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;font-size:14px;line-height:1.6;resize:none;background:var(--bg);color:var(--text);outline:0}
+.msg-edit textarea:focus{border-color:#9ca9d2}
+.msg-edit-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:8px}
+.msg-edit-actions button{border:1px solid var(--line);background:var(--surface,#fff);color:var(--text);border-radius:9px;padding:6px 14px;font:inherit;font-size:13px;cursor:pointer}
+.msg-edit-actions button.primary{background:var(--gradient);border-color:transparent;font-weight:700;color:#303544}
+.detail-chat-extra{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}
+.chat-settings-panel.detail .chat-settings-view>h3{display:none}
+.detail-chat-extra[hidden]{display:none}
+.detail-chat-extra small{font-size:12px;color:var(--muted)}
+.post-body{font-size:14px;line-height:1.7;margin:10px 0 8px;overflow-wrap:anywhere}
+.post-body>*:first-child{margin-top:0}
+.post-body>*:last-child{margin-bottom:0}
+.post-body p{white-space:normal;margin:0 0 8px}
+.post-body ul,.post-body ol{padding-left:20px;margin:4px 0 8px}
+.post-body blockquote{margin:6px 0;padding:4px 12px;border-left:3px solid #cdd6f3;color:var(--muted)}
+.post-body code{background:rgba(127,127,160,.12);border-radius:5px;padding:1px 5px;font-size:12.5px}
+.post-body pre{background:rgba(127,127,160,.1);border-radius:10px;padding:10px;overflow:auto}
+.post-body img{max-width:100%;border-radius:10px}
+.post-body h1,.post-body h2,.post-body h3{font-size:16px;margin:8px 0 6px}
+.post-preview{min-height:96px;border:1px dashed var(--line);border-radius:12px;padding:12px;font-size:14px;line-height:1.7}
+.post-preview[hidden]{display:none}
+.post-preview-empty{color:var(--muted)}
+.post-preview-toggle{border:1px solid var(--line);background:var(--surface,#fff);color:var(--text);border-radius:9px;padding:6px 11px;font:inherit;font-size:12px;cursor:pointer;margin-left:auto}
+.post-preview-toggle+.post-count{margin-left:0}
 </style>
 </head>
 <body>
@@ -542,7 +590,7 @@ if(supabaseClient){supabaseClient.auth.getSession().then(({data})=>updateAuthUI(
 loadPublicCharacters();
 
 
-function renderProfileCategories(category){const box=document.getElementById('profile-category-content');if(!box)return;document.querySelectorAll('[data-profile-tab]').forEach(b=>b.classList.toggle('active',b.dataset.profileTab===category));if(category==='posts'){const mine=posts.filter(p=>currentUser&&p.user_id===currentUser.id);box.innerHTML=mine.length?mine.map(p=>'<article class="profile-content-item"><strong>게시물</strong><p>'+esc(p.text)+'</p></article>').join(''):'<div class="empty-state">아직 작성한 게시물이 없어요.</div>';return}const chars=all().filter(c=>c.custom&&(!currentUser||!c.user_id||c.user_id===currentUser.id));box.innerHTML=chars.length?chars.map(c=>'<article class="profile-content-item"><strong>'+esc(c.emoji||'✦')+' '+esc(c.name)+'</strong><p>'+esc(c.desc||c.personality||'내가 만든 캐릭터')+'</p></article>').join(''):'<div class="empty-state">아직 만든 캐릭터가 없어요.</div>'}
+function renderProfileCategories(category){const box=document.getElementById('profile-category-content');if(!box)return;document.querySelectorAll('[data-profile-tab]').forEach(b=>b.classList.toggle('active',b.dataset.profileTab===category));if(category==='posts'){const mine=posts.filter(p=>currentUser&&p.user_id===currentUser.id);box.innerHTML=mine.length?mine.map(p=>'<article class="profile-content-item"><strong>게시물</strong><div class="post-body">'+md(p.text)+'</div></article>').join(''):'<div class="empty-state">아직 작성한 게시물이 없어요.</div>';return}const chars=all().filter(c=>c.custom&&(!currentUser||!c.user_id||c.user_id===currentUser.id));box.innerHTML=chars.length?chars.map(c=>'<article class="profile-content-item"><strong>'+esc(c.emoji||'✦')+' '+esc(c.name)+'</strong><p>'+esc(c.desc||c.personality||'내가 만든 캐릭터')+'</p></article>').join(''):'<div class="empty-state">아직 만든 캐릭터가 없어요.</div>'}
 let publicProfileUserId=null;
 async function renderPublicProfile(category='characters'){
  const box=document.getElementById('public-profile-content');
@@ -572,7 +620,7 @@ async function renderPublicProfile(category='characters'){
  if(category==='posts'){
   let mine=posts.filter(p=>p.user_id===targetId);
   if(supabaseClient&&targetId){try{const {data,error}=await supabaseClient.from('community_posts').select('id,content,created_at,user_id,author_name').eq('user_id',targetId).order('created_at',{ascending:false}).limit(100);if(error)throw error;mine=(data||[]).map(p=>({id:p.id,text:p.content,date:new Date(p.created_at).toLocaleString('ko-KR'),author:p.author_name||name,user_id:p.user_id}))}catch(err){console.error('Public profile posts:',err)}}
-  box.innerHTML=(isOwn?'<button type="button" class="btn btn-primary public-create-post" data-public-create-post>＋ 게시물 작성하기</button>':'')+(mine.length?mine.map(p=>'<article class="profile-content-item"><strong>게시물</strong><p>'+esc(p.text)+'</p><small>'+esc(p.date||'')+'</small></article>').join(''):'<div class="empty-state">공개된 게시물이 없어요.</div>');return;
+  box.innerHTML=(isOwn?'<button type="button" class="btn btn-primary public-create-post" data-public-create-post>＋ 게시물 작성하기</button>':'')+(mine.length?mine.map(p=>'<article class="profile-content-item"><strong>게시물</strong><div class="post-body">'+md(p.text)+'</div><small>'+esc(p.date||'')+'</small></article>').join(''):'<div class="empty-state">공개된 게시물이 없어요.</div>');return;
  }
  let chars=[];
  if(supabaseClient&&targetId){try{if(isOwn){const {data,error}=await supabaseClient.from('user_characters').select('characters').eq('user_id',targetId).maybeSingle();if(error)throw error;chars=Array.isArray(data?.characters)?data.characters:[]}else{const {data,error}=await supabaseClient.from('public_characters').select('character_id,user_id,character_data,visibility').eq('user_id',targetId).eq('visibility','public').limit(100);if(error)throw error;chars=(data||[]).map(r=>({...r.character_data,id:r.character_id,user_id:r.user_id,visibility:r.visibility}))}}catch(err){console.error('Public profile characters:',err)}}
@@ -613,7 +661,7 @@ function renderHistory(){const box=document.getElementById('history-list'),hist=
 function renderDrawerChats(){const box=document.getElementById('drawer-chats'),hist=getHistory();const ids=Object.keys(hist).filter(id=>hist[id]?.some(m=>m.role==='user')).reverse();box.innerHTML=ids.length?ids.map(id=>{const ch=all().find(x=>x.id===id);return ch?'<button class="drawer-chat" data-history-chat="'+esc(id)+'"><span class="drawer-chat-emoji">'+esc(ch.emoji||'✦')+'</span><span class="drawer-chat-name">'+esc(ch.name)+'</span></button>':''}).join(''):'<div style="padding:8px 12px;color:#9b9eaa;font-size:12px;line-height:1.7">아직 대화한 캐릭터가 없어요.</div>'}
 let posts=read('cozy-chat-posts-v1',[]),cloudPostsLoaded=false,postsLoading=false;
 function showPostMessage(message,type=''){const el=document.getElementById('post-message');el.textContent=message;el.className='auth-message show'+(type?' '+type:'')}
-async function renderPosts(){const box=document.getElementById('post-list');if(supabaseClient&&!postsLoading){postsLoading=true;try{const {data,error}=await supabaseClient.from('community_posts').select('id,content,created_at,user_id,author_name').order('created_at',{ascending:false}).limit(100);if(error)throw error;posts=(data||[]).map(p=>({id:p.id,text:p.content,date:new Date(p.created_at).toLocaleString('ko-KR'),author:p.author_name||'사용자',user_id:p.user_id}));cloudPostsLoaded=true}catch(err){box.innerHTML='<div class="empty-state">게시물을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</div>';console.error('Posts load:',err);postsLoading=false;return}finally{postsLoading=false}}box.innerHTML=posts.length?posts.map(p=>'<article class="post-item"><strong><button type="button" class="text-button" data-public-user="'+esc(p.user_id||'')+'">'+esc(p.author||'사용자')+'</button></strong><p>'+esc(p.text)+'</p><small>'+esc(p.date)+'</small></article>').join(''):'<div class="empty-state">아직 게시물이 없어요.<br>로그인하고 첫 이야기를 공유해 보세요.</div>'}
+async function renderPosts(){const box=document.getElementById('post-list');if(supabaseClient&&!postsLoading){postsLoading=true;try{const {data,error}=await supabaseClient.from('community_posts').select('id,content,created_at,user_id,author_name').order('created_at',{ascending:false}).limit(100);if(error)throw error;posts=(data||[]).map(p=>({id:p.id,text:p.content,date:new Date(p.created_at).toLocaleString('ko-KR'),author:p.author_name||'사용자',user_id:p.user_id}));cloudPostsLoaded=true}catch(err){box.innerHTML='<div class="empty-state">게시물을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</div>';console.error('Posts load:',err);postsLoading=false;return}finally{postsLoading=false}}box.innerHTML=posts.length?posts.map(p=>'<article class="post-item"><strong><button type="button" class="text-button" data-public-user="'+esc(p.user_id||'')+'">'+esc(p.author||'사용자')+'</button></strong><div class="post-body">'+md(p.text)+'</div><small>'+esc(p.date)+'</small></article>').join(''):'<div class="empty-state">아직 게시물이 없어요.<br>로그인하고 첫 이야기를 공유해 보세요.</div>'}
 document.getElementById('open-drawer').onclick=openDrawer;document.getElementById('close-drawer').onclick=closeDrawer;document.getElementById('drawer-shade').onclick=closeDrawer;
 document.getElementById('brand-home').onclick=e=>{e.preventDefault();setPage('home')};document.getElementById('drawer-home').onclick=e=>{e.preventDefault();setPage('home')};document.getElementById('header-discover').onclick=e=>{e.preventDefault();setPage('home');document.getElementById('discover').scrollIntoView({behavior:'smooth'})};
 document.getElementById('open-profile').onclick=()=>setPage('profile');
@@ -1153,7 +1201,7 @@ document.getElementById('persona-list').onclick=e=>{const choose=e.target.closes
       const actions = own
         ? '<button type="button" class="post-action" data-post-delete="' + esc(p.id) + '">삭제</button>'
         : (p.user_id ? '<button type="button" class="post-action" data-post-report="' + esc(p.id) + '">신고</button><button type="button" class="post-action" data-post-block="' + esc(p.id) + '">차단</button>' : '');
-      return '<article class="post-item"><div class="post-item-head"><span class="post-avatar" data-avatar-user="' + esc(p.user_id || '') + '" data-avatar-name="' + esc(p.author || '') + '">' + esc(String(p.author || '?').charAt(0)) + '</span><strong><button type="button" class="text-button" data-public-user="' + esc(p.user_id || '') + '">' + esc(p.author || '사용자') + '</button></strong><span class="post-actions">' + actions + '</span></div><p>' + esc(p.text) + '</p><small title="' + esc(p.date) + '">' + esc(window.cozyRelTime && p.created ? cozyRelTime(p.created) : p.date) + '</small></article>';
+      return '<article class="post-item"><div class="post-item-head"><span class="post-avatar" data-avatar-user="' + esc(p.user_id || '') + '" data-avatar-name="' + esc(p.author || '') + '">' + esc(String(p.author || '?').charAt(0)) + '</span><strong><button type="button" class="text-button" data-public-user="' + esc(p.user_id || '') + '">' + esc(p.author || '사용자') + '</button></strong><span class="post-actions">' + actions + '</span></div><div class="post-body">' + md(p.text) + '</div><small title="' + esc(p.date) + '">' + esc(window.cozyRelTime && p.created ? cozyRelTime(p.created) : p.date) + '</small></article>';
     }).join('') : '<div class="empty-state">아직 게시물이 없어요.<br>로그인하고 첫 이야기를 공유해 보세요.</div>';
   };
   $('post-list').addEventListener('click', async e => {
@@ -2110,6 +2158,242 @@ window.COZY_ICONS = {"trash": "<svg class=\"ico\" viewBox=\"0 0 24 24\" width=\"
   const previousToggle = window.toggleChatSettings;
   if (typeof previousToggle === 'function') {
     window.toggleChatSettings = function (...args) { const r = previousToggle.apply(this, args); updateChip(); return r };
+  }
+})();
+</script>
+<script id="cozy-v7">
+/* Cozy Chat v7: 채팅방 설정 목록 · 메시지 수정/삭제 · 상세 이어서/새로 대화 · 게시물 Markdown */
+(() => {
+  'use strict';
+  if (window.__cozyV7) return;
+  window.__cozyV7 = true;
+
+  const $ = id => document.getElementById(id);
+  const busy = () => !!document.querySelector('#chat-form button[type=submit].is-busy');
+
+  /* ================= 1) 채팅방 설정: 목록 → 항목 화면 ================= */
+  const panel = $('chat-settings-panel');
+  const nav = panel?.querySelector('.chat-settings-nav');
+  const headerTitle = panel?.querySelector('.chat-settings-header strong');
+  const ITEMS = {
+    persona: { title: '페르소나', icon: '🙂' },
+    note: { title: '유저 노트', icon: '📝' },
+    output: { title: '출력량 설정', icon: '📏' },
+    chat: { title: '채팅 설정', icon: '🎨' },
+    model: { title: 'AI 모델', icon: '🤖' },
+  };
+  if (panel && nav && headerTitle && !$('chat-settings-back')) {
+    headerTitle.insertAdjacentHTML('beforebegin', '<button type="button" class="chat-settings-back" id="chat-settings-back" aria-label="설정 목록으로" hidden>‹</button>');
+    nav.querySelectorAll('[data-settings-view]').forEach(b => {
+      const item = ITEMS[b.dataset.settingsView];
+      if (!item) return;
+      b.innerHTML = '<span class="settings-item-icon">' + item.icon + '</span><span class="settings-item-text"><strong>' + item.title + '</strong><small data-settings-summary="' + b.dataset.settingsView + '"></small></span><span class="settings-item-arrow">›</span>';
+    });
+    $('chat-settings-back').addEventListener('click', showSettingsList);
+  }
+  function selectedText(id) {
+    const el = $(id);
+    return el && el.selectedIndex >= 0 ? el.options[el.selectedIndex].textContent.trim() : '';
+  }
+  function summaries() {
+    const s = (() => { try { return getChatRoomSettings() } catch { return {} } })();
+    const mult = s.outputMultipliers || {};
+    const fmt = v => String(Number(v) || 1).replace(/\.0$/, '') + '×';
+    const note = String(s.userNote || '').trim();
+    return {
+      persona: selectedText('chat-persona-select') || '선택 안 함',
+      note: note ? note.slice(0, 28) + (note.length > 28 ? '…' : '') : '비어 있음',
+      output: 'Groq ' + fmt(mult.groq) + ' · Gemini ' + fmt(mult.gemini) + ' · OpenAI ' + fmt(mult['openai-compatible']),
+      chat: [selectedText('chat-font-select'), ($('chat-font-size')?.value ? $('chat-font-size').value + 'px' : '')].filter(Boolean).join(' · ') || '기본',
+      model: selectedText('chat-model-select') || '자동 선택',
+    };
+  }
+  function showSettingsList() {
+    if (!panel) return;
+    panel.classList.remove('detail');
+    headerTitle.textContent = '채팅방 설정';
+    $('chat-settings-back').hidden = true;
+    const sum = summaries();
+    panel.querySelectorAll('[data-settings-summary]').forEach(el => { el.textContent = sum[el.dataset.settingsSummary] || '' });
+  }
+  const previousSetView = window.setChatSettingsView;
+  if (typeof previousSetView === 'function') {
+    window.setChatSettingsView = function (view) {
+      const r = previousSetView(view);
+      if (panel && ITEMS[view]) {
+        panel.classList.add('detail');
+        headerTitle.textContent = ITEMS[view].title;
+        $('chat-settings-back').hidden = false;
+        panel.querySelector('.chat-settings-body')?.scrollTo?.(0, 0);
+      }
+      return r;
+    };
+  }
+  const previousToggle = window.toggleChatSettings;
+  if (typeof previousToggle === 'function') {
+    window.toggleChatSettings = function (open) {
+      const willOpen = typeof open === 'boolean' ? open : !panel?.classList.contains('open');
+      if (willOpen) showSettingsList();
+      return previousToggle(open);
+    };
+  }
+  showSettingsList();
+
+  /* ================= 2) 모든 메시지 수정 · 삭제 ================= */
+  function roomHistory() {
+    const key = String(active?.id || '');
+    const hist = read(H, {});
+    return { key, hist, list: Array.isArray(hist[key]) ? hist[key] : [] };
+  }
+  async function commit(key, hist, list) {
+    hist[key] = list;
+    save(H, hist);
+    renderChatMessages(list);
+    try { await saveHistoryToCloud(key) } catch {}
+    renderHistory?.();
+  }
+  function closeTools() {
+    document.querySelectorAll('#chat-log .msg-tools').forEach(el => el.remove());
+    document.querySelectorAll('#chat-log .chat-message-row.selected').forEach(el => el.classList.remove('selected'));
+  }
+  function tagRows(msgs) {
+    const { list } = roomHistory();
+    const rows = [...document.querySelectorAll('#chat-log .chat-message-row')];
+    rows.forEach((row, i) => {
+      const m = msgs?.[i];
+      const editable = m && !m.system && String(m.text || '').trim() && list[i] && list[i].text === m.text;
+      if (editable) row.dataset.msgIndex = String(i); else delete row.dataset.msgIndex;
+      row.classList.toggle('editable', !!editable);
+    });
+  }
+  const previousRenderChat = window.renderChatMessages;
+  window.renderChatMessages = function (msgs) {
+    const r = previousRenderChat(msgs);
+    tagRows(msgs);
+    return r;
+  };
+
+  $('chat-log')?.addEventListener('click', async e => {
+    if (e.target.closest('.msg-actions, .msg-edit, a, .chat-message-avatar')) return;
+    const toolBtn = e.target.closest('[data-tool]');
+    if (toolBtn) {
+      e.stopPropagation();
+      const idx = Number(toolBtn.closest('.msg-tools').dataset.for);
+      const { key, hist, list } = roomHistory();
+      const m = list[idx];
+      if (!m || busy()) return;
+      if (toolBtn.dataset.tool === 'copy') {
+        try { await navigator.clipboard.writeText(String(m.text || '')) } catch {}
+        closeTools();
+      } else if (toolBtn.dataset.tool === 'delete') {
+        if (!confirm((m.role === 'user' ? '내 메시지' : (active?.name || '캐릭터') + '의 메시지') + '를 삭제할까요?')) return;
+        list.splice(idx, 1);
+        await commit(key, hist, list);
+      } else if (toolBtn.dataset.tool === 'edit') {
+        startEdit(idx);
+      }
+      return;
+    }
+    const bubble = e.target.closest('.chat-message-row.editable .bubble');
+    if (!bubble || busy()) return;
+    const row = bubble.closest('.chat-message-row');
+    const already = row.classList.contains('selected');
+    closeTools();
+    if (already) return;
+    row.classList.add('selected');
+    const user = row.classList.contains('user');
+    row.insertAdjacentHTML('afterend', '<div class="msg-tools ' + (user ? 'user' : 'ai') + '" data-for="' + row.dataset.msgIndex + '"><button type="button" data-tool="edit">수정</button><button type="button" data-tool="delete">삭제</button><button type="button" data-tool="copy">복사</button></div>');
+  });
+
+  function startEdit(idx) {
+    const { list } = roomHistory();
+    const row = document.querySelector('#chat-log .chat-message-row[data-msg-index="' + idx + '"]');
+    const bubble = row?.querySelector('.bubble');
+    if (!bubble || !list[idx]) return;
+    closeTools();
+    row.classList.add('editing');
+    bubble.innerHTML = '<div class="msg-edit"><textarea rows="3" maxlength="8000"></textarea><div class="msg-edit-actions"><button type="button" data-edit="cancel">취소</button><button type="button" data-edit="save" class="primary">저장</button></div></div>';
+    const ta = bubble.querySelector('textarea');
+    ta.value = String(list[idx].text || '');
+    const fit = () => { ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight, 320) + 'px' };
+    ta.addEventListener('input', fit);
+    setTimeout(() => { fit(); ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length) }, 0);
+    bubble.querySelector('.msg-edit').addEventListener('click', async ev => {
+      ev.stopPropagation();
+      const b = ev.target.closest('[data-edit]');
+      if (!b) return;
+      const fresh = roomHistory();
+      if (b.dataset.edit === 'cancel') { renderChatMessages(fresh.list); return }
+      const text = ta.value.trim();
+      if (!text) { ta.focus(); return }
+      if (fresh.list[idx]) fresh.list[idx] = { ...fresh.list[idx], text, edited: true };
+      await commit(fresh.key, fresh.hist, fresh.list);
+    });
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#chat-log')) closeTools();
+  });
+
+  /* ================= 3) 캐릭터 상세: 이어서 / 새로 대화하기 ================= */
+  const chatBtn = $('character-detail-chat');
+  if (chatBtn && !$('character-detail-new-chat')) {
+    chatBtn.insertAdjacentHTML('beforebegin', '<div class="detail-chat-extra" id="detail-chat-extra" hidden><button type="button" class="btn btn-plain" id="character-detail-new-chat">새로 대화하기</button><small id="detail-chat-last"></small></div>');
+  }
+  function historyFor(id) {
+    const list = read(H, {})[id];
+    return Array.isArray(list) && list.some(m => m.role === 'user') ? list : null;
+  }
+  const previousOpenDetail = window.openCharacterDetail;
+  window.openCharacterDetail = function (id) {
+    const r = previousOpenDetail(id);
+    const c = detailCharacter, list = c ? historyFor(c.id) : null;
+    if (chatBtn) chatBtn.textContent = list ? '이어서 대화하기 →' : '대화하기 →';
+    const extra = $('detail-chat-extra');
+    if (extra) {
+      extra.hidden = !list;
+      if (list) {
+        const t = list.reduce((n, m) => Math.max(n, Number(m.time) || 0), 0);
+        $('detail-chat-last').textContent = '마지막 대화 ' + (window.cozyRelTime ? cozyRelTime(t) : '') + ' · 대화 ' + list.filter(m => m.role === 'user').length + '번';
+      }
+    }
+    return r;
+  };
+  $('character-detail-new-chat')?.addEventListener('click', async () => {
+    const c = detailCharacter;
+    if (!c) return;
+    if (!confirm('「' + (c.name || '이 캐릭터') + '」와 새로 대화를 시작할까요?\n지금까지의 대화 기록과 캐릭터가 기억하던 내용이 지워져요.')) return;
+    const hist = read(H, {});
+    delete hist[c.id];
+    save(H, hist);
+    if (currentUser && supabaseClient) {
+      const { error } = await supabaseClient.from('conversations').delete().eq('user_id', currentUser.id).eq('character_key', String(c.id));
+      if (error) console.error('대화 초기화 실패:', error);
+    }
+    renderHistory?.();
+    renderDrawerChats?.();
+    chatBtn.textContent = '대화하기 →';
+    $('detail-chat-extra').hidden = true;
+    chatBtn.click(); // 선택한 시작 설정과 페르소나로 새 대화를 연다
+  });
+
+  /* ================= 4) 게시물 Markdown ================= */
+  const postInput = $('post-input');
+  if (postInput && !$('post-preview')) {
+    postInput.placeholder = '오늘의 이야기나 캐릭터를 소개해 보세요. **굵게**, *기울임*, - 목록 같은 Markdown을 쓸 수 있어요.';
+    postInput.insertAdjacentHTML('afterend', '<div class="post-preview" id="post-preview" hidden></div>');
+    $('post-count')?.insertAdjacentHTML('beforebegin', '<button type="button" class="post-preview-toggle" id="post-preview-toggle">미리보기</button>');
+    $('post-preview-toggle')?.addEventListener('click', () => {
+      const pv = $('post-preview'), on = pv.hidden;
+      pv.hidden = !on;
+      postInput.hidden = on;
+      pv.innerHTML = postInput.value.trim() ? md(postInput.value) : '<span class="post-preview-empty">미리 볼 내용이 없어요.</span>';
+      $('post-preview-toggle').textContent = on ? '편집' : '미리보기';
+    });
+    $('post-form')?.addEventListener('submit', () => {
+      $('post-preview').hidden = true;
+      postInput.hidden = false;
+      $('post-preview-toggle').textContent = '미리보기';
+    }, true);
   }
 })();
 </script>
